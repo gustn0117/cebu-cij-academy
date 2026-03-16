@@ -45,21 +45,19 @@ const IconArrowRight = () => (
   </svg>
 );
 const IconStar = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="#FFB800"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="#333"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
 );
 const IconQuote = () => (
   <svg width="32" height="32" viewBox="0 0 24 24" fill="none" opacity="0.08"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z" fill="currentColor"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z" fill="currentColor"/></svg>
 );
 
-const featureColors = ['#0057B8', '#00B4D8', '#E4405F', '#25D366', '#FFB800', '#8B5CF6'];
-
 const features = [
-  { icon: <IconTeacher />, title: 'Expert Teachers', desc: 'Licensed and experienced English instructors with proven teaching methodologies.', color: featureColors[0] },
-  { icon: <IconGlobe />, title: 'Global Environment', desc: 'Multicultural campus with students from Korea, Japan, Taiwan, and Vietnam.', color: featureColors[1] },
-  { icon: <IconBook />, title: 'Proven Curriculum', desc: 'Structured learning programs with weekly assessments and measurable progress.', color: featureColors[2] },
-  { icon: <IconPalm />, title: 'Cebu Location', desc: 'Study English in a beautiful tropical island with year-round warm weather.', color: featureColors[3] },
-  { icon: <IconShield />, title: 'Safe Campus', desc: '24/7 security, on-site nurse, and dedicated staff ensuring student safety.', color: featureColors[4] },
-  { icon: <IconUsers />, title: 'Small Classes', desc: 'Maximum 1:4 group ratio with personalized attention for each student.', color: featureColors[5] },
+  { icon: <IconTeacher />, title: 'Expert Teachers', desc: 'Licensed and experienced English instructors with proven teaching methodologies.' },
+  { icon: <IconGlobe />, title: 'Global Environment', desc: 'Multicultural campus with students from Korea, Japan, Taiwan, and Vietnam.' },
+  { icon: <IconBook />, title: 'Proven Curriculum', desc: 'Structured learning programs with weekly assessments and measurable progress.' },
+  { icon: <IconPalm />, title: 'Cebu Location', desc: 'Study English in a beautiful tropical island with year-round warm weather.' },
+  { icon: <IconShield />, title: 'Safe Campus', desc: '24/7 security, on-site nurse, and dedicated staff ensuring student safety.' },
+  { icon: <IconUsers />, title: 'Small Classes', desc: 'Maximum 1:4 group ratio with personalized attention for each student.' },
 ];
 
 const programs = [
@@ -127,8 +125,8 @@ export default function Home() {
           <div className="feature-grid">
             {features.map((f, i) => (
               <ScrollReveal key={f.title} delay={i * 100}>
-                <div className="feature-item" style={{'--accent': f.color}}>
-                  <div className="feature-icon" style={{background: `${f.color}15`, color: f.color}}>
+                <div className="feature-item">
+                  <div className="feature-icon">
                     {f.icon}
                   </div>
                   <h4>{f.title}</h4>
@@ -164,7 +162,7 @@ export default function Home() {
                 <div className="about-checklist">
                   {['TESDA Accredited Institution', 'Native & Filipino Expert Teachers', 'Airport Pickup & Full Support', 'Modern Campus with Pool & Gym'].map((item) => (
                     <div className="about-check" key={item}>
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#25D366" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#333" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
                       <span>{item}</span>
                     </div>
                   ))}
