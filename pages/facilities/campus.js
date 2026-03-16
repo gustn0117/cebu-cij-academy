@@ -1,15 +1,17 @@
 import Layout from '@/components/Layout';
 import PageHeader from '@/components/PageHeader';
+import { useLanguage } from '@/lib/LanguageContext';
 
 export default function Campus() {
+  const { t } = useLanguage();
   return (
-    <Layout title="Campus">
-      <PageHeader title="Campus" subtitle="Our learning environment" breadcrumb={[{ label: 'Facilities', href: '/facilities' }, { label: 'Campus' }]} />
+    <Layout title={t.fac.campusTitle}>
+      <PageHeader title={t.fac.campusTitle} subtitle={t.fac.campusSub} breadcrumb={[{ label: t.nav.facilities, href: '/facilities' }, { label: t.fac.campusTitle }]} />
       <section className="section">
         <div className="container">
           <div className="content-block">
-            <h2>Campus Tour</h2>
-            <p>Take a look at our modern campus designed for effective learning.</p>
+            <h2>{t.fac.campusHeading}</h2>
+            <p>{t.fac.campusDesc}</p>
           </div>
         </div>
       </section>

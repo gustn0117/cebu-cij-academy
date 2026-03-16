@@ -1,9 +1,10 @@
 import Layout from '@/components/Layout';
 import PageHeader from '@/components/PageHeader';
+import { useLanguage } from '@/lib/LanguageContext';
 
 const ruleCategories = [
   {
-    title: 'General Rules',
+    titleKey: 'general',
     rules: [
       'Students must attend all scheduled classes. Absence without prior approval may result in warnings.',
       'Students must be punctual. Classes start on time and latecomers may not be admitted.',
@@ -13,7 +14,7 @@ const ruleCategories = [
     ],
   },
   {
-    title: 'Dormitory Rules',
+    titleKey: 'dorm',
     rules: [
       'Curfew time is 10:00 PM on weekdays (Sunday - Thursday). Students must be in the dormitory by this time.',
       'Weekend curfew is 12:00 AM (Friday - Saturday).',
@@ -24,7 +25,7 @@ const ruleCategories = [
     ],
   },
   {
-    title: 'Attendance Policy',
+    titleKey: 'attendance',
     rules: [
       'Students must maintain a minimum attendance rate of 90%.',
       'Absence due to illness must be reported to the office before 8:00 AM.',
@@ -34,7 +35,7 @@ const ruleCategories = [
     ],
   },
   {
-    title: 'Campus Rules',
+    titleKey: 'campusRules',
     rules: [
       'Smoking is only permitted in designated smoking areas.',
       'Alcohol consumption is prohibited on campus premises.',
@@ -45,7 +46,7 @@ const ruleCategories = [
     ],
   },
   {
-    title: 'Safety & Security',
+    titleKey: 'safety',
     rules: [
       'All students must attend the safety orientation on their first day.',
       'Emergency contact information must be provided during registration.',
@@ -57,14 +58,16 @@ const ruleCategories = [
 ];
 
 export default function SchoolRules() {
+  const { t } = useLanguage();
+
   return (
-    <Layout title="School Rules">
+    <Layout title={t.rules.title}>
       <PageHeader
-        title="School Rules & Regulations"
-        description="Important guidelines for all students"
+        title={t.rules.title}
+        description={t.rules.subtitle}
         breadcrumbs={[
-          { label: 'Registration', href: '/registration' },
-          { label: 'School Rules' },
+          { label: t.nav.registration, href: '/registration' },
+          { label: t.rules.title },
         ]}
       />
 
@@ -72,10 +75,7 @@ export default function SchoolRules() {
         <div className="container">
           <div className="content-block">
             <p style={{ marginBottom: 32 }}>
-              CIJ Academy is committed to providing a safe, comfortable, and productive learning
-              environment for all students. The following rules and regulations are designed to
-              ensure the well-being of every member of our community. All students are expected
-              to read, understand, and comply with these rules.
+              {t.rules.intro}
             </p>
 
             {ruleCategories.map((cat, i) => (
@@ -88,7 +88,7 @@ export default function SchoolRules() {
                   paddingBottom: 8,
                   borderBottom: '2px solid var(--primary-light)',
                 }}>
-                  {cat.title}
+                  {t.rules[cat.titleKey]}
                 </h2>
                 <ul style={{ paddingLeft: 0, listStyle: 'none' }}>
                   {cat.rules.map((rule, j) => (
@@ -122,11 +122,9 @@ export default function SchoolRules() {
               borderRadius: 'var(--radius)',
               borderLeft: '4px solid var(--secondary)',
             }}>
-              <p style={{ fontWeight: 600, color: '#8B6914', marginBottom: 8 }}>Important Notice</p>
+              <p style={{ fontWeight: 600, color: '#8B6914', marginBottom: 8 }}>{t.rules.importantNotice}</p>
               <p style={{ color: 'var(--gray-700)', fontSize: '0.95rem' }}>
-                Violation of school rules may result in warnings, penalties, or dismissal from the
-                academy depending on the severity of the offense. CIJ Academy reserves the right
-                to modify these rules as necessary to maintain a safe and productive learning environment.
+                {t.rules.noticeText}
               </p>
             </div>
           </div>

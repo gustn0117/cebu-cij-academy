@@ -1,15 +1,17 @@
 import Layout from '@/components/Layout';
 import PageHeader from '@/components/PageHeader';
+import { useLanguage } from '@/lib/LanguageContext';
 
 export default function Dormitory() {
+  const { t } = useLanguage();
   return (
-    <Layout title="Dormitory">
-      <PageHeader title="Dormitory" subtitle="Comfortable student housing" breadcrumb={[{ label: 'Facilities', href: '/facilities' }, { label: 'Dormitory' }]} />
+    <Layout title={t.fac.dormTitle}>
+      <PageHeader title={t.fac.dormTitle} subtitle={t.fac.dormSub} breadcrumb={[{ label: t.nav.facilities, href: '/facilities' }, { label: t.fac.dormTitle }]} />
       <section className="section">
         <div className="container">
           <div className="content-block">
-            <h2>Dormitory</h2>
-            <p>Our dormitory provides comfortable accommodations for all students.</p>
+            <h2>{t.fac.dormTitle}</h2>
+            <p>{t.fac.dormDesc}</p>
           </div>
         </div>
       </section>

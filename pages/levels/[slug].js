@@ -1,5 +1,6 @@
 import Layout from '@/components/Layout';
 import PageHeader from '@/components/PageHeader';
+import { useLanguage } from '@/lib/LanguageContext';
 
 const levelData = {
   kinder: {
@@ -185,6 +186,7 @@ export async function getStaticProps({ params }) {
 }
 
 export default function LevelDetail({ slug }) {
+  const { t } = useLanguage();
   const level = levelData[slug];
   if (!level) return null;
 
@@ -194,7 +196,7 @@ export default function LevelDetail({ slug }) {
         title={level.title}
         description={`${level.fullTitle} (${level.age})`}
         breadcrumbs={[
-          { label: 'Levels', href: '/levels' },
+          { label: t.nav.levels, href: '/levels' },
           { label: level.title },
         ]}
       />
@@ -237,12 +239,12 @@ export default function LevelDetail({ slug }) {
       <section className="section section-alt">
         <div className="container">
           <div className="content-block">
-            <h2>Daily Schedule</h2>
+            <h2>{t.prog.schedule}</h2>
             <table className="styled-table">
               <thead>
                 <tr>
-                  <th>Time</th>
-                  <th>Class</th>
+                  <th>{t.prog.time}</th>
+                  <th>{t.prog.class}</th>
                 </tr>
               </thead>
               <tbody>

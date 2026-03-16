@@ -2,28 +2,30 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Layout from '@/components/Layout';
 import PageHeader from '@/components/PageHeader';
+import { useLanguage } from '@/lib/LanguageContext';
 
 const allPosts = [];
 
 const PER_PAGE = 14;
 
 export default function Notice() {
+  const { t } = useLanguage();
   const [page, setPage] = useState(1);
   const totalPages = Math.ceil(allPosts.length / PER_PAGE);
   const posts = allPosts.slice((page - 1) * PER_PAGE, page * PER_PAGE);
 
   return (
-    <Layout title="Notice">
-      <PageHeader title="Notice" subtitle="Important announcements" breadcrumb={[{ label: 'Community', href: '/community' }, { label: 'Notice' }]} />
+    <Layout title={t.comm.noticeTitle}>
+      <PageHeader title={t.comm.noticeTitle} subtitle={t.comm.noticeSub} breadcrumb={[{ label: t.nav.community, href: '/community' }, { label: t.comm.noticeTitle }]} />
       <section className="section">
         <div className="container">
           <div className="board">
             <table className="board-table">
               <thead>
                 <tr>
-                  <th className="board-col-no">No</th>
-                  <th className="board-col-title">제목</th>
-                  <th className="board-col-date">날짜</th>
+                  <th className="board-col-no">{t.comm.boardNo}</th>
+                  <th className="board-col-title">{t.comm.boardTitle}</th>
+                  <th className="board-col-date">{t.comm.boardDate}</th>
                 </tr>
               </thead>
               <tbody>

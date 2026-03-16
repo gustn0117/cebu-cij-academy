@@ -1,15 +1,17 @@
 import Layout from '@/components/Layout';
 import PageHeader from '@/components/PageHeader';
+import { useLanguage } from '@/lib/LanguageContext';
 
 export default function Facilities() {
+  const { t } = useLanguage();
   return (
-    <Layout title="Facilities">
-      <PageHeader title="Facilities" subtitle="Explore our campus facilities" breadcrumb={[{ label: 'Facilities' }]} />
+    <Layout title={t.fac.title}>
+      <PageHeader title={t.fac.title} subtitle={t.fac.subtitle} breadcrumb={[{ label: t.nav.facilities }]} />
       <section className="section">
         <div className="container">
           <div className="content-block">
-            <h2>Our Facilities</h2>
-            <p>CIJ Academy provides world-class facilities for a comfortable learning experience.</p>
+            <h2>{t.fac.heading}</h2>
+            <p>{t.fac.desc}</p>
           </div>
         </div>
       </section>

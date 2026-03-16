@@ -1,31 +1,34 @@
 import Layout from '@/components/Layout';
 import PageHeader from '@/components/PageHeader';
-
-const reasons = [
-  { icon: '👨‍🏫', title: 'Professional Instructors', desc: 'Our teachers are highly trained professionals with years of experience in English language education. Each instructor is dedicated to helping students achieve their learning goals.' },
-  { icon: '📖', title: 'Customized Curriculum', desc: 'We offer personalized learning plans tailored to each student\'s level, goals, and learning style. Our curriculum is regularly updated to reflect the latest teaching methodologies.' },
-  { icon: '🏫', title: 'Modern Facilities', desc: 'Our campus features modern classrooms, comfortable dormitories, a cafeteria, swimming pool, and recreational areas to ensure a comfortable learning environment.' },
-  { icon: '🌴', title: 'Prime Location in Cebu', desc: 'Located in the heart of Cebu, students enjoy a safe and vibrant environment with easy access to beaches, shopping, and cultural attractions.' },
-  { icon: '🤝', title: 'Small Class Sizes', desc: 'We maintain small class sizes to ensure personalized attention and maximize interaction between students and teachers.' },
-  { icon: '🎯', title: 'Proven Track Record', desc: 'Our students consistently achieve significant improvements in their English proficiency, with many going on to succeed in international exams and careers.' },
-];
+import { useLanguage } from '@/lib/LanguageContext';
 
 export default function WhyChooseCIJ() {
+  const { t } = useLanguage();
+
+  const reasons = [
+    { icon: '👨‍🏫', title: t.why.f1t, desc: t.why.f1d },
+    { icon: '📖', title: t.why.f2t, desc: t.why.f2d },
+    { icon: '🏫', title: t.why.f3t, desc: t.why.f3d },
+    { icon: '🌴', title: t.why.f4t, desc: t.why.f4d },
+    { icon: '🤝', title: t.why.f5t, desc: t.why.f5d },
+    { icon: '🎯', title: t.why.f6t, desc: t.why.f6d },
+  ];
+
   return (
-    <Layout title="Why Choose CIJ">
+    <Layout title={t.why.title}>
       <PageHeader
-        title="Why Choose CIJ"
-        description="Discover what makes us different"
+        title={t.why.title}
+        description={t.why.subtitle}
         breadcrumbs={[
-          { label: 'About Us', href: '/about' },
-          { label: 'Why Choose CIJ' },
+          { label: t.nav.aboutUs, href: '/about' },
+          { label: t.why.title },
         ]}
       />
       <section className="section">
         <div className="container">
           <div className="section-title">
-            <h2>The CIJ Advantage</h2>
-            <p>Here are the reasons why students from around the world choose CIJ Academy.</p>
+            <h2>{t.why.intro}</h2>
+            <p>{t.why.introDesc}</p>
             <span className="accent-line"></span>
           </div>
           <div className="feature-grid">
@@ -50,10 +53,10 @@ export default function WhyChooseCIJ() {
             textAlign: 'center',
           }}>
             {[
-              { num: '10+', label: 'Years of Experience' },
-              { num: '5,000+', label: 'Graduates' },
-              { num: '20+', label: 'Nationalities' },
-              { num: '50+', label: 'Expert Teachers' },
+              { num: '10+', label: t.why.statYears },
+              { num: '5,000+', label: t.why.statGrads },
+              { num: '20+', label: t.why.statNations },
+              { num: '50+', label: t.why.statTeachers },
             ].map((stat) => (
               <div key={stat.label}>
                 <div style={{ fontSize: '2.5rem', fontWeight: 800, color: 'var(--primary)' }}>{stat.num}</div>

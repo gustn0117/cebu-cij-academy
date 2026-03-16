@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Layout from '@/components/Layout';
 import ScrollReveal from '@/components/ScrollReveal';
+import { useLanguage } from '@/lib/LanguageContext';
 
 /* ── SVG Icons ── */
 const IconTeacher = () => (
@@ -51,32 +52,34 @@ const IconQuote = () => (
   <svg width="32" height="32" viewBox="0 0 24 24" fill="none" opacity="0.08"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z" fill="currentColor"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z" fill="currentColor"/></svg>
 );
 
-const features = [
-  { icon: <IconTeacher />, title: 'Expert Teachers', desc: 'Licensed and experienced English instructors with proven teaching methodologies.' },
-  { icon: <IconGlobe />, title: 'Global Environment', desc: 'Multicultural campus with students from Korea, Japan, Taiwan, and Vietnam.' },
-  { icon: <IconBook />, title: 'Proven Curriculum', desc: 'Structured learning programs with weekly assessments and measurable progress.' },
-  { icon: <IconPalm />, title: 'Cebu Location', desc: 'Study English in a beautiful tropical island with year-round warm weather.' },
-  { icon: <IconShield />, title: 'Safe Campus', desc: '24/7 security, on-site nurse, and dedicated staff ensuring student safety.' },
-  { icon: <IconUsers />, title: 'Small Classes', desc: 'Maximum 1:4 group ratio with personalized attention for each student.' },
-];
-
-const programs = [
-  { title: 'ESL Program', desc: 'General English for everyday communication. Build confidence in speaking, listening, reading, and writing.', href: '/programs/esl', img: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600&h=400&fit=crop', tag: 'Most Popular' },
-  { title: 'IELTS Program', desc: 'Intensive preparation for the IELTS exam with mock tests and strategy coaching.', href: '/programs/ielts', img: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=600&h=400&fit=crop', tag: 'Test Prep' },
-  { title: 'Junior Program', desc: 'Age-appropriate English education for children ages 4-17 with fun, interactive activities.', href: '/levels', img: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&h=400&fit=crop', tag: 'Kids & Teens' },
-];
-
-const steps = [
-  { num: '01', title: 'Choose Your Program', desc: 'Select the program that matches your goals - ESL, IELTS, Business English, or Junior courses.' },
-  { num: '02', title: 'Submit Application', desc: 'Fill out our simple online registration form and receive a confirmation within 24 hours.' },
-  { num: '03', title: 'Arrive in Cebu', desc: 'We provide airport pickup and orientation to help you settle into campus life smoothly.' },
-  { num: '04', title: 'Start Learning', desc: 'Begin your classes with a placement test and personalized study plan from day one.' },
-];
-
 const testimonials = [];
 
 /* ── Page ── */
 export default function Home() {
+  const { t } = useLanguage();
+
+  const features = [
+    { icon: <IconTeacher />, title: t.home.feat1Title, desc: t.home.feat1Desc },
+    { icon: <IconGlobe />, title: t.home.feat2Title, desc: t.home.feat2Desc },
+    { icon: <IconBook />, title: t.home.feat3Title, desc: t.home.feat3Desc },
+    { icon: <IconPalm />, title: t.home.feat4Title, desc: t.home.feat4Desc },
+    { icon: <IconShield />, title: t.home.feat5Title, desc: t.home.feat5Desc },
+    { icon: <IconUsers />, title: t.home.feat6Title, desc: t.home.feat6Desc },
+  ];
+
+  const programs = [
+    { title: t.home.eslTitle, desc: t.home.eslDesc, href: '/programs/esl', img: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600&h=400&fit=crop', tag: t.home.eslTag },
+    { title: t.home.ieltsTitle, desc: t.home.ieltsDesc, href: '/programs/ielts', img: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=600&h=400&fit=crop', tag: t.home.ieltsTag },
+    { title: t.home.juniorTitle, desc: t.home.juniorDesc, href: '/levels', img: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&h=400&fit=crop', tag: t.home.juniorTag },
+  ];
+
+  const steps = [
+    { num: '01', title: t.home.step1Title, desc: t.home.step1Desc },
+    { num: '02', title: t.home.step2Title, desc: t.home.step2Desc },
+    { num: '03', title: t.home.step3Title, desc: t.home.step3Desc },
+    { num: '04', title: t.home.step4Title, desc: t.home.step4Desc },
+  ];
+
   return (
     <Layout title="Home">
       {/* ▸ Hero */}
@@ -88,19 +91,18 @@ export default function Home() {
         <div className="hero-content hero-anim">
           <span className="hero-badge">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{marginRight:6,verticalAlign:'middle'}}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            Cebu, Philippines
+            {t.home.badge}
           </span>
-          <h1>Your English Journey<br /><span className="text-gradient">Starts Here</span></h1>
+          <h1>{t.home.heroTitle1}<br /><span className="text-gradient">{t.home.heroTitle2}</span></h1>
           <p>
-            CIJ Academy offers world-class English education in the heart of Cebu.
-            Programs for all ages and levels, from kids to adults.
+            {t.home.heroDesc}
           </p>
           <div className="hero-buttons">
             <Link href="/registration/how-to-register" className="hero-btn">
-              Get Started <IconArrowRight />
+              {t.home.getStarted} <IconArrowRight />
             </Link>
             <Link href="/about" className="hero-btn-outline">
-              Learn More
+              {t.home.learnMore}
             </Link>
           </div>
         </div>
@@ -116,15 +118,15 @@ export default function Home() {
         <div className="container">
           <ScrollReveal>
             <div className="section-title">
-              <span className="section-tag">Why Choose Us</span>
-              <h2>Why CIJ Academy?</h2>
-              <p>Discover what makes CIJ Academy the premier choice for English education in Cebu.</p>
+              <span className="section-tag">{t.home.whyTag}</span>
+              <h2>{t.home.whyTitle}</h2>
+              <p>{t.home.whyDesc}</p>
               <span className="accent-line"></span>
             </div>
           </ScrollReveal>
           <div className="feature-grid">
             {features.map((f, i) => (
-              <ScrollReveal key={f.title} delay={i * 100}>
+              <ScrollReveal key={i} delay={i * 100}>
                 <div className="feature-item">
                   <div className="feature-icon">
                     {f.icon}
@@ -147,20 +149,19 @@ export default function Home() {
                 <img src="https://images.unsplash.com/photo-1571260899304-425eee4c7efc?w=700&h=500&fit=crop" alt="Students studying" />
                 <div className="about-preview-badge">
                   <span className="about-preview-badge-num">15+</span>
-                  <span className="about-preview-badge-text">Years of<br />Excellence</span>
+                  <span className="about-preview-badge-text">{t.home.yearsExcellence}</span>
                 </div>
               </div>
             </ScrollReveal>
             <ScrollReveal direction="left">
               <div className="about-preview-content">
-                <span className="section-tag">About CIJ Academy</span>
-                <h2>Premier English Academy <span className="text-gradient">Since 2003</span></h2>
+                <span className="section-tag">{t.home.aboutTag}</span>
+                <h2>{t.home.aboutTitle} <span className="text-gradient">{t.home.aboutSince}</span></h2>
                 <p>
-                  CIJ Academy is a leading English language institution located in the beautiful city of Cebu, Philippines.
-                  With over 15 years of experience, we have helped thousands of students achieve their English language goals.
+                  {t.home.aboutDesc}
                 </p>
                 <div className="about-checklist">
-                  {['TESDA Accredited Institution', 'Native & Filipino Expert Teachers', 'Airport Pickup & Full Support', 'Modern Campus with Pool & Gym'].map((item) => (
+                  {[t.home.check1, t.home.check2, t.home.check3, t.home.check4].map((item) => (
                     <div className="about-check" key={item}>
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#333" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
                       <span>{item}</span>
@@ -168,7 +169,7 @@ export default function Home() {
                   ))}
                 </div>
                 <Link href="/about/greeting" className="btn-primary">
-                  Read Our Story <IconArrowRight />
+                  {t.home.readStory} <IconArrowRight />
                 </Link>
               </div>
             </ScrollReveal>
@@ -181,21 +182,21 @@ export default function Home() {
         <div className="container">
           <ScrollReveal>
             <div className="section-title">
-              <span className="section-tag">What We Offer</span>
-              <h2>Our Programs</h2>
-              <p>Tailored programs designed to meet your specific English learning goals.</p>
+              <span className="section-tag">{t.home.progTag}</span>
+              <h2>{t.home.progTitle}</h2>
+              <p>{t.home.progDesc}</p>
               <span className="accent-line"></span>
             </div>
           </ScrollReveal>
           <div className="card-grid">
             {programs.map((p, i) => (
-              <ScrollReveal key={p.title} delay={i * 150}>
+              <ScrollReveal key={i} delay={i * 150}>
                 <Link href={p.href} style={{ textDecoration: 'none' }}>
                   <div className="card">
                     <div className="card-image">
                       <img src={p.img} alt={p.title} />
                       <div className="card-image-overlay">
-                        <span className="card-view-btn">View Program <IconArrowRight /></span>
+                        <span className="card-view-btn">{t.home.viewProgram} <IconArrowRight /></span>
                       </div>
                     </div>
                     <div className="card-body">
@@ -216,9 +217,9 @@ export default function Home() {
         <div className="container">
           <ScrollReveal>
             <div className="section-title" style={{color:'#fff'}}>
-              <span className="section-tag" style={{background:'rgba(255,255,255,0.15)',color:'#fff'}}>How It Works</span>
-              <h2 style={{color:'#fff'}}>4 Simple Steps to Get Started</h2>
-              <p style={{color:'rgba(255,255,255,0.75)'}}>From application to your first class, we make the process easy and seamless.</p>
+              <span className="section-tag" style={{background:'rgba(255,255,255,0.15)',color:'#fff'}}>{t.home.howTag}</span>
+              <h2 style={{color:'#fff'}}>{t.home.howTitle}</h2>
+              <p style={{color:'rgba(255,255,255,0.75)'}}>{t.home.howDesc}</p>
               <span className="accent-line"></span>
             </div>
           </ScrollReveal>
@@ -242,18 +243,18 @@ export default function Home() {
         <div className="container">
           <ScrollReveal>
             <div className="section-title">
-              <span className="section-tag">Student Life</span>
-              <h2>Campus Life</h2>
-              <p>Experience a vibrant student life at our modern campus in Cebu.</p>
+              <span className="section-tag">{t.home.campusTag}</span>
+              <h2>{t.home.campusTitle}</h2>
+              <p>{t.home.campusDesc}</p>
               <span className="accent-line"></span>
             </div>
           </ScrollReveal>
           <div className="campus-grid">
-            <ScrollReveal className="campus-item campus-large"><img src="https://images.unsplash.com/photo-1562774053-701939374585?w=800&h=500&fit=crop" alt="Campus building" /><div className="campus-label">Modern Campus</div></ScrollReveal>
-            <ScrollReveal className="campus-item" delay={100}><img src="https://images.unsplash.com/photo-1567521464027-f127ff144326?w=400&h=300&fit=crop" alt="Classroom" /><div className="campus-label">Classrooms</div></ScrollReveal>
-            <ScrollReveal className="campus-item" delay={200}><img src="https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=400&h=300&fit=crop" alt="Dormitory" /><div className="campus-label">Dormitory</div></ScrollReveal>
-            <ScrollReveal className="campus-item" delay={300}><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&h=300&fit=crop" alt="Cafeteria food" /><div className="campus-label">Cafeteria</div></ScrollReveal>
-            <ScrollReveal className="campus-item" delay={400}><img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&h=300&fit=crop" alt="Gym" /><div className="campus-label">Facilities</div></ScrollReveal>
+            <ScrollReveal className="campus-item campus-large"><img src="https://images.unsplash.com/photo-1562774053-701939374585?w=800&h=500&fit=crop" alt="Campus building" /><div className="campus-label">{t.home.campusModern}</div></ScrollReveal>
+            <ScrollReveal className="campus-item" delay={100}><img src="https://images.unsplash.com/photo-1567521464027-f127ff144326?w=400&h=300&fit=crop" alt="Classroom" /><div className="campus-label">{t.home.campusClassrooms}</div></ScrollReveal>
+            <ScrollReveal className="campus-item" delay={200}><img src="https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=400&h=300&fit=crop" alt="Dormitory" /><div className="campus-label">{t.home.campusDorm}</div></ScrollReveal>
+            <ScrollReveal className="campus-item" delay={300}><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&h=300&fit=crop" alt="Cafeteria food" /><div className="campus-label">{t.home.campusCafe}</div></ScrollReveal>
+            <ScrollReveal className="campus-item" delay={400}><img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&h=300&fit=crop" alt="Gym" /><div className="campus-label">{t.home.campusFacilities}</div></ScrollReveal>
           </div>
         </div>
       </section>
@@ -263,26 +264,26 @@ export default function Home() {
         <div className="container">
           <ScrollReveal>
             <div className="section-title">
-              <span className="section-tag">Testimonials</span>
-              <h2>Student Stories</h2>
-              <p>Hear from our graduates about their experience at CIJ Academy.</p>
+              <span className="section-tag">{t.home.testiTag}</span>
+              <h2>{t.home.testiTitle}</h2>
+              <p>{t.home.testiDesc}</p>
               <span className="accent-line"></span>
             </div>
           </ScrollReveal>
           <div className="testimonial-grid">
-            {testimonials.map((t, i) => (
-              <ScrollReveal key={t.name} delay={i * 150}>
+            {testimonials.map((tm, i) => (
+              <ScrollReveal key={tm.name} delay={i * 150}>
                 <div className="testimonial-card">
                   <div className="testimonial-quote"><IconQuote /></div>
                   <div className="testimonial-stars">
                     {[...Array(5)].map((_, j) => <IconStar key={j} />)}
                   </div>
-                  <p className="testimonial-text">&ldquo;{t.text}&rdquo;</p>
+                  <p className="testimonial-text">&ldquo;{tm.text}&rdquo;</p>
                   <div className="testimonial-author">
-                    <img src={t.img} alt={t.name} className="testimonial-avatar" />
+                    <img src={tm.img} alt={tm.name} className="testimonial-avatar" />
                     <div>
-                      <strong>{t.name}</strong>
-                      <span>{t.country}</span>
+                      <strong>{tm.name}</strong>
+                      <span>{tm.country}</span>
                     </div>
                   </div>
                 </div>
@@ -300,11 +301,11 @@ export default function Home() {
         </div>
         <div className="container" style={{ position: 'relative', zIndex: 1 }}>
           <ScrollReveal>
-            <h2>Ready to Start Your Journey?</h2>
-            <p>Join thousands of successful students who chose CIJ Academy.</p>
+            <h2>{t.home.ctaTitle}</h2>
+            <p>{t.home.ctaDesc}</p>
             <div className="hero-buttons" style={{ justifyContent: 'center' }}>
-              <Link href="/registration/how-to-register" className="hero-btn">Register Now <IconArrowRight /></Link>
-              <Link href="/about/address" className="hero-btn-outline" style={{ borderColor: '#fff', color: '#fff' }}>Visit Us</Link>
+              <Link href="/registration/how-to-register" className="hero-btn">{t.home.registerNow} <IconArrowRight /></Link>
+              <Link href="/about/address" className="hero-btn-outline" style={{ borderColor: '#fff', color: '#fff' }}>{t.home.visitUs}</Link>
             </div>
           </ScrollReveal>
         </div>

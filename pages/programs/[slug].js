@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import Layout from '@/components/Layout';
 import PageHeader from '@/components/PageHeader';
+import { useLanguage } from '@/lib/LanguageContext';
 
 const programData = {
   esl: {
@@ -101,6 +102,7 @@ export async function getStaticProps({ params }) {
 }
 
 export default function ProgramDetail({ slug }) {
+  const { t } = useLanguage();
   const program = programData[slug];
   if (!program) return null;
 
@@ -110,7 +112,7 @@ export default function ProgramDetail({ slug }) {
         title={program.title}
         description={program.fullTitle}
         breadcrumbs={[
-          { label: 'Programs', href: '/programs' },
+          { label: t.nav.programs, href: '/programs' },
           { label: program.title },
         ]}
       />
@@ -123,9 +125,7 @@ export default function ProgramDetail({ slug }) {
             <p>{program.desc}</p>
             <p>
               {/* 임의 텍스트 - 클라이언트가 나중에 직접 수정 예정 */}
-              This program is carefully structured to provide maximum learning efficiency.
-              Students will benefit from a balanced combination of one-on-one instruction,
-              group activities, and self-directed learning opportunities.
+              {t.prog.scheduleNote}
             </p>
           </div>
         </div>
@@ -135,7 +135,7 @@ export default function ProgramDetail({ slug }) {
       <section className="section section-alt">
         <div className="container">
           <div className="section-title">
-            <h2>Program Features</h2>
+            <h2>{t.prog.features}</h2>
             <span className="accent-line"></span>
           </div>
           <div className="card-grid">
@@ -155,12 +155,12 @@ export default function ProgramDetail({ slug }) {
       <section className="section">
         <div className="container">
           <div className="content-block">
-            <h2>Daily Schedule</h2>
+            <h2>{t.prog.schedule}</h2>
             <table className="styled-table">
               <thead>
                 <tr>
-                  <th>Time</th>
-                  <th>Class</th>
+                  <th>{t.prog.time}</th>
+                  <th>{t.prog.class}</th>
                 </tr>
               </thead>
               <tbody>

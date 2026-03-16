@@ -1,14 +1,17 @@
 import Link from 'next/link';
 import Layout from '@/components/Layout';
 import PageHeader from '@/components/PageHeader';
+import { useLanguage } from '@/lib/LanguageContext';
 
 export default function Registration() {
+  const { t } = useLanguage();
+
   return (
-    <Layout title="Registration">
+    <Layout title={t.reg.title}>
       <PageHeader
-        title="Registration"
-        description="Join CIJ Academy today"
-        breadcrumbs={[{ label: 'Registration' }]}
+        title={t.reg.title}
+        description={t.reg.subtitle}
+        breadcrumbs={[{ label: t.nav.registration }]}
       />
       <section className="section">
         <div className="container">
@@ -19,8 +22,8 @@ export default function Registration() {
                   <span style={{ fontSize: '3rem' }}>📝</span>
                 </div>
                 <div className="card-body">
-                  <h3>How to Register</h3>
-                  <p>Step-by-step guide to enrolling at CIJ Academy. Learn about the registration process, required documents, and important dates.</p>
+                  <h3>{t.nav.howToRegister}</h3>
+                  <p>{t.reg.howDesc}</p>
                 </div>
               </div>
             </Link>
@@ -30,8 +33,8 @@ export default function Registration() {
                   <span style={{ fontSize: '3rem' }}>📋</span>
                 </div>
                 <div className="card-body">
-                  <h3>School Rules</h3>
-                  <p>Important rules and regulations that all students must follow during their stay at CIJ Academy.</p>
+                  <h3>{t.nav.schoolRules}</h3>
+                  <p>{t.reg.rulesDesc}</p>
                 </div>
               </div>
             </Link>

@@ -1,15 +1,17 @@
 import Layout from '@/components/Layout';
 import PageHeader from '@/components/PageHeader';
+import { useLanguage } from '@/lib/LanguageContext';
 
 export default function Cafeteria() {
+  const { t } = useLanguage();
   return (
-    <Layout title="Cafeteria">
-      <PageHeader title="Cafeteria" subtitle="Nutritious meals for students" breadcrumb={[{ label: 'Facilities', href: '/facilities' }, { label: 'Cafeteria' }]} />
+    <Layout title={t.fac.cafeTitle}>
+      <PageHeader title={t.fac.cafeTitle} subtitle={t.fac.cafeSub} breadcrumb={[{ label: t.nav.facilities, href: '/facilities' }, { label: t.fac.cafeTitle }]} />
       <section className="section">
         <div className="container">
           <div className="content-block">
-            <h2>Cafeteria</h2>
-            <p>Our cafeteria serves nutritious meals daily for all students and staff.</p>
+            <h2>{t.fac.cafeTitle}</h2>
+            <p>{t.fac.cafeDesc}</p>
           </div>
         </div>
       </section>

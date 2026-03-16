@@ -1,66 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-
-const navItems = [
-  {
-    label: 'About Us',
-    href: '/about',
-    sub: [
-      { label: 'Greeting', href: '/about/greeting' },
-      { label: 'History', href: '/about/history' },
-      { label: 'Why Choose CIJ', href: '/about/why-choose-cij' },
-      { label: 'Address', href: '/about/address' },
-    ],
-  },
-  {
-    label: 'Programs',
-    href: '/programs',
-    sub: [
-      { label: 'ESL Program', href: '/programs/esl' },
-      { label: 'IELTS Program', href: '/programs/ielts' },
-      { label: 'TOEIC Program', href: '/programs/toeic' },
-      { label: 'Business English', href: '/programs/business' },
-    ],
-  },
-  {
-    label: 'Levels',
-    href: '/levels',
-    sub: [
-      { label: 'Kinder (4-7)', href: '/levels/kinder' },
-      { label: 'Junior A (8-11)', href: '/levels/junior-a' },
-      { label: 'Junior B (11-14)', href: '/levels/junior-b' },
-      { label: 'Junior C (14+)', href: '/levels/junior-c' },
-      { label: 'Adult', href: '/levels/adult' },
-    ],
-  },
-  {
-    label: 'Registration',
-    href: '/registration',
-    sub: [
-      { label: 'How to Register', href: '/registration/how-to-register' },
-      { label: 'School Rules', href: '/registration/school-rules' },
-    ],
-  },
-  {
-    label: 'Facilities',
-    href: '/facilities',
-    sub: [
-      { label: 'Campus', href: '/facilities/campus' },
-      { label: 'Dormitory', href: '/facilities/dormitory' },
-      { label: 'Cafeteria', href: '/facilities/cafeteria' },
-    ],
-  },
-  {
-    label: 'Community',
-    href: '/community',
-    sub: [
-      { label: 'Notice', href: '/community/notice' },
-      { label: 'Gallery', href: '/community/gallery' },
-      { label: 'FAQ', href: '/community/faq' },
-    ],
-  },
-];
+import { useLanguage } from '@/lib/LanguageContext';
 
 const languages = [
   { code: 'en', label: 'English', flag: '\u{1F1FA}\u{1F1F8}' },
@@ -71,12 +12,74 @@ const languages = [
 ];
 
 export default function Navbar() {
+  const { lang, setLang, t } = useLanguage();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
   const [langOpen, setLangOpen] = useState(false);
-  const [currentLang, setCurrentLang] = useState(languages[0]);
   const langRef = useRef(null);
   const router = useRouter();
+
+  const currentLang = languages.find((l) => l.code === lang) || languages[0];
+
+  const navItems = [
+    {
+      label: t.nav.aboutUs,
+      href: '/about',
+      sub: [
+        { label: t.nav.greeting, href: '/about/greeting' },
+        { label: t.nav.history, href: '/about/history' },
+        { label: t.nav.whyChooseCij, href: '/about/why-choose-cij' },
+        { label: t.nav.address, href: '/about/address' },
+      ],
+    },
+    {
+      label: t.nav.programs,
+      href: '/programs',
+      sub: [
+        { label: t.nav.eslProgram, href: '/programs/esl' },
+        { label: t.nav.ieltsProgram, href: '/programs/ielts' },
+        { label: t.nav.toeicProgram, href: '/programs/toeic' },
+        { label: t.nav.businessEnglish, href: '/programs/business' },
+      ],
+    },
+    {
+      label: t.nav.levels,
+      href: '/levels',
+      sub: [
+        { label: t.nav.kinder, href: '/levels/kinder' },
+        { label: t.nav.juniorA, href: '/levels/junior-a' },
+        { label: t.nav.juniorB, href: '/levels/junior-b' },
+        { label: t.nav.juniorC, href: '/levels/junior-c' },
+        { label: t.nav.adult, href: '/levels/adult' },
+      ],
+    },
+    {
+      label: t.nav.registration,
+      href: '/registration',
+      sub: [
+        { label: t.nav.howToRegister, href: '/registration/how-to-register' },
+        { label: t.nav.schoolRules, href: '/registration/school-rules' },
+      ],
+    },
+    {
+      label: t.nav.facilities,
+      href: '/facilities',
+      sub: [
+        { label: t.nav.campus, href: '/facilities/campus' },
+        { label: t.nav.dormitory, href: '/facilities/dormitory' },
+        { label: t.nav.cafeteria, href: '/facilities/cafeteria' },
+      ],
+    },
+    {
+      label: t.nav.community,
+      href: '/community',
+      sub: [
+        { label: t.nav.notice, href: '/community/notice' },
+        { label: t.nav.gallery, href: '/community/gallery' },
+        { label: t.nav.faq, href: '/community/faq' },
+      ],
+    },
+  ];
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -100,9 +103,9 @@ export default function Navbar() {
         <ul className="navbar-menu">
           {navItems.map((item) => (
             <li
-              key={item.label}
+              key={item.href}
               className="navbar-menu-item"
-              onMouseEnter={() => setOpenDropdown(item.label)}
+              onMouseEnter={() => setOpenDropdown(item.href)}
               onMouseLeave={() => setOpenDropdown(null)}
             >
               <Link
@@ -112,10 +115,10 @@ export default function Navbar() {
                 {item.label}
                 {item.sub && <span className="navbar-arrow">&#9662;</span>}
               </Link>
-              {item.sub && openDropdown === item.label && (
+              {item.sub && openDropdown === item.href && (
                 <div className="navbar-dropdown">
                   {item.sub.map((sub) => (
-                    <Link key={sub.label} href={sub.href} className="navbar-dropdown-link">
+                    <Link key={sub.href} href={sub.href} className="navbar-dropdown-link">
                       {sub.label}
                     </Link>
                   ))}
@@ -137,17 +140,17 @@ export default function Navbar() {
           </button>
           {langOpen && (
             <div className="navbar-lang-dropdown">
-              {languages.map((lang) => (
+              {languages.map((l) => (
                 <button
-                  key={lang.code}
-                  className={`navbar-lang-option ${lang.code === currentLang.code ? 'active' : ''}`}
+                  key={l.code}
+                  className={`navbar-lang-option ${l.code === lang ? 'active' : ''}`}
                   onClick={() => {
-                    setCurrentLang(lang);
+                    setLang(l.code);
                     setLangOpen(false);
                   }}
                 >
-                  <span className="navbar-lang-flag">{lang.flag}</span>
-                  <span>{lang.label}</span>
+                  <span className="navbar-lang-flag">{l.flag}</span>
+                  <span>{l.label}</span>
                 </button>
               ))}
             </div>
@@ -170,7 +173,7 @@ export default function Navbar() {
       {mobileOpen && (
         <div className="navbar-mobile-menu">
           {navItems.map((item) => (
-            <div key={item.label}>
+            <div key={item.href}>
               <Link
                 href={item.href}
                 className="navbar-mobile-link"
@@ -182,7 +185,7 @@ export default function Navbar() {
                 <div className="navbar-mobile-sub">
                   {item.sub.map((sub) => (
                     <Link
-                      key={sub.label}
+                      key={sub.href}
                       href={sub.href}
                       className="navbar-mobile-sub-link"
                       onClick={() => setMobileOpen(false)}
@@ -196,16 +199,16 @@ export default function Navbar() {
           ))}
           {/* Mobile Language */}
           <div className="navbar-mobile-lang">
-            {languages.map((lang) => (
+            {languages.map((l) => (
               <button
-                key={lang.code}
-                className={`navbar-lang-option ${lang.code === currentLang.code ? 'active' : ''}`}
+                key={l.code}
+                className={`navbar-lang-option ${l.code === lang ? 'active' : ''}`}
                 onClick={() => {
-                  setCurrentLang(lang);
+                  setLang(l.code);
                 }}
               >
-                <span className="navbar-lang-flag">{lang.flag}</span>
-                <span>{lang.label}</span>
+                <span className="navbar-lang-flag">{l.flag}</span>
+                <span>{l.label}</span>
               </button>
             ))}
           </div>

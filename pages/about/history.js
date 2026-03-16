@@ -1,35 +1,34 @@
 import Layout from '@/components/Layout';
 import PageHeader from '@/components/PageHeader';
-
-const milestones = [
-  { year: '2012', title: 'Foundation', desc: 'CIJ Academy was established in Cebu, Philippines with a vision to provide quality English education.' },
-  { year: '2014', title: 'Campus Expansion', desc: 'Expanded facilities to include new classrooms, dormitories, and recreational areas for students.' },
-  { year: '2016', title: 'Junior Programs Launch', desc: 'Introduced specialized programs for junior learners, including Kinder and Junior levels.' },
-  { year: '2018', title: 'International Recognition', desc: 'Received accreditation and recognition from international education bodies for our curriculum quality.' },
-  { year: '2020', title: 'Online Programs', desc: 'Adapted to global changes by launching online English learning programs for remote students.' },
-  { year: '2023', title: 'Renewed Vision', desc: 'Relaunched with updated curriculum, modern facilities, and a renewed commitment to excellence.' },
-];
+import { useLanguage } from '@/lib/LanguageContext';
 
 export default function History() {
+  const { t } = useLanguage();
+
+  const milestones = [
+    { year: t.hist.y1, title: t.hist.y1t, desc: t.hist.y1d },
+    { year: t.hist.y2, title: t.hist.y2t, desc: t.hist.y2d },
+    { year: t.hist.y3, title: t.hist.y3t, desc: t.hist.y3d },
+    { year: t.hist.y4, title: t.hist.y4t, desc: t.hist.y4d },
+    { year: t.hist.y5, title: t.hist.y5t, desc: t.hist.y5d },
+    { year: t.hist.y6, title: t.hist.y6t, desc: t.hist.y6d },
+  ];
+
   return (
-    <Layout title="History">
+    <Layout title={t.hist.title}>
       <PageHeader
-        title="Our History"
-        description="The journey of CIJ Academy"
+        title={t.hist.title}
+        description={t.hist.subtitle}
         breadcrumbs={[
-          { label: 'About Us', href: '/about' },
-          { label: 'History' },
+          { label: t.nav.aboutUs, href: '/about' },
+          { label: t.hist.title },
         ]}
       />
       <section className="section">
         <div className="container">
           <div className="content-block">
-            <h2>Our Journey</h2>
-            <p>
-              CIJ Academy has been at the forefront of English language education in Cebu
-              since its founding. Over the years, we have grown from a small language school
-              into a recognized international academy serving students from across the globe.
-            </p>
+            <h2>{t.hist.title}</h2>
+            <p>{t.hist.intro}</p>
           </div>
 
           <div style={{ maxWidth: 700, margin: '40px auto' }}>

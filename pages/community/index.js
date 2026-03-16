@@ -1,15 +1,17 @@
 import Layout from '@/components/Layout';
 import PageHeader from '@/components/PageHeader';
+import { useLanguage } from '@/lib/LanguageContext';
 
 export default function Community() {
+  const { t } = useLanguage();
   return (
-    <Layout title="Community">
-      <PageHeader title="Community" subtitle="Stay connected with CIJ Academy" breadcrumb={[{ label: 'Community' }]} />
+    <Layout title={t.comm.title}>
+      <PageHeader title={t.comm.title} subtitle={t.comm.subtitle} breadcrumb={[{ label: t.nav.community }]} />
       <section className="section">
         <div className="container">
           <div className="content-block">
-            <h2>Community</h2>
-            <p>Join our community and stay updated with the latest news and events.</p>
+            <h2>{t.comm.heading}</h2>
+            <p>{t.comm.desc}</p>
           </div>
         </div>
       </section>

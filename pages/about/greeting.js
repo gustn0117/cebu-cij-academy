@@ -1,49 +1,33 @@
 import Layout from '@/components/Layout';
 import PageHeader from '@/components/PageHeader';
+import { useLanguage } from '@/lib/LanguageContext';
 
 export default function Greeting() {
+  const { t } = useLanguage();
+
   return (
-    <Layout title="Greeting">
+    <Layout title={t.greet.title}>
       <PageHeader
-        title="Greeting"
-        description="Welcome to CIJ Academy"
+        title={t.greet.title}
+        description={t.greet.subtitle}
         breadcrumbs={[
-          { label: 'About Us', href: '/about' },
-          { label: 'Greeting' },
+          { label: t.nav.aboutUs, href: '/about' },
+          { label: t.greet.title },
         ]}
       />
       <section className="section">
         <div className="container">
           <div className="content-block">
-            <h2>Welcome to CIJ Academy</h2>
-            <p>
-              Thank you for visiting CIJ Academy. We are a premier English language academy
-              located in the beautiful city of Cebu, Philippines. Our mission is to provide
-              the highest quality English education to students from around the world.
-            </p>
-            <p>
-              At CIJ Academy, we believe that learning English is not just about mastering
-              grammar and vocabulary. It is about building confidence, understanding different
-              cultures, and opening doors to a world of opportunities.
-            </p>
+            <h2>{t.greet.welcome}</h2>
+            <p>{t.greet.p1}</p>
+            <p>{t.greet.p2}</p>
 
-            <h3>Our Mission</h3>
-            <p>
-              We are committed to delivering an immersive English learning experience that
-              combines academic excellence with cultural exchange. Our dedicated team of
-              instructors works tirelessly to ensure every student achieves their language goals.
-            </p>
+            <h3>{t.greet.missionTitle}</h3>
+            <p>{t.greet.missionDesc}</p>
 
-            <h3>Our Promise</h3>
-            <p>
-              Whether you are a young learner taking your first steps in English or an adult
-              looking to advance your career through better English communication, CIJ Academy
-              is here to guide you every step of the way.
-            </p>
-            <p>
-              We look forward to welcoming you to our campus and helping you begin your
-              English learning journey.
-            </p>
+            <h3>{t.greet.promiseTitle}</h3>
+            <p>{t.greet.promiseDesc}</p>
+            <p>{t.greet.closing}</p>
 
             <div style={{
               marginTop: 40,
@@ -53,10 +37,10 @@ export default function Greeting() {
               borderLeft: '4px solid var(--primary)',
             }}>
               <p style={{ fontWeight: 600, color: 'var(--primary)', marginBottom: 4 }}>
-                CIJ Academy Director
+                {t.greet.director}
               </p>
               <p style={{ color: 'var(--gray-500)', fontSize: '0.9rem' }}>
-                Cebu International Junior Academy
+                {t.greet.academy}
               </p>
             </div>
           </div>

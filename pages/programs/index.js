@@ -1,52 +1,55 @@
 import Link from 'next/link';
 import Layout from '@/components/Layout';
 import PageHeader from '@/components/PageHeader';
-
-const programs = [
-  {
-    title: 'ESL Program',
-    href: '/programs/esl',
-    tag: 'Most Popular',
-    desc: 'Our comprehensive English as a Second Language program covers all four skills: speaking, listening, reading, and writing.',
-  },
-  {
-    title: 'IELTS Program',
-    href: '/programs/ielts',
-    tag: 'Exam Prep',
-    desc: 'Intensive IELTS preparation course designed to help students achieve their target band score.',
-  },
-  {
-    title: 'TOEIC Program',
-    href: '/programs/toeic',
-    tag: 'Exam Prep',
-    desc: 'Specialized TOEIC preparation program focusing on business communication and test strategies.',
-  },
-  {
-    title: 'Business English',
-    href: '/programs/business',
-    tag: 'Professional',
-    desc: 'Professional English course tailored for business professionals and corporate communications.',
-  },
-];
+import { useLanguage } from '@/lib/LanguageContext';
 
 export default function Programs() {
+  const { t } = useLanguage();
+
+  const programs = [
+    {
+      title: t.nav.eslProgram,
+      href: '/programs/esl',
+      tag: t.prog.mostPopular,
+      desc: t.prog.eslDesc,
+    },
+    {
+      title: t.nav.ieltsProgram,
+      href: '/programs/ielts',
+      tag: t.prog.examPrep,
+      desc: t.prog.ieltsDesc,
+    },
+    {
+      title: t.nav.toeicProgram,
+      href: '/programs/toeic',
+      tag: t.prog.examPrep,
+      desc: t.prog.toeicDesc,
+    },
+    {
+      title: t.nav.businessEnglish,
+      href: '/programs/business',
+      tag: t.prog.professional,
+      desc: t.prog.bizDesc,
+    },
+  ];
+
   return (
-    <Layout title="Programs">
+    <Layout title={t.prog.title}>
       <PageHeader
-        title="Programs"
-        description="Explore our diverse English learning programs"
-        breadcrumbs={[{ label: 'Programs' }]}
+        title={t.prog.title}
+        description={t.prog.subtitle}
+        breadcrumbs={[{ label: t.nav.programs }]}
       />
       <section className="section">
         <div className="container">
           <div className="section-title">
-            <h2>Our Programs</h2>
-            <p>Choose the program that best fits your learning goals and schedule.</p>
+            <h2>{t.prog.heading}</h2>
+            <p>{t.prog.desc}</p>
             <span className="accent-line"></span>
           </div>
           <div className="card-grid">
             {programs.map((p) => (
-              <Link href={p.href} key={p.title} style={{ textDecoration: 'none' }}>
+              <Link href={p.href} key={p.href} style={{ textDecoration: 'none' }}>
                 <div className="card">
                   <div className="card-image">
                     {/* 이미지 나중에 교체 */}

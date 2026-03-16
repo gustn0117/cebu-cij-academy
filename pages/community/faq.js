@@ -1,15 +1,17 @@
 import Layout from '@/components/Layout';
 import PageHeader from '@/components/PageHeader';
+import { useLanguage } from '@/lib/LanguageContext';
 
 export default function FAQ() {
+  const { t } = useLanguage();
   return (
-    <Layout title="FAQ">
-      <PageHeader title="FAQ" subtitle="Frequently asked questions" breadcrumb={[{ label: 'Community', href: '/community' }, { label: 'FAQ' }]} />
+    <Layout title={t.comm.faqTitle}>
+      <PageHeader title={t.comm.faqTitle} subtitle={t.comm.faqSub} breadcrumb={[{ label: t.nav.community, href: '/community' }, { label: t.comm.faqTitle }]} />
       <section className="section">
         <div className="container">
           <div className="content-block">
-            <h2>Frequently Asked Questions</h2>
-            <p>Find answers to common questions about CIJ Academy.</p>
+            <h2>{t.comm.faqHeading}</h2>
+            <p>{t.comm.faqDesc}</p>
           </div>
         </div>
       </section>
