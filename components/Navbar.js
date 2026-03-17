@@ -24,50 +24,49 @@ export default function Navbar() {
   const navItems = [
     {
       label: t.nav.aboutUs,
-      href: '/about',
+      href: '/#about',
       sub: [
-        { label: t.nav.greeting, href: '/about#greeting' },
-        { label: t.nav.history, href: '/about#history' },
-        { label: t.nav.whyChooseCij, href: '/about#why-choose-cij' },
-        { label: t.nav.address, href: '/about#address' },
+        { label: t.nav.greeting, href: '/#greeting' },
+        { label: t.nav.history, href: '/#history' },
+        { label: t.nav.whyChooseCij, href: '/#why-choose-cij' },
       ],
     },
     {
       label: t.nav.programs,
-      href: '/programs',
+      href: '/#programs',
       sub: [
-        { label: t.nav.eslProgram, href: '/programs#esl' },
-        { label: t.nav.ieltsProgram, href: '/programs#ielts' },
-        { label: t.nav.toeicProgram, href: '/programs#toeic' },
-        { label: t.nav.businessEnglish, href: '/programs#business' },
+        { label: t.nav.eslProgram, href: '/#esl' },
+        { label: t.nav.ieltsProgram, href: '/#ielts' },
+        { label: t.nav.toeicProgram, href: '/#toeic' },
+        { label: t.nav.businessEnglish, href: '/#business' },
       ],
     },
     {
       label: t.nav.levels,
-      href: '/levels',
+      href: '/#levels',
       sub: [
-        { label: t.nav.kinder, href: '/levels#kinder' },
-        { label: t.nav.juniorA, href: '/levels#junior-a' },
-        { label: t.nav.juniorB, href: '/levels#junior-b' },
-        { label: t.nav.juniorC, href: '/levels#junior-c' },
-        { label: t.nav.adult, href: '/levels#adult' },
+        { label: t.nav.kinder, href: '/#kinder' },
+        { label: t.nav.juniorA, href: '/#junior-a' },
+        { label: t.nav.juniorB, href: '/#junior-b' },
+        { label: t.nav.juniorC, href: '/#junior-c' },
+        { label: t.nav.adult, href: '/#adult' },
       ],
     },
     {
       label: t.nav.registration,
-      href: '/registration',
+      href: '/#registration',
       sub: [
-        { label: t.nav.howToRegister, href: '/registration#how-to-register' },
-        { label: t.nav.schoolRules, href: '/registration#school-rules' },
+        { label: t.nav.howToRegister, href: '/#how-to-register' },
+        { label: t.nav.schoolRules, href: '/#school-rules' },
       ],
     },
     {
       label: t.nav.facilities,
-      href: '/facilities',
+      href: '/#facilities',
       sub: [
-        { label: t.nav.campus, href: '/facilities#campus' },
-        { label: t.nav.dormitory, href: '/facilities#dormitory' },
-        { label: t.nav.cafeteria, href: '/facilities#cafeteria' },
+        { label: t.nav.campus, href: '/#campus' },
+        { label: t.nav.dormitory, href: '/#dormitory' },
+        { label: t.nav.cafeteria, href: '/#cafeteria' },
       ],
     },
     {
@@ -80,6 +79,19 @@ export default function Navbar() {
       ],
     },
   ];
+
+  const handleHashClick = (e, hashHref, closeMobile) => {
+    const hash = hashHref.replace('/', '');
+    const el = document.querySelector(hash);
+    if (el) {
+      e.preventDefault();
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setOpenDropdown(null);
+      if (closeMobile) {
+        setMobileOpen(false);
+      }
+    }
+  };
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -110,7 +122,8 @@ export default function Navbar() {
             >
               <Link
                 href={item.href}
-                className={`navbar-menu-link ${router.pathname.startsWith(item.href) ? 'active' : ''}`}
+                className={`navbar-menu-link ${!item.href.startsWith('/#') && router.pathname.startsWith(item.href) ? 'active' : ''}`}
+                onClick={item.href.startsWith('/#') ? (e) => handleHashClick(e, item.href, false) : undefined}
               >
                 {item.label}
                 {item.sub && <span className="navbar-arrow">&#9662;</span>}
@@ -118,7 +131,12 @@ export default function Navbar() {
               {item.sub && openDropdown === item.href && (
                 <div className="navbar-dropdown">
                   {item.sub.map((sub) => (
-                    <Link key={sub.href} href={sub.href} className="navbar-dropdown-link">
+                    <Link
+                      key={sub.href}
+                      href={sub.href}
+                      className="navbar-dropdown-link"
+                      onClick={sub.href.startsWith('/#') ? (e) => handleHashClick(e, sub.href, false) : undefined}
+                    >
                       {sub.label}
                     </Link>
                   ))}
@@ -177,7 +195,10 @@ export default function Navbar() {
               <Link
                 href={item.href}
                 className="navbar-mobile-link"
-                onClick={() => setMobileOpen(false)}
+                onClick={item.href.startsWith('/#')
+                  ? (e) => handleHashClick(e, item.href, true)
+                  : () => setMobileOpen(false)
+                }
               >
                 {item.label}
               </Link>
@@ -188,7 +209,10 @@ export default function Navbar() {
                       key={sub.href}
                       href={sub.href}
                       className="navbar-mobile-sub-link"
-                      onClick={() => setMobileOpen(false)}
+                      onClick={sub.href.startsWith('/#')
+                        ? (e) => handleHashClick(e, sub.href, true)
+                        : () => setMobileOpen(false)
+                      }
                     >
                       {sub.label}
                     </Link>

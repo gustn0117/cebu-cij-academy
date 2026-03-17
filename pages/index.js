@@ -2,6 +2,11 @@ import Link from 'next/link';
 import Layout from '@/components/Layout';
 import ScrollReveal from '@/components/ScrollReveal';
 import { useLanguage } from '@/lib/LanguageContext';
+import AboutSection from '@/components/sections/AboutSection';
+import ProgramsSection from '@/components/sections/ProgramsSection';
+import LevelsSection from '@/components/sections/LevelsSection';
+import RegistrationSection from '@/components/sections/RegistrationSection';
+import FacilitiesSection from '@/components/sections/FacilitiesSection';
 
 /* ── SVG Icons ── */
 const IconTeacher = () => (
@@ -111,205 +116,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ▸ Features */}
-      <section className="section section-decorated">
-        <div className="decor-circle decor-circle-1"></div>
-        <div className="decor-circle decor-circle-2"></div>
-        <div className="container">
-          <ScrollReveal>
-            <div className="section-title">
-              <span className="section-tag">{t.home.whyTag}</span>
-              <h2>{t.home.whyTitle}</h2>
-              <p>{t.home.whyDesc}</p>
-              <span className="accent-line"></span>
-            </div>
-          </ScrollReveal>
-          <div className="feature-grid">
-            {features.map((f, i) => (
-              <ScrollReveal key={i} delay={i * 100}>
-                <div className="feature-item">
-                  <div className="feature-icon">
-                    {f.icon}
-                  </div>
-                  <h4>{f.title}</h4>
-                  <p>{f.desc}</p>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ▸ About Preview */}
-      <section className="section section-alt">
-        <div className="container">
-          <div className="about-preview">
-            <ScrollReveal direction="right">
-              <div className="about-preview-image">
-                <img src="https://images.unsplash.com/photo-1571260899304-425eee4c7efc?w=700&h=500&fit=crop" alt="Students studying" />
-                <div className="about-preview-badge">
-                  <span className="about-preview-badge-num">15+</span>
-                  <span className="about-preview-badge-text">{t.home.yearsExcellence}</span>
-                </div>
-              </div>
-            </ScrollReveal>
-            <ScrollReveal direction="left">
-              <div className="about-preview-content">
-                <span className="section-tag">{t.home.aboutTag}</span>
-                <h2>{t.home.aboutTitle} <span className="text-gradient">{t.home.aboutSince}</span></h2>
-                <p>
-                  {t.home.aboutDesc}
-                </p>
-                <div className="about-checklist">
-                  {[t.home.check1, t.home.check2, t.home.check3, t.home.check4].map((item) => (
-                    <div className="about-check" key={item}>
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#333" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-                      <span>{item}</span>
-                    </div>
-                  ))}
-                </div>
-                <Link href="/about/greeting" className="btn-primary">
-                  {t.home.readStory} <IconArrowRight />
-                </Link>
-              </div>
-            </ScrollReveal>
-          </div>
-        </div>
-      </section>
-
-      {/* ▸ Programs */}
-      <section className="section">
-        <div className="container">
-          <ScrollReveal>
-            <div className="section-title">
-              <span className="section-tag">{t.home.progTag}</span>
-              <h2>{t.home.progTitle}</h2>
-              <p>{t.home.progDesc}</p>
-              <span className="accent-line"></span>
-            </div>
-          </ScrollReveal>
-          <div className="card-grid">
-            {programs.map((p, i) => (
-              <ScrollReveal key={i} delay={i * 150}>
-                <Link href={p.href} style={{ textDecoration: 'none' }}>
-                  <div className="card">
-                    <div className="card-image">
-                      <img src={p.img} alt={p.title} />
-                      <div className="card-image-overlay">
-                        <span className="card-view-btn">{t.home.viewProgram} <IconArrowRight /></span>
-                      </div>
-                    </div>
-                    <div className="card-body">
-                      <span className="card-tag">{p.tag}</span>
-                      <h3>{p.title}</h3>
-                      <p>{p.desc}</p>
-                    </div>
-                  </div>
-                </Link>
-              </ScrollReveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ▸ How It Works */}
-      <section className="section section-gradient">
-        <div className="container">
-          <ScrollReveal>
-            <div className="section-title" style={{color:'#fff'}}>
-              <span className="section-tag" style={{background:'rgba(255,255,255,0.15)',color:'#fff'}}>{t.home.howTag}</span>
-              <h2 style={{color:'#fff'}}>{t.home.howTitle}</h2>
-              <p style={{color:'rgba(255,255,255,0.75)'}}>{t.home.howDesc}</p>
-              <span className="accent-line"></span>
-            </div>
-          </ScrollReveal>
-          <div className="steps-grid">
-            {steps.map((s, i) => (
-              <ScrollReveal key={s.num} delay={i * 150}>
-                <div className="step-card">
-                  <span className="step-num">{s.num}</span>
-                  <h3>{s.title}</h3>
-                  <p>{s.desc}</p>
-                  {i < steps.length - 1 && <div className="step-connector"></div>}
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ▸ Campus Life */}
-      <section className="section">
-        <div className="container">
-          <ScrollReveal>
-            <div className="section-title">
-              <span className="section-tag">{t.home.campusTag}</span>
-              <h2>{t.home.campusTitle}</h2>
-              <p>{t.home.campusDesc}</p>
-              <span className="accent-line"></span>
-            </div>
-          </ScrollReveal>
-          <div className="campus-grid">
-            <ScrollReveal className="campus-item campus-large"><img src="https://images.unsplash.com/photo-1562774053-701939374585?w=800&h=500&fit=crop" alt="Campus building" /><div className="campus-label">{t.home.campusModern}</div></ScrollReveal>
-            <ScrollReveal className="campus-item" delay={100}><img src="https://images.unsplash.com/photo-1567521464027-f127ff144326?w=400&h=300&fit=crop" alt="Classroom" /><div className="campus-label">{t.home.campusClassrooms}</div></ScrollReveal>
-            <ScrollReveal className="campus-item" delay={200}><img src="https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=400&h=300&fit=crop" alt="Dormitory" /><div className="campus-label">{t.home.campusDorm}</div></ScrollReveal>
-            <ScrollReveal className="campus-item" delay={300}><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&h=300&fit=crop" alt="Cafeteria food" /><div className="campus-label">{t.home.campusCafe}</div></ScrollReveal>
-            <ScrollReveal className="campus-item" delay={400}><img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&h=300&fit=crop" alt="Gym" /><div className="campus-label">{t.home.campusFacilities}</div></ScrollReveal>
-          </div>
-        </div>
-      </section>
-
-      {/* ▸ Testimonials */}
-      <section className="section section-alt">
-        <div className="container">
-          <ScrollReveal>
-            <div className="section-title">
-              <span className="section-tag">{t.home.testiTag}</span>
-              <h2>{t.home.testiTitle}</h2>
-              <p>{t.home.testiDesc}</p>
-              <span className="accent-line"></span>
-            </div>
-          </ScrollReveal>
-          <div className="testimonial-grid">
-            {testimonials.map((tm, i) => (
-              <ScrollReveal key={tm.name} delay={i * 150}>
-                <div className="testimonial-card">
-                  <div className="testimonial-quote"><IconQuote /></div>
-                  <div className="testimonial-stars">
-                    {[...Array(5)].map((_, j) => <IconStar key={j} />)}
-                  </div>
-                  <p className="testimonial-text">&ldquo;{tm.text}&rdquo;</p>
-                  <div className="testimonial-author">
-                    <img src={tm.img} alt={tm.name} className="testimonial-avatar" />
-                    <div>
-                      <strong>{tm.name}</strong>
-                      <span>{tm.country}</span>
-                    </div>
-                  </div>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ▸ CTA */}
-      <section className="cta-section">
-        <div className="cta-bg">
-          <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1600&h=600&fit=crop" alt="Cebu beach" />
-          <div className="cta-overlay"></div>
-        </div>
-        <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-          <ScrollReveal>
-            <h2>{t.home.ctaTitle}</h2>
-            <p>{t.home.ctaDesc}</p>
-            <div className="hero-buttons" style={{ justifyContent: 'center' }}>
-              <Link href="/registration/how-to-register" className="hero-btn">{t.home.registerNow} <IconArrowRight /></Link>
-              <Link href="/about/address" className="hero-btn-outline" style={{ borderColor: '#fff', color: '#fff' }}>{t.home.visitUs}</Link>
-            </div>
-          </ScrollReveal>
-        </div>
-      </section>
+      {/* ▸ All Sections */}
+      <AboutSection />
+      <ProgramsSection />
+      <LevelsSection />
+      <RegistrationSection />
+      <FacilitiesSection />
     </Layout>
   );
 }
