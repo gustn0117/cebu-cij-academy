@@ -101,15 +101,12 @@ export default function Navbar() {
           <Image
             src="/images/logo.png"
             alt="CIJ Academy"
-            width={50}
-            height={50}
+            width={48}
+            height={55}
             className="navbar-logo-img"
             priority
           />
-          <div className="navbar-logo-text">
-            <span className="navbar-logo-main">CIJ</span>
-            <span className="navbar-logo-sub">ACADEMY</span>
-          </div>
+          <span className="navbar-logo-sub">ACADEMY</span>
         </Link>
 
         {/* Desktop Menu */}
