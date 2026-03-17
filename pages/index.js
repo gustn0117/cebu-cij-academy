@@ -117,11 +117,11 @@ export default function Home() {
       </section>
 
       {/* ▸ All Sections */}
-      <ScrollReveal delay={0}><AboutSection /></ScrollReveal>
-      <ScrollReveal delay={100}><ProgramsSection /></ScrollReveal>
-      <ScrollReveal delay={200}><LevelsSection /></ScrollReveal>
-      <ScrollReveal delay={300}><RegistrationSection /></ScrollReveal>
-      <ScrollReveal delay={400}><FacilitiesSection /></ScrollReveal>
+      <AboutSection />
+      <ProgramsSection />
+      <LevelsSection />
+      <RegistrationSection />
+      <FacilitiesSection />
     </Layout>
   );
 }
