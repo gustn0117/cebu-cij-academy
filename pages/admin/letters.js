@@ -336,7 +336,9 @@ function GalleryTab() {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
-  const [form, setForm] = useState({ title: '', image_url: '' });
+  const [title, setTitle] = useState('');
+  const [file, setFile] = useState(null);
+  const [preview, setPreview] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => { fetchImages(); }, []);
@@ -351,21 +353,40 @@ function GalleryTab() {
     setLoading(false);
   };
 
+  const handleFileChange = (e) => {
+    const f = e.target.files[0];
+    if (!f) return;
+    setFile(f);
+    const reader = new FileReader();
+    reader.onload = (ev) => setPreview(ev.target.result);
+    reader.readAsDataURL(f);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.title.trim() || !form.image_url.trim()) return alert('Please fill in all fields.');
+    if (!title.trim() || !file) return alert('Please add a title and select an image.');
     setSubmitting(true);
     try {
+      // 1. Upload file
+      const formData = new FormData();
+      formData.append('file', file);
+      const uploadRes = await fetch('/api/admin/upload', { method: 'POST', body: formData });
+      const uploadData = await uploadRes.json();
+      if (!uploadData.url) throw new Error(uploadData.error || 'Upload failed');
+
+      // 2. Save to DB
       const res = await fetch('/api/admin/gallery', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ title, image_url: uploadData.url }),
       });
       const newImage = await res.json();
       setImages((prev) => [newImage, ...prev]);
-      setForm({ title: '', image_url: '' });
+      setTitle('');
+      setFile(null);
+      setPreview(null);
       setShowForm(false);
-    } catch (err) { console.error(err); alert('Failed to add image.'); }
+    } catch (err) { console.error(err); alert('Failed to upload image: ' + err.message); }
     setSubmitting(false);
   };
 
@@ -382,41 +403,59 @@ function GalleryTab() {
           <h1 style={styles.pageTitle}>Gallery</h1>
           <span style={styles.badge}>{images.length} images</span>
         </div>
-        <button onClick={() => setShowForm(!showForm)} style={styles.btnPrimary}>
+        <button onClick={() => { setShowForm(!showForm); setFile(null); setPreview(null); setTitle(''); }} style={styles.btnPrimary}>
           {showForm ? 'Cancel' : '+ Add Image'}
         </button>
       </div>
 
       {showForm && (
         <form onSubmit={handleSubmit} style={styles.formCard}>
-          <h3 style={styles.formTitle}>New Image</h3>
+          <h3 style={styles.formTitle}>Upload Image</h3>
           <input
             type="text"
             placeholder="Title"
-            value={form.title}
-            onChange={(e) => setForm({ ...form, title: e.target.value })}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
             style={styles.input}
           />
+          <div
+            onClick={() => document.getElementById('gallery-file-input').click()}
+            style={{
+              border: '2px dashed #ddd',
+              borderRadius: 12,
+              padding: preview ? 0 : '40px 20px',
+              textAlign: 'center',
+              cursor: 'pointer',
+              marginBottom: 16,
+              overflow: 'hidden',
+              background: '#fafafa',
+              transition: 'border-color 0.2s',
+            }}
+          >
+            {preview ? (
+              <img src={preview} alt="Preview" style={{ width: '100%', maxHeight: 240, objectFit: 'cover', display: 'block' }} />
+            ) : (
+              <>
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#bbb" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                  <circle cx="8.5" cy="8.5" r="1.5" />
+                  <polyline points="21 15 16 10 5 21" />
+                </svg>
+                <p style={{ margin: '12px 0 0', color: '#999', fontSize: '0.88rem' }}>Click to select image</p>
+                <p style={{ margin: '4px 0 0', color: '#ccc', fontSize: '0.78rem' }}>JPG, PNG, WebP (max 10MB)</p>
+              </>
+            )}
+          </div>
           <input
-            type="url"
-            placeholder="Image URL (https://...)"
-            value={form.image_url}
-            onChange={(e) => setForm({ ...form, image_url: e.target.value })}
-            style={styles.input}
+            id="gallery-file-input"
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            style={{ display: 'none' }}
           />
-          {form.image_url && (
-            <div style={{ marginBottom: 16, borderRadius: 8, overflow: 'hidden', border: '1px solid #eee', maxHeight: 200 }}>
-              <img
-                src={form.image_url}
-                alt="Preview"
-                style={{ width: '100%', maxHeight: 200, objectFit: 'cover', display: 'block' }}
-                onError={(e) => { e.target.style.display = 'none'; }}
-              />
-            </div>
-          )}
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <button type="submit" disabled={submitting} style={styles.btnPrimary}>
-              {submitting ? 'Saving...' : 'Save Image'}
+              {submitting ? 'Uploading...' : 'Upload & Save'}
             </button>
           </div>
         </form>
