@@ -5,9 +5,9 @@ export default function FacilitiesSection() {
 
   return (
     <>
-      <div id="facilities" style={{ padding: '60px 0 20px', textAlign: 'center', background: 'var(--dark)', color: '#fff' }}>
+      <div id="facilities" className="section-divider">
         <div className="container">
-          <h2 style={{ fontSize: '2rem', fontWeight: 800, marginBottom: 8 }}>{t.nav.facilities}</h2>
+          <h2>{t.nav.facilities}</h2>
         </div>
       </div>
 

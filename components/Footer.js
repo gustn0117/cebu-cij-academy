@@ -19,26 +19,26 @@ export default function Footer() {
           <div>
             <h4>{t.nav.aboutUs}</h4>
             <ul className="footer-links">
-              <li><Link href="/about/greeting">{t.nav.greeting}</Link></li>
-              <li><Link href="/about/history">{t.nav.history}</Link></li>
-              <li><Link href="/about/why-choose-cij">{t.nav.whyChooseCij}</Link></li>
+              <li><Link href="/#greeting">{t.nav.greeting}</Link></li>
+              <li><Link href="/#history">{t.nav.history}</Link></li>
+              <li><Link href="/#why-choose-cij">{t.nav.whyChooseCij}</Link></li>
             </ul>
           </div>
           <div>
             <h4>{t.nav.programs}</h4>
             <ul className="footer-links">
-              <li><Link href="/programs/esl">{t.nav.eslProgram}</Link></li>
-              <li><Link href="/programs/ielts">{t.nav.ieltsProgram}</Link></li>
-              <li><Link href="/programs/toeic">{t.nav.toeicProgram}</Link></li>
-              <li><Link href="/programs/business">{t.nav.businessEnglish}</Link></li>
+              <li><Link href="/#esl">{t.nav.eslProgram}</Link></li>
+              <li><Link href="/#ielts">{t.nav.ieltsProgram}</Link></li>
+              <li><Link href="/#toeic">{t.nav.toeicProgram}</Link></li>
+              <li><Link href="/#business">{t.nav.businessEnglish}</Link></li>
             </ul>
           </div>
           <div>
             <h4>{t.footer.quickLinks}</h4>
             <ul className="footer-links">
-              <li><Link href="/levels">{t.nav.levels}</Link></li>
-              <li><Link href="/registration/how-to-register">{t.nav.registration}</Link></li>
-              <li><Link href="/registration/school-rules">{t.nav.schoolRules}</Link></li>
+              <li><Link href="/#levels">{t.nav.levels}</Link></li>
+              <li><Link href="/#how-to-register">{t.nav.registration}</Link></li>
+              <li><Link href="/#school-rules">{t.nav.schoolRules}</Link></li>
             </ul>
           </div>
         </div>

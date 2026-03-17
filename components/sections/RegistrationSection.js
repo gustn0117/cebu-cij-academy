@@ -32,9 +32,9 @@ export default function RegistrationSection() {
 
   return (
     <>
-      <div id="registration" style={{ padding: '60px 0 20px', textAlign: 'center', background: 'var(--dark)', color: '#fff' }}>
+      <div id="registration" className="section-divider">
         <div className="container">
-          <h2 style={{ fontSize: '2rem', fontWeight: 800, marginBottom: 8 }}>{t.nav?.registration || 'Registration'}</h2>
+          <h2>{t.nav?.registration || 'Registration'}</h2>
         </div>
       </div>
 

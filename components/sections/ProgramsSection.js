@@ -170,9 +170,9 @@ export default function ProgramsSection() {
 
   return (
     <>
-      <div id="programs" style={{ padding: '60px 0 20px', textAlign: 'center', background: 'var(--dark)', color: '#fff' }}>
+      <div id="programs" className="section-divider">
         <div className="container">
-          <h2 style={{ fontSize: '2rem', fontWeight: 800, marginBottom: 8 }}>{t.nav.programs}</h2>
+          <h2>{t.nav.programs}</h2>
         </div>
       </div>
 
