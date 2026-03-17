@@ -1,54 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Layout from '@/components/Layout';
 import PageHeader from '@/components/PageHeader';
 import { useLanguage } from '@/lib/LanguageContext';
-
-const reviews = [
-  {
-    id: 1,
-    name: 'Yuki T.',
-    country: 'Japan',
-    flag: '\u{1F1EF}\u{1F1F5}',
-    program: 'Junior Camp',
-    duration: '4 weeks',
-    rating: 5,
-    text: 'My daughter had an amazing experience at CIJ Academy. Her English improved dramatically in just 4 weeks. The teachers were patient and encouraging, and she made friends from many different countries.',
-    date: '2025-01',
-  },
-  {
-    id: 2,
-    name: 'Chen Wei',
-    country: 'Taiwan',
-    flag: '\u{1F1F9}\u{1F1FC}',
-    program: 'Semi Sparta',
-    duration: '8 weeks',
-    rating: 5,
-    text: 'The 1:1 classes were incredibly effective. I came with basic English and left being able to hold conversations confidently. The campus is beautiful with ocean views, and the food was great.',
-    date: '2024-12',
-  },
-  {
-    id: 3,
-    name: 'Nguyen Minh',
-    country: 'Vietnam',
-    flag: '\u{1F1FB}\u{1F1F3}',
-    program: 'Sparta',
-    duration: '12 weeks',
-    rating: 4,
-    text: 'Intensive but very rewarding program. The strict schedule helped me stay focused. I improved my IELTS score from 4.5 to 6.0. Highly recommend for serious learners.',
-    date: '2024-11',
-  },
-  {
-    id: 4,
-    name: 'Tanaka Sora',
-    country: 'Japan',
-    flag: '\u{1F1EF}\u{1F1F5}',
-    program: 'Family',
-    duration: '3 weeks',
-    rating: 5,
-    text: 'We came as a family — my wife and two kids. It was a wonderful experience for everyone. The kids loved the activities, and we parents could study in a relaxed environment.',
-    date: '2024-08',
-  },
-];
 
 function StarRating({ rating }) {
   return (
@@ -68,6 +21,20 @@ function StarRating({ rating }) {
 export default function Review() {
   const { t } = useLanguage();
   const rv = t.comm?.review || {};
+  const [reviews, setReviews] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/reviews')
+      .then((res) => res.json())
+      .then((data) => {
+        setReviews(data);
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
+      });
+  }, []);
 
   return (
     <Layout title={rv.pageTitle || 'Reviews'}>
@@ -81,6 +48,11 @@ export default function Review() {
       />
       <section className="section">
         <div className="container">
+          {loading ? (
+            <p style={{ textAlign: 'center', padding: '60px 0', color: '#6c757d' }}>Loading...</p>
+          ) : reviews.length === 0 ? (
+            <p style={{ textAlign: 'center', padding: '60px 0', color: '#6c757d' }}>No reviews yet.</p>
+          ) : (
           <div className="review-grid">
             {reviews.map((review) => (
               <div key={review.id} className="review-card">
@@ -99,6 +71,7 @@ export default function Review() {
               </div>
             ))}
           </div>
+          )}
         </div>
       </section>
     </Layout>

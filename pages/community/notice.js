@@ -1,16 +1,29 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Layout from '@/components/Layout';
 import PageHeader from '@/components/PageHeader';
 import { useLanguage } from '@/lib/LanguageContext';
 
-const allPosts = [];
-
 const PER_PAGE = 14;
 
 export default function Notice() {
   const { t } = useLanguage();
+  const [allPosts, setAllPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    fetch('/api/notices')
+      .then((res) => res.json())
+      .then((data) => {
+        setAllPosts(data);
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
+      });
+  }, []);
+
   const totalPages = Math.ceil(allPosts.length / PER_PAGE);
   const posts = allPosts.slice((page - 1) * PER_PAGE, page * PER_PAGE);
 
@@ -19,6 +32,9 @@ export default function Notice() {
       <PageHeader title={t.comm.noticeTitle} subtitle={t.comm.noticeSub} breadcrumb={[{ label: t.nav.community, href: '/community' }, { label: t.comm.noticeTitle }]} />
       <section className="section">
         <div className="container">
+          {loading ? (
+            <p style={{ textAlign: 'center', padding: '60px 0', color: '#6c757d' }}>Loading...</p>
+          ) : (
           <div className="board">
             <table className="board-table">
               <thead>
@@ -35,7 +51,7 @@ export default function Notice() {
                     <td className="board-title">
                       <Link href={`/community/notice/${post.id}`}>{post.title}</Link>
                     </td>
-                    <td className="board-date">{post.date}</td>
+                    <td className="board-date">{new Date(post.created_at).toLocaleDateString()}</td>
                   </tr>
                 ))}
               </tbody>
@@ -66,6 +82,7 @@ export default function Notice() {
               </button>
             </div>
           </div>
+          )}
         </div>
       </section>
     </Layout>
