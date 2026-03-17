@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useLanguage } from '@/lib/LanguageContext';
 
@@ -31,17 +32,7 @@ export default function Navbar() {
         { label: t.nav.whyChooseCij, href: '/#why-choose-cij' },
       ],
     },
-    {
-      label: t.nav.programs,
-      href: '/#programs',
-      sub: [
-        { label: t.nav.eslProgram, href: '/#esl' },
-        { label: t.nav.ieltsProgram, href: '/#ielts' },
-        { label: t.nav.toeicProgram, href: '/#toeic' },
-        { label: t.nav.businessEnglish, href: '/#business' },
-      ],
-    },
-    {
+{
       label: t.nav.levels,
       href: '/#levels',
       sub: [
@@ -107,8 +98,18 @@ export default function Navbar() {
     <nav className="navbar">
       <div className="navbar-inner">
         <Link href="/" className="navbar-logo">
-          <span className="navbar-logo-main">CIJ</span>
-          <span className="navbar-logo-sub">ACADEMY</span>
+          <Image
+            src="/images/logo.png"
+            alt="CIJ Academy"
+            width={50}
+            height={50}
+            className="navbar-logo-img"
+            priority
+          />
+          <div className="navbar-logo-text">
+            <span className="navbar-logo-main">CIJ</span>
+            <span className="navbar-logo-sub">ACADEMY</span>
+          </div>
         </Link>
 
         {/* Desktop Menu */}
