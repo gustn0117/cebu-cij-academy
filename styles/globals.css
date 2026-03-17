@@ -1326,4 +1326,228 @@ img { max-width: 100%; height: auto; }
   .hero-scroll-indicator { display: none; }
   .section-divider { padding: 24px 0; }
   .section-divider h2 { font-size: 1.2rem; }
+  .review-grid { grid-template-columns: 1fr; }
+}
+
+/* ─── Letter Form ─── */
+.letter-form-wrapper {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.letter-form {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 40px;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--gray-300);
+}
+
+.letter-form-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.letter-form-header h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--dark);
+  margin: 12px 0 8px;
+}
+
+.letter-form-header p {
+  color: var(--gray-500);
+  font-size: 0.95rem;
+}
+
+.letter-field {
+  margin-bottom: 20px;
+}
+
+.letter-field label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--dark);
+  margin-bottom: 6px;
+}
+
+.letter-field input,
+.letter-field textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--gray-300);
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  font-family: inherit;
+  transition: border-color 0.2s;
+  background: var(--gray-100);
+}
+
+.letter-field input:focus,
+.letter-field textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: var(--white);
+  box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+.letter-field textarea {
+  resize: vertical;
+  min-height: 160px;
+}
+
+.letter-submit {
+  width: 100%;
+  justify-content: center;
+  padding: 16px;
+  font-size: 1rem;
+  margin-top: 8px;
+}
+
+.letter-success {
+  text-align: center;
+  padding: 60px 40px;
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--gray-300);
+}
+
+.letter-success-icon {
+  margin-bottom: 20px;
+}
+
+.letter-success h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 12px;
+}
+
+.letter-success p {
+  color: var(--gray-500);
+  font-size: 1rem;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* ─── Evaluation Report ─── */
+.eval-wrapper {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.eval-info {
+  text-align: center;
+}
+
+.eval-icon {
+  margin-bottom: 20px;
+}
+
+.eval-info h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 16px;
+}
+
+.eval-info > p {
+  color: var(--gray-700);
+  font-size: 1rem;
+  line-height: 1.8;
+  margin-bottom: 32px;
+}
+
+.eval-features {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  text-align: left;
+  max-width: 450px;
+  margin: 0 auto 32px;
+}
+
+.eval-feature {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.95rem;
+  color: var(--gray-700);
+  font-weight: 500;
+}
+
+.eval-contact {
+  padding: 20px 24px;
+  background: var(--primary-light);
+  border-radius: var(--radius-sm);
+  color: var(--primary);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+/* ─── Review Cards ─── */
+.review-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.review-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 28px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--gray-300);
+  transition: var(--transition);
+}
+
+.review-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+  border-color: transparent;
+}
+
+.review-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.review-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--gray-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.review-name {
+  display: block;
+  font-size: 1rem;
+  color: var(--dark);
+}
+
+.review-meta {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--gray-500);
+  margin-top: 2px;
+}
+
+.review-text {
+  color: var(--gray-700);
+  font-size: 0.95rem;
+  line-height: 1.8;
+  margin: 14px 0;
+}
+
+.review-date {
+  font-size: 0.82rem;
+  color: var(--gray-500);
 }
