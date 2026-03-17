@@ -30,17 +30,27 @@ export default function Navbar() {
         { label: t.nav.greeting, href: '/#greeting' },
         { label: t.nav.history, href: '/#history' },
         { label: t.nav.whyChooseCij, href: '/#why-choose-cij' },
+        { label: t.nav.address || 'Address', href: '/#address' },
       ],
     },
-{
+    {
+      label: t.nav.programs,
+      href: '/#programs',
+      sub: [
+        { label: t.nav.sparta || 'Sparta', href: '/#sparta' },
+        { label: t.nav.semiSparta || 'Semi Sparta', href: '/#semi-sparta' },
+        { label: t.nav.junior || 'Junior', href: '/#junior' },
+        { label: t.nav.juniorCamp || 'Junior Camp', href: '/#junior-camp' },
+        { label: t.nav.family || 'Family', href: '/#family' },
+      ],
+    },
+    {
       label: t.nav.levels,
       href: '/#levels',
       sub: [
-        { label: t.nav.kinder, href: '/#kinder' },
-        { label: t.nav.juniorA, href: '/#junior-a' },
-        { label: t.nav.juniorB, href: '/#junior-b' },
-        { label: t.nav.juniorC, href: '/#junior-c' },
         { label: t.nav.adult, href: '/#adult' },
+        { label: t.nav.juniorLevel || 'Junior', href: '/#junior-level' },
+        { label: t.nav.kinder, href: '/#kinder' },
       ],
     },
     {
@@ -48,6 +58,7 @@ export default function Navbar() {
       href: '/#registration',
       sub: [
         { label: t.nav.howToRegister, href: '/#how-to-register' },
+        { label: t.nav.applyOnline || 'Apply Online', href: '/#apply-online' },
         { label: t.nav.schoolRules, href: '/#school-rules' },
       ],
     },
@@ -55,9 +66,8 @@ export default function Navbar() {
       label: t.nav.facilities,
       href: '/#facilities',
       sub: [
-        { label: t.nav.campus, href: '/#campus' },
-        { label: t.nav.dormitory, href: '/#dormitory' },
-        { label: t.nav.cafeteria, href: '/#cafeteria' },
+        { label: t.nav.liloanCampus || 'Liloan Campus', href: '/#liloan-campus' },
+        { label: t.nav.premiumCampus || 'Premium Campus', href: '/#premium-campus' },
       ],
     },
     {
@@ -65,8 +75,9 @@ export default function Navbar() {
       href: '/community',
       sub: [
         { label: t.nav.notice, href: '/community/notice' },
-        { label: t.nav.gallery, href: '/community/gallery' },
-        { label: t.nav.faq, href: '/community/faq' },
+        { label: t.nav.letter || 'Letter', href: '/community/letter' },
+        { label: t.nav.evaluationReport || 'Evaluation Report', href: '/community/evaluation' },
+        { label: t.nav.review || 'Review', href: '/community/review' },
       ],
     },
   ];
