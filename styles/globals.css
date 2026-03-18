@@ -25,7 +25,7 @@ html { scroll-behavior: smooth; }
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
 
 body {
   font-family: 'Poppins', 'Noto Sans KR', sans-serif;
@@ -1307,9 +1307,9 @@ img { max-width: 100%; height: auto; }
   .testimonial-grid { grid-template-columns: 1fr; }
   .cta-section { padding: 70px 0; }
   .cta-section h2 { font-size: 1.8rem; }
-  .floating-buttons { right: 10px; gap: 6px; }
-  .floating-btn { width: 40px; height: 40px; }
-  .floating-btn svg { width: 18px; height: 18px; }
+  .floating-buttons { right: 8px; gap: 6px; }
+  .floating-btn { width: 36px; height: 36px; }
+  .floating-btn svg { width: 16px; height: 16px; }
   .section-divider { padding: 32px 0; }
   .section-divider h2 { font-size: 1.4rem; letter-spacing: 1px; }
 }

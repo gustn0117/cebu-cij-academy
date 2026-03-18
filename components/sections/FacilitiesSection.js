@@ -22,7 +22,7 @@ export default function FacilitiesSection() {
       </section>
 
       {/* Campus */}
-      <section id="campus" className="section section-alt">
+      <section id="liloan-campus" className="section section-alt">
         <div className="container">
           <div className="content-block">
             <h2>{t.fac.campusTitle}</h2>
@@ -32,7 +32,7 @@ export default function FacilitiesSection() {
       </section>
 
       {/* Dormitory */}
-      <section id="dormitory" className="section">
+      <section id="premium-campus" className="section">
         <div className="container">
           <div className="content-block">
             <h2>{t.fac.dormTitle}</h2>

@@ -7,6 +7,10 @@ const TABS = [
   { key: 'notices', label: 'Notices', icon: 'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6 M16 13H8 M16 17H8 M10 9H8' },
   { key: 'gallery', label: 'Gallery', icon: 'M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z M12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8z' },
   { key: 'reviews', label: 'Reviews', icon: 'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z' },
+  { key: 'reports', label: 'Reports', icon: 'M9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4zM5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z' },
+  { key: 'members', label: 'Members', icon: 'M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z M23 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75' },
+  { key: 'floating', label: 'Floating Bar', icon: 'M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z' },
+  { key: 'texts', label: 'Text Mgmt', icon: 'M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7 M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z' },
 ];
 
 const PRIMARY = '#B91C1C';
@@ -110,6 +114,10 @@ export default function AdminDashboard() {
           {activeTab === 'notices' && <NoticesTab />}
           {activeTab === 'gallery' && <GalleryTab />}
           {activeTab === 'reviews' && <ReviewsTab />}
+          {activeTab === 'reports' && <ReportsTab />}
+          {activeTab === 'members' && <MembersTab />}
+          {activeTab === 'floating' && <FloatingTab />}
+          {activeTab === 'texts' && <TextsTab />}
         </main>
       </div>
     </>
@@ -659,6 +667,473 @@ function ReviewsTab() {
   );
 }
 
+// ─── Reports Tab ───
+function ReportsTab() {
+  const [reports, setReports] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [showForm, setShowForm] = useState(false);
+  const [expanded, setExpanded] = useState(null);
+  const [form, setForm] = useState({ title: '', content: '', image_url: '', password: '' });
+  const [submitting, setSubmitting] = useState(false);
+  const [file, setFile] = useState(null);
+  const [preview, setPreview] = useState(null);
+  const [editModal, setEditModal] = useState(null);
+  const [editForm, setEditForm] = useState({ title: '', content: '', image_url: '', password: '' });
+  const [editFile, setEditFile] = useState(null);
+  const [editPreview, setEditPreview] = useState(null);
+
+  useEffect(() => { fetchReports(); }, []);
+
+  const fetchReports = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/admin/reports');
+      const data = await res.json();
+      setReports(data);
+    } catch (err) { console.error(err); }
+    setLoading(false);
+  };
+
+  const handleFileChange = (e, isEdit) => {
+    const f = e.target.files[0];
+    if (!f) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      if (isEdit) { setEditFile(f); setEditPreview(ev.target.result); }
+      else { setFile(f); setPreview(ev.target.result); }
+    };
+    reader.readAsDataURL(f);
+  };
+
+  const uploadImage = async (fileToUpload) => {
+    const formData = new FormData();
+    formData.append('file', fileToUpload);
+    const uploadRes = await fetch('/api/admin/upload', { method: 'POST', body: formData });
+    const uploadData = await uploadRes.json();
+    if (!uploadData.url) throw new Error(uploadData.error || 'Upload failed');
+    return uploadData.url;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!form.title.trim()) return alert('Title is required.');
+    setSubmitting(true);
+    try {
+      let image_url = form.image_url;
+      if (file) image_url = await uploadImage(file);
+      const res = await fetch('/api/admin/reports', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...form, image_url }),
+      });
+      const newReport = await res.json();
+      setReports((prev) => [newReport, ...prev]);
+      setForm({ title: '', content: '', image_url: '', password: '' });
+      setFile(null);
+      setPreview(null);
+      setShowForm(false);
+    } catch (err) { console.error(err); alert('Failed to add report: ' + err.message); }
+    setSubmitting(false);
+  };
+
+  const deleteReport = async (id) => {
+    if (!confirm('Delete this report?')) return;
+    await fetch(`/api/admin/reports?id=${id}`, { method: 'DELETE' });
+    setReports((prev) => prev.filter((r) => r.id !== id));
+    if (expanded === id) setExpanded(null);
+  };
+
+  const openEdit = (report) => {
+    setEditModal(report);
+    setEditForm({ title: report.title || '', content: report.content || '', image_url: report.image_url || '', password: report.password || '' });
+    setEditFile(null);
+    setEditPreview(report.image_url || null);
+  };
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+    if (!editForm.title.trim()) return alert('Title is required.');
+    setSubmitting(true);
+    try {
+      let image_url = editForm.image_url;
+      if (editFile) image_url = await uploadImage(editFile);
+      const res = await fetch('/api/admin/reports', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: editModal.id, ...editForm, image_url }),
+      });
+      const updated = await res.json();
+      setReports((prev) => prev.map((r) => r.id === editModal.id ? updated : r));
+      setEditModal(null);
+    } catch (err) { console.error(err); alert('Failed to update: ' + err.message); }
+    setSubmitting(false);
+  };
+
+  return (
+    <div>
+      <div style={styles.pageHeader}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <h1 style={styles.pageTitle}>Reports</h1>
+          <span style={styles.badge}>{reports.length} total</span>
+        </div>
+        <button onClick={() => { setShowForm(!showForm); setFile(null); setPreview(null); setForm({ title: '', content: '', image_url: '', password: '' }); }} style={styles.btnPrimary}>
+          {showForm ? 'Cancel' : '+ Add Report'}
+        </button>
+      </div>
+
+      {showForm && (
+        <form onSubmit={handleSubmit} style={styles.formCard}>
+          <h3 style={styles.formTitle}>New Report</h3>
+          <input type="text" placeholder="Title *" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} style={styles.input} />
+          <textarea placeholder="Content" value={form.content} onChange={(e) => setForm({ ...form, content: e.target.value })} style={{ ...styles.input, minHeight: 120, resize: 'vertical' }} />
+          <div
+            onClick={() => document.getElementById('report-file-input').click()}
+            style={{ border: '2px dashed #ddd', borderRadius: 12, padding: preview ? 0 : '32px 20px', textAlign: 'center', cursor: 'pointer', marginBottom: 12, overflow: 'hidden', background: '#fafafa' }}
+          >
+            {preview ? (
+              <img src={preview} alt="Preview" style={{ width: '100%', maxHeight: 200, objectFit: 'cover', display: 'block' }} />
+            ) : (
+              <p style={{ margin: 0, color: '#999', fontSize: '0.88rem' }}>Click to select image (optional)</p>
+            )}
+          </div>
+          <input id="report-file-input" type="file" accept="image/*" onChange={(e) => handleFileChange(e, false)} style={{ display: 'none' }} />
+          <input type="text" placeholder="Password (optional)" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} style={styles.input} />
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <button type="submit" disabled={submitting} style={styles.btnPrimary}>{submitting ? 'Saving...' : 'Save Report'}</button>
+          </div>
+        </form>
+      )}
+
+      {/* Edit Modal */}
+      {editModal && (
+        <div style={styles.modalOverlay} onClick={() => setEditModal(null)}>
+          <div style={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+            <form onSubmit={handleEditSubmit}>
+              <h3 style={styles.formTitle}>Edit Report</h3>
+              <input type="text" placeholder="Title *" value={editForm.title} onChange={(e) => setEditForm({ ...editForm, title: e.target.value })} style={styles.input} />
+              <textarea placeholder="Content" value={editForm.content} onChange={(e) => setEditForm({ ...editForm, content: e.target.value })} style={{ ...styles.input, minHeight: 120, resize: 'vertical' }} />
+              <div
+                onClick={() => document.getElementById('report-edit-file-input').click()}
+                style={{ border: '2px dashed #ddd', borderRadius: 12, padding: editPreview ? 0 : '32px 20px', textAlign: 'center', cursor: 'pointer', marginBottom: 12, overflow: 'hidden', background: '#fafafa' }}
+              >
+                {editPreview ? (
+                  <img src={editPreview} alt="Preview" style={{ width: '100%', maxHeight: 200, objectFit: 'cover', display: 'block' }} />
+                ) : (
+                  <p style={{ margin: 0, color: '#999', fontSize: '0.88rem' }}>Click to select image (optional)</p>
+                )}
+              </div>
+              <input id="report-edit-file-input" type="file" accept="image/*" onChange={(e) => handleFileChange(e, true)} style={{ display: 'none' }} />
+              <input type="text" placeholder="Password (optional)" value={editForm.password} onChange={(e) => setEditForm({ ...editForm, password: e.target.value })} style={styles.input} />
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+                <button type="button" onClick={() => setEditModal(null)} style={styles.btnSmallDanger}>Cancel</button>
+                <button type="submit" disabled={submitting} style={styles.btnPrimary}>{submitting ? 'Saving...' : 'Update Report'}</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {loading ? (
+        <LoadingState />
+      ) : reports.length === 0 ? (
+        <EmptyState message="No reports yet" />
+      ) : (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          {reports.map((report) => (
+            <div key={report.id} style={styles.tableRow}>
+              <div
+                onClick={() => setExpanded(expanded === report.id ? null : report.id)}
+                style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', padding: '16px 20px' }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12, flex: 1, minWidth: 0 }}>
+                  <svg
+                    width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                    style={{ transform: expanded === report.id ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.2s', flexShrink: 0 }}
+                  >
+                    <polyline points="9 18 15 12 9 6" />
+                  </svg>
+                  <strong style={{ fontSize: '0.93rem', color: '#1a1a2e', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{report.title}</strong>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0, marginLeft: 16 }}>
+                  <span style={{ fontSize: '0.8rem', color: '#999' }}>{formatDate(report.created_at)}</span>
+                  <button onClick={(e) => { e.stopPropagation(); openEdit(report); }} style={styles.btnSmallDanger}>Edit</button>
+                  <button onClick={(e) => { e.stopPropagation(); deleteReport(report.id); }} style={styles.btnSmallDanger}>Delete</button>
+                </div>
+              </div>
+              {expanded === report.id && (
+                <div style={{ padding: '0 20px 20px 48px', fontSize: '0.9rem', lineHeight: 1.7, color: '#444', borderTop: '1px solid #f0f0f0' }}>
+                  <div style={{ paddingTop: 16 }}>
+                    {report.image_url && (
+                      <img src={report.image_url} alt={report.title} style={{ maxWidth: '100%', maxHeight: 240, objectFit: 'cover', borderRadius: 8, marginBottom: 12 }} />
+                    )}
+                    {(report.content || '').split('\n').map((line, i) => (
+                      <p key={i} style={{ margin: '0 0 6px' }}>{line || '\u00A0'}</p>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── Members Tab ───
+function MembersTab() {
+  const [members, setMembers] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => { fetchMembers(); }, []);
+
+  const fetchMembers = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/admin/members');
+      const data = await res.json();
+      setMembers(data);
+    } catch (err) { console.error(err); }
+    setLoading(false);
+  };
+
+  const deleteMember = async (id) => {
+    if (!confirm('Are you sure you want to remove this member?')) return;
+    await fetch(`/api/admin/members?id=${id}`, { method: 'DELETE' });
+    setMembers((prev) => prev.filter((m) => m.id !== id));
+  };
+
+  return (
+    <div>
+      <div style={styles.pageHeader}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <h1 style={styles.pageTitle}>Members</h1>
+          <span style={styles.badge}>{members.length} total</span>
+        </div>
+      </div>
+
+      {loading ? (
+        <LoadingState />
+      ) : members.length === 0 ? (
+        <EmptyState message="No members yet" />
+      ) : (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          {members.map((member) => (
+            <div key={member.id} style={{ ...styles.tableRow, padding: '16px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 24, flex: 1, minWidth: 0 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  <div style={{ width: 36, height: 36, borderRadius: '50%', background: '#f5f5f5', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.85rem', fontWeight: 600, color: '#888', flexShrink: 0 }}>
+                    {(member.name || member.email || '?').charAt(0).toUpperCase()}
+                  </div>
+                  <div>
+                    <div style={{ fontWeight: 600, fontSize: '0.93rem', color: '#1a1a2e' }}>{member.name || 'No Name'}</div>
+                    <div style={{ fontSize: '0.82rem', color: '#888' }}>{member.email || ''}</div>
+                  </div>
+                </div>
+                <span style={{ fontSize: '0.8rem', color: '#999', flexShrink: 0 }}>{formatDate(member.created_at)}</span>
+              </div>
+              <button onClick={() => deleteMember(member.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 8, flexShrink: 0 }} title="Remove member">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#DC2626" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="3 6 5 6 21 6" />
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                </svg>
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── Floating Bar Tab ───
+function FloatingTab() {
+  const FLOATING_FIELDS = ['phone', 'email', 'facebook', 'instagram', 'tiktok', 'youtube'];
+  const [values, setValues] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  useEffect(() => { fetchSettings(); }, []);
+
+  const fetchSettings = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/admin/floating');
+      const data = await res.json();
+      const map = {};
+      (data || []).forEach((item) => { map[item.key] = item.value || ''; });
+      setValues(map);
+    } catch (err) { console.error(err); }
+    setLoading(false);
+  };
+
+  const handleSave = async () => {
+    setSaving(true);
+    setSuccess(false);
+    try {
+      const settings = FLOATING_FIELDS.map((key) => ({ key, value: values[key] || '' }));
+      await fetch('/api/admin/floating', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ settings }),
+      });
+      setSuccess(true);
+      setTimeout(() => setSuccess(false), 3000);
+    } catch (err) { console.error(err); alert('Failed to save settings.'); }
+    setSaving(false);
+  };
+
+  return (
+    <div>
+      <div style={styles.pageHeader}>
+        <h1 style={styles.pageTitle}>Floating Bar Settings</h1>
+      </div>
+
+      {loading ? (
+        <LoadingState />
+      ) : (
+        <div style={styles.formCard}>
+          <h3 style={styles.formTitle}>Contact & Social Links</h3>
+          {FLOATING_FIELDS.map((field) => (
+            <div key={field} style={{ marginBottom: 16 }}>
+              <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: '#555', marginBottom: 6, textTransform: 'capitalize' }}>{field}</label>
+              <input
+                type="text"
+                placeholder={`Enter ${field}`}
+                value={values[field] || ''}
+                onChange={(e) => setValues({ ...values, [field]: e.target.value })}
+                style={{ ...styles.input, marginBottom: 0 }}
+              />
+            </div>
+          ))}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 8 }}>
+            <button onClick={handleSave} disabled={saving} style={styles.btnPrimary}>
+              {saving ? 'Saving...' : 'Save Settings'}
+            </button>
+            {success && <span style={{ color: '#16a34a', fontSize: '0.88rem', fontWeight: 500 }}>Settings saved successfully!</span>}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── Text Management Tab ───
+function TextsTab() {
+  const PAGES = ['About', 'Programs', 'Levels', 'Registration', 'Facilities'];
+  const LANGS = ['EN', 'JA', 'ZH-TW', 'ZH-CN', 'VI'];
+
+  const [selectedPage, setSelectedPage] = useState(PAGES[0]);
+  const [selectedLang, setSelectedLang] = useState(LANGS[0]);
+  const [texts, setTexts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [newKey, setNewKey] = useState('');
+
+  const fetchTexts = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/admin/texts?page=${selectedPage}&lang=${selectedLang}`);
+      const data = await res.json();
+      setTexts(data || []);
+    } catch (err) { console.error(err); }
+    setLoading(false);
+  }, [selectedPage, selectedLang]);
+
+  useEffect(() => { fetchTexts(); }, [fetchTexts]);
+
+  const updateText = (index, value) => {
+    setTexts((prev) => prev.map((t, i) => i === index ? { ...t, value } : t));
+  };
+
+  const addKey = () => {
+    if (!newKey.trim()) return;
+    if (texts.some((t) => t.key === newKey.trim())) return alert('Key already exists.');
+    setTexts((prev) => [...prev, { page: selectedPage, key: newKey.trim(), lang: selectedLang, value: '' }]);
+    setNewKey('');
+  };
+
+  const handleSave = async () => {
+    setSaving(true);
+    setSuccess(false);
+    try {
+      for (const text of texts) {
+        await fetch('/api/admin/texts', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ page: text.page || selectedPage, key: text.key, lang: text.lang || selectedLang, value: text.value }),
+        });
+      }
+      setSuccess(true);
+      setTimeout(() => setSuccess(false), 3000);
+    } catch (err) { console.error(err); alert('Failed to save texts.'); }
+    setSaving(false);
+  };
+
+  return (
+    <div>
+      <div style={styles.pageHeader}>
+        <h1 style={styles.pageTitle}>Text Management</h1>
+      </div>
+
+      <div style={{ display: 'flex', gap: 12, marginBottom: 24 }}>
+        <div>
+          <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#666', marginBottom: 6 }}>Page</label>
+          <select value={selectedPage} onChange={(e) => setSelectedPage(e.target.value)} style={{ ...styles.input, marginBottom: 0, minWidth: 160 }}>
+            {PAGES.map((p) => <option key={p} value={p}>{p}</option>)}
+          </select>
+        </div>
+        <div>
+          <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#666', marginBottom: 6 }}>Language</label>
+          <select value={selectedLang} onChange={(e) => setSelectedLang(e.target.value)} style={{ ...styles.input, marginBottom: 0, minWidth: 120 }}>
+            {LANGS.map((l) => <option key={l} value={l}>{l}</option>)}
+          </select>
+        </div>
+      </div>
+
+      {loading ? (
+        <LoadingState />
+      ) : (
+        <div style={styles.formCard}>
+          <h3 style={styles.formTitle}>{selectedPage} - {selectedLang}</h3>
+          {texts.length === 0 && (
+            <p style={{ color: '#999', fontSize: '0.9rem', marginBottom: 16 }}>No text entries for this page/language yet. Add a key below to get started.</p>
+          )}
+          {texts.map((text, index) => (
+            <div key={text.key} style={{ marginBottom: 16 }}>
+              <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#888', marginBottom: 4 }}>{text.key}</label>
+              <textarea
+                value={text.value || ''}
+                onChange={(e) => updateText(index, e.target.value)}
+                style={{ ...styles.input, marginBottom: 0, minHeight: 60, resize: 'vertical' }}
+              />
+            </div>
+          ))}
+          <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 16, paddingTop: 8, borderTop: '1px solid #f0f0f0' }}>
+            <input
+              type="text"
+              placeholder="New key name"
+              value={newKey}
+              onChange={(e) => setNewKey(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addKey(); } }}
+              style={{ ...styles.input, marginBottom: 0, flex: 1 }}
+            />
+            <button onClick={addKey} style={{ ...styles.btnPrimary, whiteSpace: 'nowrap' }}>+ Add Key</button>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <button onClick={handleSave} disabled={saving} style={styles.btnPrimary}>
+              {saving ? 'Saving...' : 'Save All'}
+            </button>
+            {success && <span style={{ color: '#16a34a', fontSize: '0.88rem', fontWeight: 500 }}>Texts saved successfully!</span>}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ─── Shared Components ───
 function LoadingState() {
   return (
@@ -967,6 +1442,30 @@ const styles = {
     height: 180,
     background: '#f5f5f5',
     overflow: 'hidden',
+  },
+
+  // Modal
+  modalOverlay: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    background: 'rgba(0,0,0,0.4)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 1000,
+  },
+  modalContent: {
+    background: '#fff',
+    borderRadius: 16,
+    padding: '28px',
+    width: 540,
+    maxWidth: '90vw',
+    maxHeight: '85vh',
+    overflowY: 'auto',
+    boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
   },
 
   // Review card

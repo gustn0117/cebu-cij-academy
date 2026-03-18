@@ -176,9 +176,27 @@ export default function RegistrationSection() {
       </section>
 
       {/* ============================== */}
+      {/* APPLY ONLINE                   */}
+      {/* ============================== */}
+      <section id="apply-online" className="section section-alt">
+        <div className="container">
+          <div className="section-title">
+            <h2>{r.applyOnlineTitle || t.nav?.applyOnline || 'Apply Online'}</h2>
+            <span className="accent-line"></span>
+          </div>
+          <div className="content-block" style={{ textAlign: 'center' }}>
+            <p>{r.applyOnlineDesc || 'Please contact us via email or through our agents to apply for enrollment.'}</p>
+            <p style={{ marginTop: 16 }}>
+              <strong>Email:</strong> cijacademy@naver.com
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================== */}
       {/* SCHOOL RULES                   */}
       {/* ============================== */}
-      <section id="school-rules" className="section section-alt">
+      <section id="school-rules" className="section">
         <div className="container">
           <div className="section-title">
             <h2>{r.rulesTitle}</h2>

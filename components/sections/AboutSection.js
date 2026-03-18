@@ -251,6 +251,22 @@ export default function AboutSection() {
           </div>
         </div>
       </section>
+
+      {/* Address Section */}
+      <section id="address" className="section section-alt">
+        <div className="container">
+          <div className="section-title">
+            <h2>{t.nav.address || 'Address'}</h2>
+            <span className="accent-line"></span>
+          </div>
+          <div className="content-block" style={{ textAlign: 'center' }}>
+            <p style={{ fontSize: '1.05rem', lineHeight: 1.9 }}>
+              <strong>CIJ Academy</strong><br />
+              Bayswater Subdivision, Pajac, Lapu-Lapu City, Cebu, Philippines 6015
+            </p>
+          </div>
+        </div>
+      </section>
     </>
   );
 }

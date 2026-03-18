@@ -202,6 +202,7 @@ export default function LevelsSection() {
       </section>
 
       {/* ===================== JUNIOR A ===================== */}
+      <div id="junior-level"></div>
       <section id="junior-a" className="section section-alt">
         <div className="container">
           <div className="content-block">
