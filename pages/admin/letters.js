@@ -11,6 +11,7 @@ const TABS = [
   { key: 'members', label: 'Members', icon: 'M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z M23 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75' },
   { key: 'floating', label: 'Floating Bar', icon: 'M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z' },
   { key: 'images', label: 'Images', icon: 'M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z M8.5 10a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z M21 15l-5-5L5 21' },
+  { key: 'popups', label: 'Popups', icon: 'M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9 M13.73 21a2 2 0 0 1-3.46 0' },
   { key: 'texts', label: 'Text Mgmt', icon: 'M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7 M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z' },
 ];
 
@@ -119,6 +120,7 @@ export default function AdminDashboard() {
           {activeTab === 'members' && <MembersTab />}
           {activeTab === 'floating' && <FloatingTab />}
           {activeTab === 'images' && <ImagesTab />}
+          {activeTab === 'popups' && <PopupsTab />}
           {activeTab === 'texts' && <TextsTab />}
         </main>
       </div>
@@ -1335,6 +1337,224 @@ function ImagesTab() {
           </>
         )}
       </div>
+    </div>
+  );
+}
+
+// ─── Popups Tab ───
+function PopupsTab() {
+  const [popups, setPopups] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [showForm, setShowForm] = useState(false);
+  const [form, setForm] = useState({ title: '', link_url: '', position: 1 });
+  const [file, setFile] = useState(null);
+  const [preview, setPreview] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [editModal, setEditModal] = useState(null);
+  const [editForm, setEditForm] = useState({ title: '', link_url: '', position: 1 });
+  const [editFile, setEditFile] = useState(null);
+  const [editPreview, setEditPreview] = useState(null);
+
+  useEffect(() => { fetchPopups(); }, []);
+
+  const fetchPopups = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/admin/popups');
+      const data = await res.json();
+      setPopups(data);
+    } catch (err) { console.error(err); }
+    setLoading(false);
+  };
+
+  const handleFileChange = (e, isEdit) => {
+    const f = e.target.files[0];
+    if (!f) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      if (isEdit) { setEditFile(f); setEditPreview(ev.target.result); }
+      else { setFile(f); setPreview(ev.target.result); }
+    };
+    reader.readAsDataURL(f);
+  };
+
+  const uploadImage = async (fileToUpload) => {
+    const formData = new FormData();
+    formData.append('file', fileToUpload);
+    const uploadRes = await fetch('/api/admin/upload', { method: 'POST', body: formData });
+    const uploadData = await uploadRes.json();
+    if (!uploadData.url) throw new Error(uploadData.error || 'Upload failed');
+    return uploadData.url;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!form.title.trim() || !file) return alert('Title and image are required.');
+    setSubmitting(true);
+    try {
+      const image_url = await uploadImage(file);
+      const res = await fetch('/api/admin/popups', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...form, image_url, position: Number(form.position) || 1 }),
+      });
+      const newPopup = await res.json();
+      setPopups((prev) => [...prev, newPopup].sort((a, b) => a.position - b.position));
+      setForm({ title: '', link_url: '', position: 1 });
+      setFile(null); setPreview(null); setShowForm(false);
+    } catch (err) { console.error(err); alert('Failed: ' + err.message); }
+    setSubmitting(false);
+  };
+
+  const toggleActive = async (popup) => {
+    const res = await fetch('/api/admin/popups', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: popup.id, is_active: !popup.is_active }),
+    });
+    const updated = await res.json();
+    setPopups((prev) => prev.map((p) => p.id === popup.id ? updated : p));
+  };
+
+  const deletePopup = async (id) => {
+    if (!confirm('Delete this popup?')) return;
+    await fetch(`/api/admin/popups?id=${id}`, { method: 'DELETE' });
+    setPopups((prev) => prev.filter((p) => p.id !== id));
+  };
+
+  const openEdit = (popup) => {
+    setEditModal(popup);
+    setEditForm({ title: popup.title, link_url: popup.link_url || '', position: popup.position || 1 });
+    setEditFile(null); setEditPreview(popup.image_url);
+  };
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+    setSubmitting(true);
+    try {
+      let image_url = editModal.image_url;
+      if (editFile) image_url = await uploadImage(editFile);
+      const res = await fetch('/api/admin/popups', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: editModal.id, ...editForm, image_url, position: Number(editForm.position) || 1 }),
+      });
+      const updated = await res.json();
+      setPopups((prev) => prev.map((p) => p.id === editModal.id ? updated : p).sort((a, b) => a.position - b.position));
+      setEditModal(null);
+    } catch (err) { console.error(err); alert('Failed: ' + err.message); }
+    setSubmitting(false);
+  };
+
+  return (
+    <div>
+      <div style={styles.pageHeader}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <h1 style={styles.pageTitle}>Popup Management</h1>
+          <span style={styles.badge}>{popups.filter(p => p.is_active).length} active</span>
+        </div>
+        <button onClick={() => { setShowForm(!showForm); setFile(null); setPreview(null); setForm({ title: '', link_url: '', position: 1 }); }} style={styles.btnPrimary}>
+          {showForm ? 'Cancel' : '+ Add Popup'}
+        </button>
+      </div>
+
+      {/* Guide */}
+      <div style={{ background: '#FFFBEB', border: '1px solid #FDE68A', borderRadius: 12, padding: '16px 20px', marginBottom: 24 }}>
+        <strong style={{ fontSize: '0.9rem', color: '#92400E' }}>Image Guide</strong>
+        <ul style={{ margin: '8px 0 0', paddingLeft: 20, fontSize: '0.85rem', color: '#78350F', lineHeight: 1.8 }}>
+          <li>Recommended size: <strong>480 x 640px</strong> (3:4 ratio, portrait)</li>
+          <li>Also works well: <strong>480 x 480px</strong> (1:1, square) or <strong>640 x 480px</strong> (4:3, landscape)</li>
+          <li>Max file size: 10MB. Formats: JPG, PNG, WebP</li>
+          <li>Multiple popups can be active at the same time</li>
+          <li>Position number controls display order (lower = first)</li>
+          <li>Link URL (optional): clicking the popup image opens this link</li>
+        </ul>
+      </div>
+
+      {showForm && (
+        <form onSubmit={handleSubmit} style={styles.formCard}>
+          <h3 style={styles.formTitle}>New Popup</h3>
+          <input type="text" placeholder="Title *" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} style={styles.input} />
+          <input type="text" placeholder="Link URL (optional)" value={form.link_url} onChange={(e) => setForm({ ...form, link_url: e.target.value })} style={styles.input} />
+          <input type="number" placeholder="Position (1=first)" value={form.position} onChange={(e) => setForm({ ...form, position: e.target.value })} style={{ ...styles.input, maxWidth: 200 }} min="1" />
+          <div
+            onClick={() => document.getElementById('popup-file-input').click()}
+            style={{ border: '2px dashed #ddd', borderRadius: 12, padding: preview ? 0 : '40px 20px', textAlign: 'center', cursor: 'pointer', marginBottom: 16, overflow: 'hidden', background: '#fafafa' }}
+          >
+            {preview ? (
+              <img src={preview} alt="Preview" style={{ width: '100%', maxHeight: 300, objectFit: 'contain', display: 'block' }} />
+            ) : (
+              <>
+                <p style={{ margin: 0, color: '#999', fontSize: '0.88rem' }}>Click to select popup image *</p>
+                <p style={{ margin: '4px 0 0', color: '#ccc', fontSize: '0.78rem' }}>Recommended: 480x640px (3:4 portrait)</p>
+              </>
+            )}
+          </div>
+          <input id="popup-file-input" type="file" accept="image/*" onChange={(e) => handleFileChange(e, false)} style={{ display: 'none' }} />
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <button type="submit" disabled={submitting} style={styles.btnPrimary}>{submitting ? 'Uploading...' : 'Save Popup'}</button>
+          </div>
+        </form>
+      )}
+
+      {/* Edit Modal */}
+      {editModal && (
+        <div style={styles.modalOverlay} onClick={() => setEditModal(null)}>
+          <div style={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+            <form onSubmit={handleEditSubmit}>
+              <h3 style={styles.formTitle}>Edit Popup</h3>
+              <input type="text" placeholder="Title *" value={editForm.title} onChange={(e) => setEditForm({ ...editForm, title: e.target.value })} style={styles.input} />
+              <input type="text" placeholder="Link URL (optional)" value={editForm.link_url} onChange={(e) => setEditForm({ ...editForm, link_url: e.target.value })} style={styles.input} />
+              <input type="number" placeholder="Position" value={editForm.position} onChange={(e) => setEditForm({ ...editForm, position: e.target.value })} style={{ ...styles.input, maxWidth: 200 }} min="1" />
+              <div
+                onClick={() => document.getElementById('popup-edit-file-input').click()}
+                style={{ border: '2px dashed #ddd', borderRadius: 12, padding: editPreview ? 0 : '32px 20px', textAlign: 'center', cursor: 'pointer', marginBottom: 16, overflow: 'hidden', background: '#fafafa' }}
+              >
+                {editPreview ? (
+                  <img src={editPreview} alt="Preview" style={{ width: '100%', maxHeight: 300, objectFit: 'contain', display: 'block' }} />
+                ) : (
+                  <p style={{ margin: 0, color: '#999', fontSize: '0.88rem' }}>Click to change image</p>
+                )}
+              </div>
+              <input id="popup-edit-file-input" type="file" accept="image/*" onChange={(e) => handleFileChange(e, true)} style={{ display: 'none' }} />
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+                <button type="button" onClick={() => setEditModal(null)} style={styles.btnSmallDanger}>Cancel</button>
+                <button type="submit" disabled={submitting} style={styles.btnPrimary}>{submitting ? 'Saving...' : 'Update'}</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {loading ? (
+        <LoadingState />
+      ) : popups.length === 0 ? (
+        <EmptyState message="No popups yet" />
+      ) : (
+        <div style={styles.imageGrid}>
+          {popups.map((popup) => (
+            <div key={popup.id} style={{ ...styles.imageCard, opacity: popup.is_active ? 1 : 0.5 }}>
+              <div style={{ ...styles.imageWrapper, height: 240 }}>
+                <img src={popup.image_url} alt={popup.title} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+              </div>
+              <div style={{ padding: '12px 14px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+                  <span style={{ fontSize: '0.88rem', fontWeight: 600, color: '#1a1a2e', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>{popup.title}</span>
+                  <span style={{ fontSize: '0.75rem', color: '#999', marginLeft: 8, flexShrink: 0 }}>#{popup.position}</span>
+                </div>
+                {popup.link_url && <div style={{ fontSize: '0.75rem', color: '#888', marginBottom: 8, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{popup.link_url}</div>}
+                <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+                  <button onClick={() => toggleActive(popup)} style={{ ...styles.btnSmallDanger, color: popup.is_active ? '#16a34a' : '#999', borderColor: popup.is_active ? '#bbf7d0' : '#e5e5e5', fontSize: '0.75rem' }}>
+                    {popup.is_active ? 'Active' : 'Inactive'}
+                  </button>
+                  <button onClick={() => openEdit(popup)} style={{ ...styles.btnSmallDanger, fontSize: '0.75rem' }}>Edit</button>
+                  <button onClick={() => deletePopup(popup.id)} style={{ ...styles.btnSmallDanger, fontSize: '0.75rem' }}>Delete</button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

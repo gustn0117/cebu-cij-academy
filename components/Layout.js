@@ -2,6 +2,7 @@ import Head from 'next/head';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import FloatingButtons from './FloatingButtons';
+import PopupModal from './PopupModal';
 
 export default function Layout({ children, title = 'CIJ Academy' }) {
   return (
@@ -15,6 +16,7 @@ export default function Layout({ children, title = 'CIJ Academy' }) {
       <Navbar />
       <main>{children}</main>
       <FloatingButtons />
+      <PopupModal />
       <Footer />
     </>
   );

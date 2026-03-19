@@ -1814,3 +1814,89 @@ img { max-width: 100%; height: auto; }
     grid-template-columns: 1fr;
   }
 }
+
+/* ─── Popup Modal ─── */
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 20px;
+}
+
+.popup-container {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  max-width: 480px;
+  width: 90vw;
+  animation: popupFadeIn 0.3s ease-out;
+}
+
+@keyframes popupFadeIn {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.95); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+.popup-content {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.popup-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  max-height: 70vh;
+  object-fit: contain;
+}
+
+.popup-actions {
+  display: flex;
+  border-top: 1px solid #eee;
+}
+
+.popup-btn-dismiss,
+.popup-btn-close {
+  flex: 1;
+  padding: 14px;
+  border: none;
+  background: #fff;
+  font-size: 0.9rem;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.2s;
+}
+
+.popup-btn-dismiss {
+  color: #6c757d;
+  border-right: 1px solid #eee;
+}
+
+.popup-btn-dismiss:hover {
+  background: #f8f9fa;
+}
+
+.popup-btn-close {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.popup-btn-close:hover {
+  background: var(--primary-light);
+}
+
+@media (max-width: 480px) {
+  .popup-container {
+    max-width: 95vw;
+  }
+  .popup-btn-dismiss,
+  .popup-btn-close {
+    font-size: 0.82rem;
+    padding: 12px;
+  }
+}
