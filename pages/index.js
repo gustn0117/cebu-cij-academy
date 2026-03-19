@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import Layout from '@/components/Layout';
 import ScrollReveal from '@/components/ScrollReveal';
@@ -59,9 +60,47 @@ const IconQuote = () => (
 
 const testimonials = [];
 
+const DEFAULT_SLIDES = [
+  'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=1600&h=900&fit=crop',
+  'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1600&h=900&fit=crop',
+  'https://images.unsplash.com/photo-1562774053-701939374585?w=1600&h=900&fit=crop',
+  'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1600&h=900&fit=crop',
+];
+
 /* ── Page ── */
 export default function Home() {
   const { t } = useLanguage();
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [slides, setSlides] = useState(DEFAULT_SLIDES);
+  const timerRef = useRef(null);
+
+  useEffect(() => {
+    fetch('/api/hero-slides')
+      .then((r) => r.json())
+      .then((data) => {
+        if (data && data.length > 0) {
+          setSlides(data.map((s) => s.image_url));
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const startTimer = useCallback(() => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    timerRef.current = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 5000);
+  }, [slides.length]);
+
+  useEffect(() => {
+    startTimer();
+    return () => { if (timerRef.current) clearInterval(timerRef.current); };
+  }, [startTimer]);
+
+  const goToSlide = (index) => {
+    setCurrentSlide(index);
+    startTimer();
+  };
 
   const features = [
     { icon: <IconTeacher />, title: t.home.feat1Title, desc: t.home.feat1Desc },
@@ -89,9 +128,13 @@ export default function Home() {
     <Layout title="Home">
       {/* ▸ Hero */}
       <section className="hero">
-        <div className="hero-bg">
-          <img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=1600&h=900&fit=crop" alt="CIJ Academy Campus" className="hero-bg-img" />
-          <div className="hero-overlay"></div>
+        <div className="hero-slider">
+          {slides.map((src, i) => (
+            <div key={i} className={`hero-slide ${i === currentSlide ? 'active' : ''}`}>
+              <img src={src} alt={`CIJ Academy Campus ${i + 1}`} className="hero-bg-img" />
+              <div className="hero-overlay"></div>
+            </div>
+          ))}
         </div>
         <div className="hero-content hero-anim">
           <span className="hero-badge">
@@ -110,6 +153,16 @@ export default function Home() {
               {t.home.learnMore}
             </Link>
           </div>
+        </div>
+        <div className="hero-dots">
+          {slides.map((_, i) => (
+            <button
+              key={i}
+              className={`hero-dot ${i === currentSlide ? 'active' : ''}`}
+              onClick={() => goToSlide(i)}
+              aria-label={`Go to slide ${i + 1}`}
+            />
+          ))}
         </div>
         <div className="hero-scroll-indicator">
           <div className="hero-scroll-mouse"><div className="hero-scroll-wheel"></div></div>

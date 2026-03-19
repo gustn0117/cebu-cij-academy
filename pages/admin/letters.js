@@ -10,6 +10,7 @@ const TABS = [
   { key: 'reports', label: 'Reports', icon: 'M9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4zM5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z' },
   { key: 'members', label: 'Members', icon: 'M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z M23 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75' },
   { key: 'floating', label: 'Floating Bar', icon: 'M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z' },
+  { key: 'images', label: 'Images', icon: 'M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z M8.5 10a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z M21 15l-5-5L5 21' },
   { key: 'texts', label: 'Text Mgmt', icon: 'M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7 M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z' },
 ];
 
@@ -117,6 +118,7 @@ export default function AdminDashboard() {
           {activeTab === 'reports' && <ReportsTab />}
           {activeTab === 'members' && <MembersTab />}
           {activeTab === 'floating' && <FloatingTab />}
+          {activeTab === 'images' && <ImagesTab />}
           {activeTab === 'texts' && <TextsTab />}
         </main>
       </div>
@@ -1019,9 +1021,327 @@ function FloatingTab() {
   );
 }
 
+// ─── Images Tab ───
+function ImagesTab() {
+  const [heroSlides, setHeroSlides] = useState([null, null, null, null]);
+  const [heroLoading, setHeroLoading] = useState(true);
+  const [facilityImages, setFacilityImages] = useState([]);
+  const [facilityLoading, setFacilityLoading] = useState(true);
+  const [uploading, setUploading] = useState(null);
+  const [facForm, setFacForm] = useState({ section: 'liloan', title: '', file: null });
+  const [facPreview, setFacPreview] = useState(null);
+  const [facUploading, setFacUploading] = useState(false);
+
+  useEffect(() => {
+    fetchHeroSlides();
+    fetchFacilityImages();
+  }, []);
+
+  const fetchHeroSlides = async () => {
+    setHeroLoading(true);
+    try {
+      const res = await fetch('/api/admin/hero-slides');
+      const data = await res.json();
+      const slots = [null, null, null, null];
+      (data || []).forEach((slide) => {
+        const pos = (slide.position || 1) - 1;
+        if (pos >= 0 && pos < 4) slots[pos] = slide;
+      });
+      setHeroSlides(slots);
+    } catch (err) { console.error(err); }
+    setHeroLoading(false);
+  };
+
+  const fetchFacilityImages = async () => {
+    setFacilityLoading(true);
+    try {
+      const res = await fetch('/api/admin/facility-images');
+      const data = await res.json();
+      setFacilityImages(data || []);
+    } catch (err) { console.error(err); }
+    setFacilityLoading(false);
+  };
+
+  const handleHeroUpload = async (slotIndex) => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      setUploading(slotIndex);
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        const uploadRes = await fetch('/api/admin/upload', { method: 'POST', body: formData });
+        const uploadData = await uploadRes.json();
+        if (!uploadData.url) throw new Error(uploadData.error || 'Upload failed');
+
+        const existing = heroSlides[slotIndex];
+        const position = slotIndex + 1;
+
+        if (existing) {
+          const res = await fetch('/api/admin/hero-slides', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: existing.id, image_url: uploadData.url, position }),
+          });
+          const updated = await res.json();
+          setHeroSlides((prev) => {
+            const next = [...prev];
+            next[slotIndex] = updated;
+            return next;
+          });
+        } else {
+          const res = await fetch('/api/admin/hero-slides', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ image_url: uploadData.url, position }),
+          });
+          const created = await res.json();
+          setHeroSlides((prev) => {
+            const next = [...prev];
+            next[slotIndex] = created;
+            return next;
+          });
+        }
+      } catch (err) { alert('Upload failed: ' + err.message); }
+      setUploading(null);
+    };
+    input.click();
+  };
+
+  const handleHeroDelete = async (slotIndex) => {
+    const slide = heroSlides[slotIndex];
+    if (!slide) return;
+    if (!confirm('Delete this hero image?')) return;
+    try {
+      await fetch(`/api/admin/hero-slides?id=${slide.id}`, { method: 'DELETE' });
+      setHeroSlides((prev) => {
+        const next = [...prev];
+        next[slotIndex] = null;
+        return next;
+      });
+    } catch (err) { alert('Failed to delete'); }
+  };
+
+  const handleFacFileChange = (e) => {
+    const f = e.target.files[0];
+    if (!f) return;
+    setFacForm((prev) => ({ ...prev, file: f }));
+    const reader = new FileReader();
+    reader.onload = (ev) => setFacPreview(ev.target.result);
+    reader.readAsDataURL(f);
+  };
+
+  const handleFacUpload = async (e) => {
+    e.preventDefault();
+    if (!facForm.file) return alert('Please select an image.');
+    setFacUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', facForm.file);
+      const uploadRes = await fetch('/api/admin/upload', { method: 'POST', body: formData });
+      const uploadData = await uploadRes.json();
+      if (!uploadData.url) throw new Error(uploadData.error || 'Upload failed');
+
+      const res = await fetch('/api/admin/facility-images', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          section: facForm.section,
+          image_url: uploadData.url,
+          title: facForm.title,
+          position: facilityImages.filter((img) => img.section === facForm.section).length + 1,
+        }),
+      });
+      const created = await res.json();
+      setFacilityImages((prev) => [...prev, created]);
+      setFacForm({ section: facForm.section, title: '', file: null });
+      setFacPreview(null);
+    } catch (err) { alert('Upload failed: ' + err.message); }
+    setFacUploading(false);
+  };
+
+  const handleFacDelete = async (id) => {
+    if (!confirm('Delete this facility image?')) return;
+    try {
+      await fetch(`/api/admin/facility-images?id=${id}`, { method: 'DELETE' });
+      setFacilityImages((prev) => prev.filter((img) => img.id !== id));
+    } catch (err) { alert('Failed to delete'); }
+  };
+
+  const liloanImages = facilityImages.filter((img) => img.section === 'liloan');
+  const premiumImages = facilityImages.filter((img) => img.section === 'premium');
+
+  return (
+    <div>
+      <div style={styles.pageHeader}>
+        <h1 style={styles.pageTitle}>Image Management</h1>
+      </div>
+
+      {/* Hero Slider Section */}
+      <div style={styles.formCard}>
+        <h3 style={styles.formTitle}>Hero Slider Images (4 slots)</h3>
+        <p style={{ fontSize: '0.85rem', color: '#888', marginBottom: 20 }}>Upload images for the homepage hero slider. Slot 1 is the main image shown on page load.</p>
+        {heroLoading ? (
+          <LoadingState />
+        ) : (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
+            {heroSlides.map((slide, i) => (
+              <div key={i} style={{ border: '1px solid #eee', borderRadius: 12, overflow: 'hidden', background: '#fafafa' }}>
+                <div style={{ height: 120, background: '#f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+                  {slide ? (
+                    <img
+                      src={slide.image_url}
+                      alt={`Slide ${i + 1}`}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                      }}
+                    />
+                  ) : (
+                    <div style={{ color: '#ccc', fontSize: '0.82rem', textAlign: 'center' }}>
+                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ccc" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                        <circle cx="8.5" cy="8.5" r="1.5" />
+                        <polyline points="21 15 16 10 5 21" />
+                      </svg>
+                      <div style={{ marginTop: 4 }}>Empty</div>
+                    </div>
+                  )}
+                </div>
+                <div style={{ padding: '10px 12px' }}>
+                  <div style={{ fontSize: '0.78rem', fontWeight: 600, color: i === 0 ? PRIMARY : '#666', marginBottom: 8 }}>
+                    {i === 0 ? 'Slot 1 (Main)' : `Slot ${i + 1}`}
+                  </div>
+                  <div style={{ display: 'flex', gap: 6 }}>
+                    <button
+                      onClick={() => handleHeroUpload(i)}
+                      disabled={uploading === i}
+                      style={{ ...styles.btnPrimary, padding: '4px 10px', fontSize: '0.75rem', flex: 1 }}
+                    >
+                      {uploading === i ? '...' : slide ? 'Replace' : 'Upload'}
+                    </button>
+                    {slide && (
+                      <button
+                        onClick={() => handleHeroDelete(i)}
+                        style={{ ...styles.btnSmallDanger, padding: '4px 10px', fontSize: '0.75rem' }}
+                      >
+                        Del
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Facilities Images Section */}
+      <div style={styles.formCard}>
+        <h3 style={styles.formTitle}>Facilities Images</h3>
+
+        {/* Upload form */}
+        <form onSubmit={handleFacUpload} style={{ marginBottom: 24, paddingBottom: 20, borderBottom: '1px solid #f0f0f0' }}>
+          <div style={{ display: 'flex', gap: 12, alignItems: 'flex-end', flexWrap: 'wrap' }}>
+            <div>
+              <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#666', marginBottom: 6 }}>Campus</label>
+              <select
+                value={facForm.section}
+                onChange={(e) => setFacForm((prev) => ({ ...prev, section: e.target.value }))}
+                style={{ ...styles.input, marginBottom: 0, minWidth: 160 }}
+              >
+                <option value="liloan">Liloan Campus</option>
+                <option value="premium">Premium Campus</option>
+              </select>
+            </div>
+            <div style={{ flex: 1, minWidth: 160 }}>
+              <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#666', marginBottom: 6 }}>Title</label>
+              <input
+                type="text"
+                placeholder="Image title (optional)"
+                value={facForm.title}
+                onChange={(e) => setFacForm((prev) => ({ ...prev, title: e.target.value }))}
+                style={{ ...styles.input, marginBottom: 0 }}
+              />
+            </div>
+            <div>
+              <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#666', marginBottom: 6 }}>Image</label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFacFileChange}
+                style={{ fontSize: '0.82rem' }}
+              />
+            </div>
+            <button type="submit" disabled={facUploading} style={{ ...styles.btnPrimary, whiteSpace: 'nowrap' }}>
+              {facUploading ? 'Uploading...' : 'Upload'}
+            </button>
+          </div>
+          {facPreview && (
+            <div style={{ marginTop: 12 }}>
+              <img src={facPreview} alt="Preview" style={{ maxHeight: 100, borderRadius: 8, objectFit: 'cover' }} />
+            </div>
+          )}
+        </form>
+
+        {facilityLoading ? (
+          <LoadingState />
+        ) : (
+          <>
+            {/* Liloan Campus */}
+            <div style={{ marginBottom: 24 }}>
+              <h4 style={{ fontSize: '0.95rem', fontWeight: 600, color: '#1a1a2e', marginBottom: 12 }}>
+                Liloan Campus
+                <span style={{ ...styles.badge, marginLeft: 8, fontSize: '0.72rem' }}>{liloanImages.length}</span>
+              </h4>
+              {liloanImages.length === 0 ? (
+                <p style={{ color: '#bbb', fontSize: '0.88rem' }}>No images uploaded yet.</p>
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                  {liloanImages.map((img) => (
+                    <div key={img.id} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 14px', background: '#fafafa', borderRadius: 8, border: '1px solid #eee' }}>
+                      <img src={img.image_url} alt={img.title} style={{ width: 60, height: 40, objectFit: 'cover', borderRadius: 6, flexShrink: 0 }} />
+                      <span style={{ flex: 1, fontSize: '0.88rem', color: '#333', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{img.title || '(no title)'}</span>
+                      <button onClick={() => handleFacDelete(img.id)} style={styles.btnSmallDanger}>Delete</button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Premium Campus */}
+            <div>
+              <h4 style={{ fontSize: '0.95rem', fontWeight: 600, color: '#1a1a2e', marginBottom: 12 }}>
+                Premium Campus
+                <span style={{ ...styles.badge, marginLeft: 8, fontSize: '0.72rem' }}>{premiumImages.length}</span>
+              </h4>
+              {premiumImages.length === 0 ? (
+                <p style={{ color: '#bbb', fontSize: '0.88rem' }}>No images uploaded yet.</p>
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                  {premiumImages.map((img) => (
+                    <div key={img.id} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 14px', background: '#fafafa', borderRadius: 8, border: '1px solid #eee' }}>
+                      <img src={img.image_url} alt={img.title} style={{ width: 60, height: 40, objectFit: 'cover', borderRadius: 6, flexShrink: 0 }} />
+                      <span style={{ flex: 1, fontSize: '0.88rem', color: '#333', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{img.title || '(no title)'}</span>
+                      <button onClick={() => handleFacDelete(img.id)} style={styles.btnSmallDanger}>Delete</button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
 // ─── Text Management Tab ───
 function TextsTab() {
-  const PAGES = ['About', 'Programs', 'Levels', 'Registration', 'Facilities'];
+  const PAGES = ['Address'];
   const LANGS = ['EN', 'JA', 'ZH-TW', 'ZH-CN', 'VI'];
 
   const [selectedPage, setSelectedPage] = useState(PAGES[0]);
