@@ -16,7 +16,7 @@ export default async function handler(req, res) {
 
   const { data, error } = await supabase
     .from('users')
-    .insert({ email, password: hashedPassword, name })
+    .insert({ email, password_hash: hashedPassword, name })
     .select('id, email, name, created_at')
     .single();
 

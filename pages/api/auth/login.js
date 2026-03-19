@@ -25,13 +25,13 @@ export default async function handler(req, res) {
     return res.status(401).json({ error: 'Invalid email or password' });
   }
 
-  const valid = await bcrypt.compare(password, user.password);
+  const valid = await bcrypt.compare(password, user.password_hash);
   if (!valid) {
     return res.status(401).json({ error: 'Invalid email or password' });
   }
 
   const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, { expiresIn: '7d' });
 
-  const { password: _, ...userData } = user;
+  const { password_hash: _, ...userData } = user;
   return res.status(200).json({ token, user: userData });
 }

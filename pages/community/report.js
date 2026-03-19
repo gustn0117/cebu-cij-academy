@@ -69,8 +69,8 @@ export default function Report() {
       <Layout title="Report">
         <PageHeader
           title="Report"
-          subtitle="Detailed report information"
-          breadcrumb={[
+          description="Detailed report information"
+          breadcrumbs={[
             { label: t.nav.community, href: '/community' },
             { label: 'Report', href: '/community/report' },
             { label: report.title },
@@ -124,8 +124,8 @@ export default function Report() {
     <Layout title="Report">
       <PageHeader
         title="Report"
-        subtitle="Reports and documents"
-        breadcrumb={[
+        description="Reports and documents"
+        breadcrumbs={[
           { label: t.nav.community, href: '/community' },
           { label: 'Report' },
         ]}
@@ -134,14 +134,16 @@ export default function Report() {
         <div className="container">
           {loading ? (
             <p style={{ textAlign: 'center', padding: '60px 0', color: '#6c757d' }}>Loading...</p>
+          ) : allPosts.length === 0 ? (
+            <p style={{ textAlign: 'center', padding: '60px 0', color: '#6c757d' }}>No reports yet.</p>
           ) : (
             <div className="board">
               <table className="board-table">
                 <thead>
                   <tr>
-                    <th className="board-col-no">{t.comm.boardNo}</th>
-                    <th className="board-col-title">{t.comm.boardTitle}</th>
-                    <th className="board-col-date">{t.comm.boardDate}</th>
+                    <th className="board-col-no">{t.comm?.boardNo || 'No'}</th>
+                    <th className="board-col-title">{t.comm?.boardTitle || 'Title'}</th>
+                    <th className="board-col-date">{t.comm?.boardDate || 'Date'}</th>
                   </tr>
                 </thead>
                 <tbody>
