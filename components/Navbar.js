@@ -37,10 +37,11 @@ export default function Navbar() {
       label: t.nav.programs,
       href: '/#programs',
       sub: [
-        { label: t.nav.eslProgram || 'ESL Program', href: '/#esl' },
-        { label: t.nav.ieltsProgram || 'IELTS Program', href: '/#ielts' },
-        { label: t.nav.toeicProgram || 'TOEIC Program', href: '/#toeic' },
-        { label: t.nav.businessEnglish || 'Business English', href: '/#business' },
+        { label: t.nav.sparta || 'Sparta', href: '/#sparta' },
+        { label: t.nav.semiSparta || 'Semi Sparta', href: '/#semi-sparta' },
+        { label: t.nav.junior || 'Junior', href: '/#junior-program' },
+        { label: t.nav.juniorCamp || 'Junior Camp', href: '/#junior-camp' },
+        { label: t.nav.family || 'Family', href: '/#family' },
       ],
     },
     {
