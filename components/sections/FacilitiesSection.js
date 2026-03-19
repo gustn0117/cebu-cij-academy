@@ -25,24 +25,13 @@ export default function FacilitiesSection() {
         </div>
       </div>
 
-      {/* Overview */}
-      <section className="section">
+      {/* Liloan Campus */}
+      <section id="liloan-campus" className="section">
         <div className="container">
-          <div className="content-block">
-            <h2>{t.fac.heading}</h2>
-            <p>{t.fac.desc}</p>
-          </div>
-        </div>
-      </section>
-
-      {/* Campus */}
-      <section id="liloan-campus" className="section section-alt">
-        <div className="container">
-          <div className="content-block">
-            <h2>{t.fac.campusTitle}</h2>
-            <p>{t.fac.campusDesc}</p>
-          </div>
-          {liloanImages.length > 0 && (
+          <h2 style={{ fontSize: '1.6rem', fontWeight: 700, marginBottom: 24 }}>
+            {t.nav.liloanCampus || 'Liloan Campus'}
+          </h2>
+          {liloanImages.length > 0 ? (
             <div className="facility-images-grid">
               {liloanImages.map((img) => (
                 <div key={img.id} className="facility-image-item">
@@ -51,18 +40,19 @@ export default function FacilitiesSection() {
                 </div>
               ))}
             </div>
+          ) : (
+            <p style={{ color: '#6c757d', fontSize: '0.95rem' }}>No images uploaded yet.</p>
           )}
         </div>
       </section>
 
-      {/* Dormitory */}
-      <section id="premium-campus" className="section">
+      {/* Premium Campus */}
+      <section id="premium-campus" className="section section-alt">
         <div className="container">
-          <div className="content-block">
-            <h2>{t.fac.dormTitle}</h2>
-            <p>{t.fac.dormDesc}</p>
-          </div>
-          {premiumImages.length > 0 && (
+          <h2 style={{ fontSize: '1.6rem', fontWeight: 700, marginBottom: 24 }}>
+            {t.nav.premiumCampus || 'Premium Campus'}
+          </h2>
+          {premiumImages.length > 0 ? (
             <div className="facility-images-grid">
               {premiumImages.map((img) => (
                 <div key={img.id} className="facility-image-item">
@@ -71,17 +61,9 @@ export default function FacilitiesSection() {
                 </div>
               ))}
             </div>
+          ) : (
+            <p style={{ color: '#6c757d', fontSize: '0.95rem' }}>No images uploaded yet.</p>
           )}
-        </div>
-      </section>
-
-      {/* Cafeteria */}
-      <section id="cafeteria" className="section section-alt">
-        <div className="container">
-          <div className="content-block">
-            <h2>{t.fac.cafeTitle}</h2>
-            <p>{t.fac.cafeDesc}</p>
-          </div>
         </div>
       </section>
     </>
