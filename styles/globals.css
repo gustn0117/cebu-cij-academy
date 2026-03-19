@@ -1695,3 +1695,122 @@ img { max-width: 100%; height: auto; }
 @media (max-width: 480px) {
   .gallery-grid { grid-template-columns: 1fr; }
 }
+
+/* ─── Program Sections ─── */
+.program-info-box {
+  background: var(--gray-100);
+  border-radius: var(--radius-sm);
+  padding: 24px 28px;
+  margin: 16px 0;
+  border-left: 4px solid var(--primary);
+}
+
+.program-info-box ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.program-info-box ul li {
+  padding: 6px 0;
+  font-size: 0.95rem;
+  color: var(--gray-700);
+  line-height: 1.7;
+}
+
+.program-info-box h4 {
+  margin-bottom: 8px;
+}
+
+.program-info-box p {
+  color: var(--gray-700);
+  font-size: 0.95rem;
+  line-height: 1.8;
+  margin-bottom: 0;
+}
+
+.program-course-card {
+  background: var(--white);
+  border: 1px solid var(--gray-300);
+  border-radius: var(--radius-sm);
+  padding: 20px 24px;
+  margin-bottom: 16px;
+  transition: var(--transition);
+}
+
+.program-course-card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: rgba(185,28,28,0.15);
+}
+
+.program-course-card p {
+  color: var(--gray-700);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  margin-bottom: 4px;
+}
+
+.program-course-name {
+  color: var(--primary);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.program-notes {
+  background: #FFFBEB;
+  border: 1px solid #FDE68A;
+  border-radius: var(--radius-sm);
+  padding: 20px 24px;
+}
+
+.program-notes p {
+  font-size: 0.9rem;
+  color: var(--gray-700);
+  line-height: 1.8;
+  margin-bottom: 6px;
+}
+
+.program-notes p:last-child {
+  margin-bottom: 0;
+}
+
+.program-timetable-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.program-timetable-main {
+  overflow-x: auto;
+}
+
+.program-timetable-notice {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.program-notice-block {
+  background: var(--gray-100);
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+}
+
+.program-notice-block p {
+  font-size: 0.88rem;
+  color: var(--gray-700);
+  line-height: 1.7;
+  margin-bottom: 4px;
+}
+
+.program-notice-block p:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .program-timetable-wrapper {
+    grid-template-columns: 1fr;
+  }
+}
