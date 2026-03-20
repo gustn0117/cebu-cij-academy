@@ -145,14 +145,6 @@ export default function Home() {
           <p>
             {t.home.heroDesc}
           </p>
-          <div className="hero-buttons">
-            <Link href="/registration/how-to-register" className="hero-btn">
-              {t.home.getStarted} <IconArrowRight />
-            </Link>
-            <Link href="/about" className="hero-btn-outline">
-              {t.home.learnMore}
-            </Link>
-          </div>
         </div>
         <div className="hero-dots">
           {slides.map((_, i) => (

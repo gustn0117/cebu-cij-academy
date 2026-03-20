@@ -920,28 +920,41 @@ function MembersTab() {
         <EmptyState message="No members yet" />
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          {members.map((member) => (
-            <div key={member.id} style={{ ...styles.tableRow, padding: '16px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 24, flex: 1, minWidth: 0 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                  <div style={{ width: 36, height: 36, borderRadius: '50%', background: '#f5f5f5', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.85rem', fontWeight: 600, color: '#888', flexShrink: 0 }}>
-                    {(member.name || member.email || '?').charAt(0).toUpperCase()}
-                  </div>
-                  <div>
-                    <div style={{ fontWeight: 600, fontSize: '0.93rem', color: '#1a1a2e' }}>{member.name || 'No Name'}</div>
-                    <div style={{ fontSize: '0.82rem', color: '#888' }}>{member.email || ''}</div>
-                  </div>
-                </div>
-                <span style={{ fontSize: '0.8rem', color: '#999', flexShrink: 0 }}>{formatDate(member.created_at)}</span>
-              </div>
-              <button onClick={() => deleteMember(member.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 8, flexShrink: 0 }} title="Remove member">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#DC2626" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="3 6 5 6 21 6" />
-                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                </svg>
-              </button>
-            </div>
-          ))}
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.88rem' }}>
+              <thead>
+                <tr style={{ borderBottom: '2px solid #eee', textAlign: 'left' }}>
+                  <th style={{ padding: '10px 12px', color: '#666', fontWeight: 600 }}>Username</th>
+                  <th style={{ padding: '10px 12px', color: '#666', fontWeight: 600 }}>Name</th>
+                  <th style={{ padding: '10px 12px', color: '#666', fontWeight: 600 }}>Email</th>
+                  <th style={{ padding: '10px 12px', color: '#666', fontWeight: 600 }}>Phone</th>
+                  <th style={{ padding: '10px 12px', color: '#666', fontWeight: 600 }}>Birthdate</th>
+                  <th style={{ padding: '10px 12px', color: '#666', fontWeight: 600 }}>Joined</th>
+                  <th style={{ padding: '10px 12px', width: 40 }}></th>
+                </tr>
+              </thead>
+              <tbody>
+                {members.map((member) => (
+                  <tr key={member.id} style={{ borderBottom: '1px solid #f0f0f0' }}>
+                    <td style={{ padding: '12px', color: '#1a1a2e', fontWeight: 500 }}>{member.username || '-'}</td>
+                    <td style={{ padding: '12px', color: '#1a1a2e' }}>{member.name || '-'}</td>
+                    <td style={{ padding: '12px', color: '#666' }}>{member.email || '-'}</td>
+                    <td style={{ padding: '12px', color: '#666' }}>{member.phone || '-'}</td>
+                    <td style={{ padding: '12px', color: '#666' }}>{member.birthdate || '-'}</td>
+                    <td style={{ padding: '12px', color: '#999', fontSize: '0.82rem' }}>{formatDate(member.created_at)}</td>
+                    <td style={{ padding: '12px' }}>
+                      <button onClick={() => deleteMember(member.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4 }} title="Remove member">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#DC2626" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <polyline points="3 6 5 6 21 6" />
+                          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                        </svg>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
     </div>
