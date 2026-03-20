@@ -1,17 +1,20 @@
-import { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Layout from '@/components/Layout';
 import PageHeader from '@/components/PageHeader';
+import AuthModal from '@/components/AuthModal';
 import { useLanguage } from '@/lib/LanguageContext';
+
+const PER_PAGE = 14;
 
 function StarRating({ rating, interactive, onRate }) {
   const [hover, setHover] = useState(0);
   return (
-    <div style={{ display: 'flex', gap: 2 }}>
+    <div style={{ display: 'inline-flex', gap: 2 }}>
       {[1, 2, 3, 4, 5].map((star) => (
         <svg
           key={star}
-          width={interactive ? 28 : 16}
-          height={interactive ? 28 : 16}
+          width={interactive ? 28 : 14}
+          height={interactive ? 28 : 14}
           viewBox="0 0 24 24"
           fill={(interactive ? (hover || rating) : rating) >= star ? '#F59E0B' : '#E5E7EB'}
           stroke="none"
@@ -43,7 +46,7 @@ const modalBoxStyle = {
 const inputStyle = {
   width: '100%', padding: '12px 16px', border: '1px solid #dee2e6',
   borderRadius: 8, fontSize: '0.95rem', fontFamily: 'inherit',
-  outline: 'none', transition: 'border-color 0.2s',
+  outline: 'none', transition: 'border-color 0.2s', boxSizing: 'border-box',
 };
 
 const labelStyle = {
@@ -58,145 +61,11 @@ const btnPrimary = {
   transition: 'all 0.2s',
 };
 
-const btnOutline = {
-  background: 'transparent', color: '#B91C1C', border: '2px solid #B91C1C',
-  padding: '10px 24px', borderRadius: 8, fontSize: '0.9rem',
-  fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit',
-};
-
 const closeBtn = {
   position: 'absolute', top: 16, right: 16, background: 'none',
   border: 'none', fontSize: '1.5rem', cursor: 'pointer', color: '#6c757d',
   lineHeight: 1,
 };
-
-function AuthModal({ isOpen, onClose, onAuth }) {
-  const [mode, setMode] = useState('login');
-  const [form, setForm] = useState({ email: '', password: '', name: '' });
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
-
-  if (!isOpen) return null;
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-    setLoading(true);
-    try {
-      if (mode === 'signup') {
-        if (!form.name.trim()) { setError('Name is required'); setLoading(false); return; }
-        const res = await fetch('/api/auth/signup', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: form.email, password: form.password, name: form.name }),
-        });
-        const data = await res.json();
-        if (!res.ok) { setError(data.error || 'Signup failed'); setLoading(false); return; }
-        // Auto-login after signup
-        const loginRes = await fetch('/api/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: form.email, password: form.password }),
-        });
-        const loginData = await loginRes.json();
-        if (loginRes.ok) {
-          localStorage.setItem('cij_token', loginData.token);
-          localStorage.setItem('cij_user', JSON.stringify(loginData.user));
-          onAuth(loginData.user, loginData.token);
-          onClose();
-        } else {
-          setError('Account created. Please log in.');
-          setMode('login');
-        }
-      } else {
-        const res = await fetch('/api/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: form.email, password: form.password }),
-        });
-        const data = await res.json();
-        if (!res.ok) { setError(data.error || 'Login failed'); setLoading(false); return; }
-        localStorage.setItem('cij_token', data.token);
-        localStorage.setItem('cij_user', JSON.stringify(data.user));
-        onAuth(data.user, data.token);
-        onClose();
-      }
-    } catch {
-      setError('Network error. Please try again.');
-    }
-    setLoading(false);
-  };
-
-  return (
-    <div style={modalOverlayStyle} onClick={(e) => e.target === e.currentTarget && onClose()}>
-      <div style={modalBoxStyle}>
-        <button style={closeBtn} onClick={onClose}>&times;</button>
-        <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginBottom: 4, color: '#1A1A2E' }}>
-          {mode === 'login' ? 'Log In' : 'Create Account'}
-        </h2>
-        <p style={{ color: '#6c757d', fontSize: '0.9rem', marginBottom: 24 }}>
-          {mode === 'login' ? 'Log in to write a review' : 'Sign up to share your experience'}
-        </p>
-
-        {error && (
-          <div style={{
-            background: '#FEF2F2', color: '#B91C1C', padding: '10px 14px',
-            borderRadius: 8, fontSize: '0.88rem', marginBottom: 16,
-          }}>{error}</div>
-        )}
-
-        <form onSubmit={handleSubmit}>
-          {mode === 'signup' && (
-            <div style={{ marginBottom: 16 }}>
-              <label style={labelStyle}>Name</label>
-              <input
-                style={inputStyle}
-                type="text"
-                value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
-                required
-              />
-            </div>
-          )}
-          <div style={{ marginBottom: 16 }}>
-            <label style={labelStyle}>Email</label>
-            <input
-              style={inputStyle}
-              type="email"
-              value={form.email}
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
-              required
-            />
-          </div>
-          <div style={{ marginBottom: 24 }}>
-            <label style={labelStyle}>Password</label>
-            <input
-              style={inputStyle}
-              type="password"
-              value={form.password}
-              onChange={(e) => setForm({ ...form, password: e.target.value })}
-              required
-              minLength={6}
-            />
-          </div>
-          <button type="submit" style={{ ...btnPrimary, width: '100%' }} disabled={loading}>
-            {loading ? 'Please wait...' : mode === 'login' ? 'Log In' : 'Sign Up'}
-          </button>
-        </form>
-
-        <p style={{ textAlign: 'center', marginTop: 20, fontSize: '0.88rem', color: '#6c757d' }}>
-          {mode === 'login' ? "Don't have an account? " : 'Already have an account? '}
-          <button
-            onClick={() => { setMode(mode === 'login' ? 'signup' : 'login'); setError(''); }}
-            style={{ background: 'none', border: 'none', color: '#B91C1C', fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit', fontSize: '0.88rem' }}
-          >
-            {mode === 'login' ? 'Sign Up' : 'Log In'}
-          </button>
-        </p>
-      </div>
-    </div>
-  );
-}
 
 function ReviewFormModal({ isOpen, onClose, onSubmit, editData }) {
   const [form, setForm] = useState({ title: '', text: '', rating: 5 });
@@ -291,6 +160,8 @@ export default function Review() {
   const [showAuth, setShowAuth] = useState(false);
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [editingReview, setEditingReview] = useState(null);
+  const [expandedId, setExpandedId] = useState(null);
+  const [page, setPage] = useState(1);
 
   const fetchReviews = useCallback(() => {
     fetch('/api/reviews')
@@ -349,7 +220,8 @@ export default function Review() {
     }
   };
 
-  const handleEditClick = (review) => {
+  const handleEditClick = (e, review) => {
+    e.stopPropagation();
     setEditingReview(review);
     setShowReviewForm(true);
   };
@@ -376,12 +248,21 @@ export default function Review() {
     fetchReviews();
   };
 
+  const totalPages = Math.ceil(reviews.length / PER_PAGE);
+  const currentReviews = reviews.slice((page - 1) * PER_PAGE, page * PER_PAGE);
+
+  const getDisplayTitle = (review) => {
+    if (review.title) return review.title;
+    if (review.text) return review.text.length > 50 ? review.text.substring(0, 50) + '...' : review.text;
+    return 'No title';
+  };
+
   return (
     <Layout title={rv.pageTitle || 'Reviews'}>
       <PageHeader
         title={rv.pageTitle || 'Student Reviews'}
-        description={rv.pageSub || 'Hear from our students and parents'}
-        breadcrumbs={[
+        subtitle={rv.pageSub || 'Hear from our students and parents'}
+        breadcrumb={[
           { label: t.nav.community, href: '/community' },
           { label: rv.pageTitle || 'Reviews' },
         ]}
@@ -428,48 +309,100 @@ export default function Review() {
           ) : reviews.length === 0 ? (
             <p style={{ textAlign: 'center', padding: '60px 0', color: '#6c757d' }}>No reviews yet.</p>
           ) : (
-          <div className="review-grid">
-            {reviews.map((review) => (
-              <div key={review.id} className="review-card">
-                <div className="review-header">
-                  <div className="review-avatar">
-                    <span style={{ fontSize: '1.6rem' }}>{review.flag || '👤'}</span>
-                  </div>
-                  <div style={{ flex: 1 }}>
-                    <strong className="review-name">{review.name}</strong>
-                    {(review.country || review.program || review.duration) && (
-                      <span className="review-meta">
-                        {[review.country, review.program, review.duration].filter(Boolean).join(' · ')}
-                      </span>
-                    )}
-                  </div>
-                  {user && review.user_id === user.id && (
-                    <button
-                      onClick={() => handleEditClick(review)}
-                      style={{
-                        background: 'none', border: '1px solid #dee2e6', borderRadius: 6,
-                        padding: '4px 12px', fontSize: '0.82rem', color: '#6c757d',
-                        cursor: 'pointer', fontFamily: 'inherit', transition: 'all 0.2s',
-                      }}
-                    >
-                      Edit
-                    </button>
-                  )}
-                </div>
-                <StarRating rating={review.rating} />
-                {review.title && (
-                  <h3 style={{
-                    fontSize: '1.05rem', fontWeight: 600, color: '#1A1A2E',
-                    margin: '10px 0 0',
-                  }}>{review.title}</h3>
-                )}
-                <p className="review-text">{review.text}</p>
-                <span className="review-date">
-                  {review.created_at ? new Date(review.created_at).toLocaleDateString() : review.date}
-                </span>
+            <div className="board">
+              <table className="board-table">
+                <thead>
+                  <tr>
+                    <th className="board-col-no" style={{ width: 80 }}>Rating</th>
+                    <th className="board-col-title">{t.comm?.boardTitle || 'Title'}</th>
+                    <th className="board-col-date" style={{ width: 100 }}>Author</th>
+                    <th className="board-col-date">{t.comm?.boardDate || 'Date'}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {currentReviews.map((review) => (
+                    <React.Fragment key={review.id}>
+                      <tr
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => setExpandedId(expandedId === review.id ? null : review.id)}
+                      >
+                        <td className="board-no" style={{ width: 80 }}>
+                          <StarRating rating={review.rating} />
+                        </td>
+                        <td className="board-title">
+                          <span style={{ color: '#1A1A2E' }}>{getDisplayTitle(review)}</span>
+                        </td>
+                        <td className="board-date" style={{ width: 100 }}>{review.name || 'Anonymous'}</td>
+                        <td className="board-date">
+                          {review.created_at ? new Date(review.created_at).toLocaleDateString() : review.date || ''}
+                        </td>
+                      </tr>
+                      {expandedId === review.id && (
+                        <tr>
+                          <td colSpan="4" style={{ padding: '20px 24px', background: '#FAFAFA', borderBottom: '1px solid #eee' }}>
+                            <div style={{ maxWidth: 700 }}>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
+                                <StarRating rating={review.rating} />
+                                <span style={{ fontSize: '0.85rem', color: '#6c757d' }}>
+                                  by <strong>{review.name || 'Anonymous'}</strong>
+                                  {review.created_at && ` on ${new Date(review.created_at).toLocaleDateString()}`}
+                                </span>
+                              </div>
+                              {review.title && (
+                                <h4 style={{ fontSize: '1.05rem', fontWeight: 600, color: '#1A1A2E', marginBottom: 8 }}>
+                                  {review.title}
+                                </h4>
+                              )}
+                              <p style={{ fontSize: '0.95rem', lineHeight: 1.7, color: '#333', margin: 0, whiteSpace: 'pre-wrap' }}>
+                                {review.text}
+                              </p>
+                              {user && review.user_id === user.id && (
+                                <button
+                                  onClick={(e) => handleEditClick(e, review)}
+                                  style={{
+                                    marginTop: 16,
+                                    background: 'none', border: '1px solid #B91C1C', borderRadius: 6,
+                                    padding: '6px 16px', fontSize: '0.85rem', color: '#B91C1C',
+                                    cursor: 'pointer', fontFamily: 'inherit', fontWeight: 600,
+                                  }}
+                                >
+                                  Edit
+                                </button>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      )}
+                    </React.Fragment>
+                  ))}
+                </tbody>
+              </table>
+              <div className="board-pagination">
+                <button
+                  className="board-page-btn"
+                  disabled={page <= 1}
+                  onClick={() => setPage(page - 1)}
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6"/></svg>
+                </button>
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
+                  <button
+                    key={p}
+                    className={`board-page-num ${p === page ? 'active' : ''}`}
+                    onClick={() => setPage(p)}
+                  >
+                    {p}
+                  </button>
+                ))}
+                <button
+                  className="board-page-btn"
+                  disabled={page >= totalPages}
+                  onClick={() => setPage(page + 1)}
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
               </div>
-            ))}
-          </div>
+            </div>
           )}
         </div>
       </section>

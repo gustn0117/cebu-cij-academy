@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useLanguage } from '@/lib/LanguageContext';
+import AuthModal from '@/components/AuthModal';
 
 const languages = [
   { code: 'en', label: 'English', flag: '\u{1F1FA}\u{1F1F8}' },
@@ -17,6 +18,8 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
   const [langOpen, setLangOpen] = useState(false);
+  const [showAuth, setShowAuth] = useState(false);
+  const [user, setUser] = useState(null);
   const langRef = useRef(null);
   const router = useRouter();
 
@@ -105,6 +108,27 @@ export default function Navbar() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // Check auth on mount
+  useEffect(() => {
+    try {
+      const savedToken = localStorage.getItem('cij_token');
+      const savedUser = localStorage.getItem('cij_user');
+      if (savedToken && savedUser) {
+        setUser(JSON.parse(savedUser));
+      }
+    } catch {}
+  }, []);
+
+  const handleAuth = (userData) => {
+    setUser(userData);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('cij_token');
+    localStorage.removeItem('cij_user');
+    setUser(null);
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-inner">
@@ -157,6 +181,38 @@ export default function Navbar() {
             </li>
           ))}
         </ul>
+
+        {/* Login / User Button (Desktop) */}
+        <div className="navbar-auth" style={{ display: 'flex', alignItems: 'center', marginRight: 8 }}>
+          {user ? (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#1A1A2E', whiteSpace: 'nowrap' }}>
+                {user.name}
+              </span>
+              <button
+                onClick={handleLogout}
+                style={{
+                  background: 'none', border: '1px solid #B91C1C', color: '#B91C1C',
+                  padding: '4px 12px', borderRadius: 6, fontSize: '0.8rem',
+                  fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap',
+                }}
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => setShowAuth(true)}
+              style={{
+                background: '#B91C1C', color: '#fff', border: 'none',
+                padding: '6px 16px', borderRadius: 6, fontSize: '0.85rem',
+                fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap',
+              }}
+            >
+              Login
+            </button>
+          )}
+        </div>
 
         {/* Language Selector */}
         <div className="navbar-lang" ref={langRef}>
@@ -233,6 +289,38 @@ export default function Navbar() {
               )}
             </div>
           ))}
+          {/* Mobile Auth */}
+          <div style={{ padding: '12px 0', borderBottom: '1px solid #eee' }}>
+            {user ? (
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 4px' }}>
+                <span style={{ fontSize: '0.9rem', fontWeight: 600, color: '#1A1A2E' }}>
+                  {user.name}
+                </span>
+                <button
+                  onClick={() => { handleLogout(); setMobileOpen(false); }}
+                  style={{
+                    background: 'none', border: '1px solid #B91C1C', color: '#B91C1C',
+                    padding: '4px 14px', borderRadius: 6, fontSize: '0.82rem',
+                    fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit',
+                  }}
+                >
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => { setShowAuth(true); setMobileOpen(false); }}
+                style={{
+                  background: '#B91C1C', color: '#fff', border: 'none',
+                  padding: '8px 20px', borderRadius: 6, fontSize: '0.88rem',
+                  fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit', width: '100%',
+                }}
+              >
+                Login
+              </button>
+            )}
+          </div>
+
           {/* Mobile Language */}
           <div className="navbar-mobile-lang">
             {languages.map((l) => (
@@ -250,6 +338,11 @@ export default function Navbar() {
           </div>
         </div>
       )}
+      <AuthModal
+        isOpen={showAuth}
+        onClose={() => setShowAuth(false)}
+        onAuth={handleAuth}
+      />
     </nav>
   );
 }

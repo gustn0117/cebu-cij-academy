@@ -1,11 +1,32 @@
+import { useState, useEffect } from 'react';
 import { useLanguage } from '@/lib/LanguageContext';
 import { en as aboutEn, ja as aboutJa, zhTW as aboutZhTW, zhCN as aboutZhCN, vi as aboutVi } from '@/lib/translations/about';
 
 const aboutT = { en: aboutEn, ja: aboutJa, 'zh-TW': aboutZhTW, 'zh-CN': aboutZhCN, vi: aboutVi };
 
+const LANG_MAP = { en: 'EN', ja: 'JA', 'zh-TW': 'ZH-TW', 'zh-CN': 'ZH-CN', vi: 'VI' };
+
 export default function AboutSection() {
   const { t, lang } = useLanguage();
   const a = aboutT[lang]?.about || aboutT.en.about;
+  const [addressDesc, setAddressDesc] = useState(null);
+
+  useEffect(() => {
+    fetch('/api/texts?page=address')
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          const langCode = LANG_MAP[lang] || 'EN';
+          const match = data.find((d) => d.key === 'description' && d.lang === langCode);
+          if (match && match.value) {
+            setAddressDesc(match.value);
+          } else {
+            setAddressDesc(null);
+          }
+        }
+      })
+      .catch(() => {});
+  }, [lang]);
 
   const featureIcons = [
     (
@@ -262,7 +283,7 @@ export default function AboutSection() {
           <div className="content-block" style={{ textAlign: 'center' }}>
             <p style={{ fontSize: '1.05rem', lineHeight: 1.9 }}>
               <strong>CIJ Academy</strong><br />
-              Bayswater Subdivision, Pajac, Lapu-Lapu City, Cebu, Philippines 6015
+              {addressDesc || 'Bayswater Subdivision, Pajac, Lapu-Lapu City, Cebu, Philippines 6015'}
             </p>
           </div>
         </div>

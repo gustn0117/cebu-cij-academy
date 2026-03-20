@@ -1,14 +1,24 @@
 import { supabase } from '@/lib/supabase';
 
 export default async function handler(req, res) {
-  if (req.method !== 'GET') {
-    return res.status(405).json({ error: 'Method not allowed' });
+  if (req.method === 'GET') {
+    // List all reports (summary only - no content, no password)
+    const { data, error } = await supabase
+      .from('reports')
+      .select('id, title, image_url, created_at')
+      .order('created_at', { ascending: false });
+
+    if (error) return res.status(500).json({ error: error.message });
+    return res.status(200).json(data);
   }
 
-  const { id, password } = req.query;
+  if (req.method === 'POST') {
+    const { id, password } = req.body;
 
-  // Single report with password verification
-  if (id) {
+    if (!id || !password) {
+      return res.status(400).json({ error: 'id and password are required' });
+    }
+
     const { data: report, error } = await supabase
       .from('reports')
       .select('*')
@@ -27,12 +37,5 @@ export default async function handler(req, res) {
     return res.status(200).json(reportData);
   }
 
-  // List all reports (summary only)
-  const { data, error } = await supabase
-    .from('reports')
-    .select('id, title, created_at')
-    .order('created_at', { ascending: false });
-
-  if (error) return res.status(500).json({ error: error.message });
-  return res.status(200).json(data);
+  return res.status(405).json({ error: 'Method not allowed' });
 }

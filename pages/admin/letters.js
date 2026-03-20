@@ -1559,49 +1559,48 @@ function PopupsTab() {
 
 // ─── Text Management Tab ───
 function TextsTab() {
-  const PAGES = ['Address'];
-  const LANGS = ['EN', 'JA', 'ZH-TW', 'ZH-CN', 'VI'];
+  const LANGS = [
+    { code: 'EN', label: 'English' },
+    { code: 'JA', label: 'Japanese' },
+    { code: 'ZH-TW', label: 'Chinese (Traditional)' },
+    { code: 'ZH-CN', label: 'Chinese (Simplified)' },
+    { code: 'VI', label: 'Vietnamese' },
+  ];
 
-  const [selectedPage, setSelectedPage] = useState(PAGES[0]);
-  const [selectedLang, setSelectedLang] = useState(LANGS[0]);
-  const [texts, setTexts] = useState([]);
+  const [values, setValues] = useState({ EN: '', JA: '', 'ZH-TW': '', 'ZH-CN': '', VI: '' });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [newKey, setNewKey] = useState('');
 
-  const fetchTexts = useCallback(async () => {
-    setLoading(true);
-    try {
-      const res = await fetch(`/api/admin/texts?page=${selectedPage}&lang=${selectedLang}`);
-      const data = await res.json();
-      setTexts(data || []);
-    } catch (err) { console.error(err); }
-    setLoading(false);
-  }, [selectedPage, selectedLang]);
-
-  useEffect(() => { fetchTexts(); }, [fetchTexts]);
-
-  const updateText = (index, value) => {
-    setTexts((prev) => prev.map((t, i) => i === index ? { ...t, value } : t));
-  };
-
-  const addKey = () => {
-    if (!newKey.trim()) return;
-    if (texts.some((t) => t.key === newKey.trim())) return alert('Key already exists.');
-    setTexts((prev) => [...prev, { page: selectedPage, key: newKey.trim(), lang: selectedLang, value: '' }]);
-    setNewKey('');
-  };
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      try {
+        const res = await fetch('/api/admin/texts?page=address');
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          const newValues = { EN: '', JA: '', 'ZH-TW': '', 'ZH-CN': '', VI: '' };
+          data.forEach((item) => {
+            if (item.key === 'description' && newValues.hasOwnProperty(item.lang)) {
+              newValues[item.lang] = item.value || '';
+            }
+          });
+          setValues(newValues);
+        }
+      } catch (err) { console.error(err); }
+      setLoading(false);
+    })();
+  }, []);
 
   const handleSave = async () => {
     setSaving(true);
     setSuccess(false);
     try {
-      for (const text of texts) {
+      for (const lang of LANGS) {
         await fetch('/api/admin/texts', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ page: text.page || selectedPage, key: text.key, lang: text.lang || selectedLang, value: text.value }),
+          body: JSON.stringify({ page: 'address', key: 'description', lang: lang.code, value: values[lang.code] }),
         });
       }
       setSuccess(true);
@@ -1613,58 +1612,35 @@ function TextsTab() {
   return (
     <div>
       <div style={styles.pageHeader}>
-        <h1 style={styles.pageTitle}>Text Management</h1>
-      </div>
-
-      <div style={{ display: 'flex', gap: 12, marginBottom: 24 }}>
-        <div>
-          <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#666', marginBottom: 6 }}>Page</label>
-          <select value={selectedPage} onChange={(e) => setSelectedPage(e.target.value)} style={{ ...styles.input, marginBottom: 0, minWidth: 160 }}>
-            {PAGES.map((p) => <option key={p} value={p}>{p}</option>)}
-          </select>
-        </div>
-        <div>
-          <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#666', marginBottom: 6 }}>Language</label>
-          <select value={selectedLang} onChange={(e) => setSelectedLang(e.target.value)} style={{ ...styles.input, marginBottom: 0, minWidth: 120 }}>
-            {LANGS.map((l) => <option key={l} value={l}>{l}</option>)}
-          </select>
-        </div>
+        <h1 style={styles.pageTitle}>Address Text Management</h1>
+        <p style={{ color: '#888', fontSize: '0.9rem', marginTop: 4 }}>
+          Edit the address description text that appears below &quot;CIJ Academy&quot; on the Address section
+        </p>
       </div>
 
       {loading ? (
         <LoadingState />
       ) : (
         <div style={styles.formCard}>
-          <h3 style={styles.formTitle}>{selectedPage} - {selectedLang}</h3>
-          {texts.length === 0 && (
-            <p style={{ color: '#999', fontSize: '0.9rem', marginBottom: 16 }}>No text entries for this page/language yet. Add a key below to get started.</p>
-          )}
-          {texts.map((text, index) => (
-            <div key={text.key} style={{ marginBottom: 16 }}>
-              <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#888', marginBottom: 4 }}>{text.key}</label>
+          <h3 style={styles.formTitle}>Address Description</h3>
+          {LANGS.map((lang) => (
+            <div key={lang.code} style={{ marginBottom: 20 }}>
+              <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: '#555', marginBottom: 6 }}>
+                {lang.label} ({lang.code})
+              </label>
               <textarea
-                value={text.value || ''}
-                onChange={(e) => updateText(index, e.target.value)}
-                style={{ ...styles.input, marginBottom: 0, minHeight: 60, resize: 'vertical' }}
+                value={values[lang.code]}
+                onChange={(e) => setValues((prev) => ({ ...prev, [lang.code]: e.target.value }))}
+                placeholder={`Address description in ${lang.label}...`}
+                style={{ ...styles.input, marginBottom: 0, minHeight: 80, resize: 'vertical' }}
               />
             </div>
           ))}
-          <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 16, paddingTop: 8, borderTop: '1px solid #f0f0f0' }}>
-            <input
-              type="text"
-              placeholder="New key name"
-              value={newKey}
-              onChange={(e) => setNewKey(e.target.value)}
-              onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addKey(); } }}
-              style={{ ...styles.input, marginBottom: 0, flex: 1 }}
-            />
-            <button onClick={addKey} style={{ ...styles.btnPrimary, whiteSpace: 'nowrap' }}>+ Add Key</button>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 8 }}>
             <button onClick={handleSave} disabled={saving} style={styles.btnPrimary}>
               {saving ? 'Saving...' : 'Save All'}
             </button>
-            {success && <span style={{ color: '#16a34a', fontSize: '0.88rem', fontWeight: 500 }}>Texts saved successfully!</span>}
+            {success && <span style={{ color: '#16a34a', fontSize: '0.88rem', fontWeight: 500 }}>Saved successfully!</span>}
           </div>
         </div>
       )}
