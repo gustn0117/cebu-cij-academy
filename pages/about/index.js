@@ -492,6 +492,155 @@ export default function About() {
           </div>
         </div>
       </section>
+
+      {/* Address Section */}
+      <section id="address" className="section section-alt">
+        <div className="container">
+          <div className="section-title">
+            <h2>CIJ Academy&amp;School Address</h2>
+            <span className="accent-line"></span>
+          </div>
+
+          {/* Airport Pickup & Arrival Guide */}
+          <div className="content-block">
+            <h3 style={{ fontSize: '1.4rem', fontWeight: 700, marginBottom: 12 }}>Airport Pickup &amp; Arrival Guide</h3>
+            <p>CIJ Academy &amp; School provides a safe and convenient airport pickup service to ensure that students arrive smoothly in Cebu.</p>
+            <p>For first-time visitors to the Philippines, please refer to the guide below for a clear understanding of the arrival process.</p>
+          </div>
+
+          <div className="content-block" style={{ marginTop: 40 }}>
+            <h3 style={{ fontSize: '1.3rem', fontWeight: 700, marginBottom: 20 }}>Arrival Procedures in the Philippines</h3>
+            <p>After arriving at Cebu-Mactan International Airport, please follow the steps below:</p>
+
+            <div style={{ marginTop: 24 }}>
+              <h4 style={addressStepStyle}>1. Immigration</h4>
+              <p>After disembarking, follow the signs to the Immigration area. Present your passport and required documents to the immigration officer. You may be asked simple questions such as your purpose of visit or length of stay.</p>
+              <p style={{ marginTop: 8 }}>Students may answer:</p>
+              <p style={{ fontWeight: 600, fontStyle: 'italic' }}>&ldquo;Tour&rdquo; or &ldquo;Sightseeing&rdquo;</p>
+            </div>
+
+            <div style={{ marginTop: 24 }}>
+              <h4 style={addressStepStyle}>2. Baggage Claim</h4>
+              <p>After passing Immigration, proceed to the baggage claim area.</p>
+              <p>Check the display screen for your flight number and collect your luggage at the assigned conveyor belt. Please note that baggage delivery may take some time, so kindly wait patiently.</p>
+            </div>
+
+            <div style={{ marginTop: 24 }}>
+              <h4 style={addressStepStyle}>3. Customs</h4>
+              <p>After collecting your luggage, proceed through Customs. If you have no items to declare, you can pass through without difficulty. If you are carrying items that require declaration, please follow the appropriate procedure.</p>
+            </div>
+
+            <div style={{ marginTop: 24 }}>
+              <h4 style={addressStepStyle}>4. Arrival Hall</h4>
+              <p>Once all procedures are completed, you will enter the Arrival Hall. At this point, you may meet the CIJ staff for pickup or proceed with your own transportation. The entire process usually takes about 30 minutes to 1 hour, depending on airport conditions.</p>
+            </div>
+          </div>
+
+          {/* Pickup Locations */}
+          <div className="content-block" style={{ marginTop: 40 }}>
+            <h3 style={{ fontSize: '1.3rem', fontWeight: 700, marginBottom: 20 }}>Pickup Locations at the Airport</h3>
+
+            <div style={{ marginBottom: 32 }}>
+              <h4 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: 8 }}>Domestic Terminal (T1)</h4>
+              <p style={{ color: 'var(--gray-500)', marginBottom: 12 }}>(For flights from Manila, Clark, Baguio, etc.)</p>
+              <div id="pickup-domestic-photo" style={{ background: '#f0f0f0', borderRadius: 12, height: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#999', marginBottom: 16 }}>
+                [Photo – Domestic Terminal Arrival Exit &amp; Pickup Point]
+              </div>
+              <p>Passengers arriving on domestic flights will exit through Terminal 1.</p>
+              <p>There are two exits in the arrival hall, but the pickup location is the same.</p>
+              <p>After collecting your luggage, proceed toward the escalator area.</p>
+              <p>CIJ staff will be waiting between the two exits, in front of the elevator.</p>
+              <p>Staff will be holding a CIJ sign for easy identification.</p>
+            </div>
+
+            <div style={{ marginBottom: 32 }}>
+              <h4 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: 8 }}>International Terminal (T2)</h4>
+              <div id="pickup-international-photo" style={{ background: '#f0f0f0', borderRadius: 12, height: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#999', marginBottom: 16 }}>
+                [Photo – International Terminal Arrival Exit &amp; Meeting Point]
+              </div>
+              <p>Passengers arriving on international flights will exit through Terminal 2.</p>
+              <p>There is only one exit in the arrival hall, making it easy to locate.</p>
+              <p>After collecting your luggage, follow the flow of passengers toward the exit.</p>
+              <p>CIJ staff will be waiting at the designated meeting point, holding a sign or your name.</p>
+            </div>
+          </div>
+
+          {/* Transportation Without Pickup */}
+          <div className="content-block" style={{ marginTop: 40 }}>
+            <h3 style={{ fontSize: '1.3rem', fontWeight: 700, marginBottom: 20 }}>Transportation Without Pickup Service</h3>
+            <p>If you choose not to use the pickup service, you may travel to the academy using the options below.</p>
+
+            <div style={{ marginTop: 24 }}>
+              <h4 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: 8 }}>By Taxi</h4>
+              <div id="pickup-taxi-photo" style={{ background: '#f0f0f0', borderRadius: 12, height: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#999', marginBottom: 16 }}>
+                [Photo – Airport Taxi Area]
+              </div>
+              <p>Taxis are readily available at the airport, and there are two types:</p>
+              <ul>
+                <li><strong>White taxi (regular)</strong> – starting fare: 40 PHP</li>
+                <li><strong>Yellow taxi (airport taxi)</strong> – starting fare: 70 PHP</li>
+              </ul>
+              <p style={{ marginTop: 12 }}>The estimated fare from the airport to CIJ Academy in Liloan is approximately 500–600 PHP (white taxi).</p>
+              <p>Yellow taxis are slightly more expensive but generally offer newer and more comfortable vehicles.</p>
+              <p style={{ marginTop: 12 }}>For a smooth arrival, we recommend telling the driver:</p>
+              <p style={{ fontWeight: 600, fontStyle: 'italic' }}>&ldquo;CIJ Academy, behind Liloan Jollibee&rdquo; (or &ldquo;CIJ Academy, behind Jollibee Liloan&rdquo;)</p>
+            </div>
+
+            <div style={{ marginTop: 24 }}>
+              <h4 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: 8 }}>By Grab</h4>
+              <p>You may also use the Grab app, which is widely used in the Philippines.</p>
+              <p>When entering your destination, please search for:</p>
+              <p style={{ fontWeight: 600, fontStyle: 'italic' }}>&ldquo;CIJ Sparta&rdquo; or &ldquo;CIJ Academy Liloan&rdquo;</p>
+              <p style={{ marginTop: 8 }}>In many cases, &ldquo;CIJ Sparta&rdquo; appears more accurately on Google Maps.</p>
+              <p>Grab is a convenient option as the fare is shown in advance.</p>
+            </div>
+          </div>
+
+          {/* Address & Google Maps */}
+          <div className="content-block" style={{ marginTop: 40 }}>
+            <h3 style={{ fontSize: '1.3rem', fontWeight: 700, marginBottom: 20 }}>Address</h3>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 24, marginBottom: 32 }}>
+              <div style={{ background: 'var(--white)', padding: 24, borderRadius: 'var(--radius)', boxShadow: 'var(--shadow-sm)', border: '1px solid var(--gray-300)' }}>
+                <h4 style={{ fontSize: '1.05rem', fontWeight: 700, marginBottom: 8 }}>LILOAN CIJ EDUCATION INC.</h4>
+                <p style={{ color: 'var(--gray-700)', lineHeight: 1.7 }}>
+                  08-302 Purok Mabini, Poblacion Liloan, Cebu, Philippines
+                </p>
+                <p style={{ color: 'var(--gray-700)', marginTop: 8 }}>
+                  <a href="tel:+63-32-503-9846" style={{ color: 'var(--primary)', fontWeight: 600 }}>+63-32-503-9846</a>
+                </p>
+              </div>
+              <div style={{ background: 'var(--white)', padding: 24, borderRadius: 'var(--radius)', boxShadow: 'var(--shadow-sm)', border: '1px solid var(--gray-300)' }}>
+                <h4 style={{ fontSize: '1.05rem', fontWeight: 700, marginBottom: 8 }}>PREMIUM DORMITORY</h4>
+                <p style={{ color: 'var(--gray-700)', lineHeight: 1.7 }}>
+                  Purok Neem Tree, Fatima Road, Jubay, Liloan, Cebu, Philippines
+                </p>
+              </div>
+            </div>
+
+            {/* Google Maps Embed */}
+            <div style={{ borderRadius: 'var(--radius)', overflow: 'hidden', boxShadow: 'var(--shadow-md)' }}>
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3924.614!2d123.9973!3d10.4015!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33a9a143df1a2e13%3A0x9c4f4c6b8c5e8e0a!2sCIJ%20Academy%20Sparta%20Campus!5e0!3m2!1sen!2sph!4v1"
+                width="100%"
+                height="400"
+                style={{ border: 0, display: 'block' }}
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="CIJ Academy Location"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
     </Layout>
   );
 }
+
+const addressStepStyle = {
+  fontSize: '1.1rem',
+  fontWeight: 700,
+  marginBottom: 8,
+  color: 'var(--dark)',
+};

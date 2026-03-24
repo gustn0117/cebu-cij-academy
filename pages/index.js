@@ -1,13 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import Link from 'next/link';
 import Layout from '@/components/Layout';
 import ScrollReveal from '@/components/ScrollReveal';
 import { useLanguage } from '@/lib/LanguageContext';
-import AboutSection from '@/components/sections/AboutSection';
-import ProgramsSection from '@/components/sections/ProgramsSection';
-import LevelsSection from '@/components/sections/LevelsSection';
-import RegistrationSection from '@/components/sections/RegistrationSection';
-import FacilitiesSection from '@/components/sections/FacilitiesSection';
 
 /* ── SVG Icons ── */
 const IconTeacher = () => (
@@ -46,56 +40,61 @@ const IconUsers = () => (
     <path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/>
   </svg>
 );
-const IconArrowRight = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
-  </svg>
-);
-const IconStar = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="#333"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-);
-const IconQuote = () => (
-  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" opacity="0.08"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z" fill="currentColor"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z" fill="currentColor"/></svg>
-);
 
-const testimonials = [];
+/* ── Page (server-side fetch hero slides to avoid flash) ── */
+export async function getServerSideProps() {
+  let heroSlides = [];
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    const res = await fetch(`${baseUrl}/api/hero-slides`);
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data.length > 0) {
+        heroSlides = data.map((s) => s.image_url);
+      }
+    }
+  } catch {}
+  return { props: { heroSlides } };
+}
 
-const DEFAULT_SLIDES = [
-  'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=1600&h=900&fit=crop',
-  'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1600&h=900&fit=crop',
-  'https://images.unsplash.com/photo-1562774053-701939374585?w=1600&h=900&fit=crop',
-  'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1600&h=900&fit=crop',
-];
-
-/* ── Page ── */
-export default function Home() {
+export default function Home({ heroSlides = [] }) {
   const { t } = useLanguage();
+  const initialSlides = heroSlides.length > 0 ? heroSlides : null;
+  const [slides, setSlides] = useState(initialSlides);
+  const [slidesReady, setSlidesReady] = useState(!!initialSlides);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [slides, setSlides] = useState(DEFAULT_SLIDES);
   const timerRef = useRef(null);
 
+  // Client-side fallback: if SSR didn't provide slides, fetch them
   useEffect(() => {
+    if (slides) return;
     fetch('/api/hero-slides')
       .then((r) => r.json())
       .then((data) => {
         if (data && data.length > 0) {
           setSlides(data.map((s) => s.image_url));
         }
+        setSlidesReady(true);
       })
-      .catch(() => {});
-  }, []);
+      .catch(() => {
+        setSlidesReady(true);
+      });
+  }, [slides]);
+
+  const slideCount = slides ? slides.length : 0;
 
   const startTimer = useCallback(() => {
     if (timerRef.current) clearInterval(timerRef.current);
+    if (slideCount <= 1) return;
     timerRef.current = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
+      setCurrentSlide((prev) => (prev + 1) % slideCount);
     }, 5000);
-  }, [slides.length]);
+  }, [slideCount]);
 
   useEffect(() => {
-    startTimer();
+    if (slideCount > 0) startTimer();
     return () => { if (timerRef.current) clearInterval(timerRef.current); };
-  }, [startTimer]);
+  }, [startTimer, slideCount]);
 
   const goToSlide = (index) => {
     setCurrentSlide(index);
@@ -111,31 +110,20 @@ export default function Home() {
     { icon: <IconUsers />, title: t.home.feat6Title, desc: t.home.feat6Desc },
   ];
 
-  const programs = [
-    { title: t.home.eslTitle, desc: t.home.eslDesc, href: '/programs/esl', img: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600&h=400&fit=crop', tag: t.home.eslTag },
-    { title: t.home.ieltsTitle, desc: t.home.ieltsDesc, href: '/programs/ielts', img: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=600&h=400&fit=crop', tag: t.home.ieltsTag },
-    { title: t.home.juniorTitle, desc: t.home.juniorDesc, href: '/levels', img: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&h=400&fit=crop', tag: t.home.juniorTag },
-  ];
-
-  const steps = [
-    { num: '01', title: t.home.step1Title, desc: t.home.step1Desc },
-    { num: '02', title: t.home.step2Title, desc: t.home.step2Desc },
-    { num: '03', title: t.home.step3Title, desc: t.home.step3Desc },
-    { num: '04', title: t.home.step4Title, desc: t.home.step4Desc },
-  ];
-
   return (
     <Layout title="Home">
       {/* ▸ Hero */}
-      <section className="hero">
-        <div className="hero-slider">
-          {slides.map((src, i) => (
-            <div key={i} className={`hero-slide ${i === currentSlide ? 'active' : ''}`}>
-              <img src={src} alt={`CIJ Academy Campus ${i + 1}`} className="hero-bg-img" />
-              <div className="hero-overlay"></div>
-            </div>
-          ))}
-        </div>
+      <section className="hero" style={!slidesReady ? { background: '#1A1A2E' } : undefined}>
+        {slides && slides.length > 0 && (
+          <div className={`hero-slider ${slidesReady ? 'hero-slider-ready' : ''}`}>
+            {slides.map((src, i) => (
+              <div key={i} className={`hero-slide ${i === currentSlide ? 'active' : ''}`}>
+                <img src={src} alt={`CIJ Academy Campus ${i + 1}`} className="hero-bg-img" />
+                <div className="hero-overlay"></div>
+              </div>
+            ))}
+          </div>
+        )}
         <div className="hero-content hero-anim">
           <span className="hero-badge">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{marginRight:6,verticalAlign:'middle'}}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
@@ -146,27 +134,55 @@ export default function Home() {
             {t.home.heroDesc}
           </p>
         </div>
-        <div className="hero-dots">
-          {slides.map((_, i) => (
-            <button
-              key={i}
-              className={`hero-dot ${i === currentSlide ? 'active' : ''}`}
-              onClick={() => goToSlide(i)}
-              aria-label={`Go to slide ${i + 1}`}
-            />
-          ))}
-        </div>
+        {slides && slides.length > 0 && (
+          <div className="hero-dots">
+            {slides.map((_, i) => (
+              <button
+                key={i}
+                className={`hero-dot ${i === currentSlide ? 'active' : ''}`}
+                onClick={() => goToSlide(i)}
+                aria-label={`Go to slide ${i + 1}`}
+              />
+            ))}
+          </div>
+        )}
         <div className="hero-scroll-indicator">
           <div className="hero-scroll-mouse"><div className="hero-scroll-wheel"></div></div>
         </div>
       </section>
 
-      {/* ▸ All Sections */}
-      <AboutSection />
-      <ProgramsSection />
-      <LevelsSection />
-      <RegistrationSection />
-      <FacilitiesSection />
+      {/* ▸ Features */}
+      <section style={{ padding: '80px 0', background: '#fff' }}>
+        <div className="container" style={{ textAlign: 'center' }}>
+          <h2 style={{ fontSize: '2rem', fontWeight: 700, color: '#1A1A2E', marginBottom: 12 }}>
+            {t.home.featTitle || 'Why Choose CIJ Academy?'}
+          </h2>
+          <p style={{ color: '#6c757d', fontSize: '1.05rem', maxWidth: 600, margin: '0 auto 48px' }}>
+            {t.home.featSubtitle || 'Premier English education in the heart of Cebu'}
+          </p>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+            gap: 32,
+          }}>
+            {features.map((f, i) => (
+              <ScrollReveal key={i} delay={i * 0.08}>
+                <div style={{
+                  padding: '32px 24px',
+                  borderRadius: 16,
+                  background: '#f8f9fa',
+                  textAlign: 'center',
+                  transition: 'transform 0.3s, box-shadow 0.3s',
+                }}>
+                  <div style={{ color: '#B91C1C', marginBottom: 16 }}>{f.icon}</div>
+                  <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1A1A2E', marginBottom: 8 }}>{f.title}</h3>
+                  <p style={{ color: '#6c757d', fontSize: '0.92rem', lineHeight: 1.6 }}>{f.desc}</p>
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
+        </div>
+      </section>
     </Layout>
   );
 }

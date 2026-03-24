@@ -28,49 +28,49 @@ export default function Navbar() {
   const navItems = [
     {
       label: t.nav.aboutUs,
-      href: '/#about',
+      href: '/about',
       sub: [
-        { label: t.nav.greeting, href: '/#greeting' },
-        { label: t.nav.history, href: '/#history' },
-        { label: t.nav.whyChooseCij, href: '/#why-choose-cij' },
-        { label: t.nav.address || 'Address', href: '/#address' },
+        { label: t.nav.greeting, href: '/about#greeting' },
+        { label: t.nav.history, href: '/about#history' },
+        { label: t.nav.whyChooseCij, href: '/about#why-choose-cij' },
+        { label: t.nav.address || 'Address', href: '/about#address' },
       ],
     },
     {
       label: t.nav.programs,
-      href: '/#programs',
+      href: '/programs',
       sub: [
-        { label: t.nav.sparta || 'Sparta', href: '/#sparta' },
-        { label: t.nav.semiSparta || 'Semi Sparta', href: '/#semi-sparta' },
-        { label: t.nav.junior || 'Junior', href: '/#junior-program' },
-        { label: t.nav.juniorCamp || 'Junior Camp', href: '/#junior-camp' },
-        { label: t.nav.family || 'Family', href: '/#family' },
+        { label: t.nav.sparta || 'Sparta', href: '/programs#sparta' },
+        { label: t.nav.semiSparta || 'Semi Sparta', href: '/programs#semi-sparta' },
+        { label: t.nav.junior || 'Junior', href: '/programs#junior-program' },
+        { label: t.nav.juniorCamp || 'Junior Camp', href: '/programs#junior-camp' },
+        { label: t.nav.family || 'Family', href: '/programs#family' },
       ],
     },
     {
       label: t.nav.levels,
-      href: '/#levels',
+      href: '/levels',
       sub: [
-        { label: t.nav.adult, href: '/#adult' },
-        { label: t.nav.juniorLevel || 'Junior', href: '/#junior-level' },
-        { label: t.nav.kinder, href: '/#kinder' },
+        { label: t.nav.adult, href: '/levels#adult' },
+        { label: t.nav.juniorLevel || 'Junior', href: '/levels#junior-level' },
+        { label: t.nav.kinder, href: '/levels#kinder' },
       ],
     },
     {
       label: t.nav.registration,
-      href: '/#registration',
+      href: '/registration',
       sub: [
-        { label: t.nav.howToRegister, href: '/#how-to-register' },
-        { label: t.nav.applyOnline || 'Apply Online', href: '/#apply-online' },
-        { label: t.nav.schoolRules, href: '/#school-rules' },
+        { label: t.nav.howToRegister, href: '/registration#how-to-register' },
+        { label: t.nav.applyOnline || 'Apply Online', href: '/registration#apply-online' },
+        { label: t.nav.schoolRules, href: '/registration#school-rules' },
       ],
     },
     {
       label: t.nav.facilities,
-      href: '/#facilities',
+      href: '/facilities',
       sub: [
-        { label: t.nav.liloanCampus || 'Liloan Campus', href: '/#liloan-campus' },
-        { label: t.nav.premiumCampus || 'Premium Campus', href: '/#premium-campus' },
+        { label: t.nav.liloanCampus || 'Liloan Campus', href: '/facilities#liloan-campus' },
+        { label: t.nav.premiumCampus || 'Premium Campus', href: '/facilities#premium-campus' },
       ],
     },
     {
@@ -86,17 +86,46 @@ export default function Navbar() {
   ];
 
   const handleHashClick = (e, hashHref, closeMobile) => {
-    const hash = hashHref.replace('/', '');
-    const el = document.querySelector(hash);
-    if (el) {
-      e.preventDefault();
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      setOpenDropdown(null);
-      if (closeMobile) {
-        setMobileOpen(false);
+    // Parse the href into pathname and hash parts
+    const hashIndex = hashHref.indexOf('#');
+    const targetPath = hashIndex >= 0 ? hashHref.substring(0, hashIndex) : hashHref;
+    const hash = hashIndex >= 0 ? hashHref.substring(hashIndex) : '';
+
+    // Check if we're already on the correct page
+    const currentPath = router.pathname;
+    const onCorrectPage = targetPath === currentPath || (targetPath === '' && currentPath === '/');
+
+    if (onCorrectPage && hash) {
+      // Already on the right page, scroll to the hash
+      const el = document.querySelector(hash);
+      if (el) {
+        e.preventDefault();
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     }
+    // If not on the right page, let Next.js Link handle navigation (hash will be in URL)
+
+    setOpenDropdown(null);
+    if (closeMobile) {
+      setMobileOpen(false);
+    }
   };
+
+  // After route change, scroll to hash if present
+  useEffect(() => {
+    const handleRouteChange = (url) => {
+      const hashIndex = url.indexOf('#');
+      if (hashIndex >= 0) {
+        const hash = url.substring(hashIndex);
+        setTimeout(() => {
+          const el = document.querySelector(hash);
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 300);
+      }
+    };
+    router.events.on('routeChangeComplete', handleRouteChange);
+    return () => router.events.off('routeChangeComplete', handleRouteChange);
+  }, [router]);
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -130,6 +159,7 @@ export default function Navbar() {
   };
 
   return (
+    <>
     <nav className="navbar">
       <div className="navbar-inner">
         <Link href="/" className="navbar-logo">
@@ -158,8 +188,8 @@ export default function Navbar() {
             >
               <Link
                 href={item.href}
-                className={`navbar-menu-link ${!item.href.startsWith('/#') && router.pathname.startsWith(item.href) ? 'active' : ''}`}
-                onClick={item.href.startsWith('/#') ? (e) => handleHashClick(e, item.href, false) : undefined}
+                className={`navbar-menu-link ${router.pathname.startsWith(item.href.split('#')[0]) && item.href.split('#')[0] !== '/' ? 'active' : ''}`}
+                onClick={item.href.includes('#') ? (e) => handleHashClick(e, item.href, false) : undefined}
               >
                 {item.label}
                 {item.sub && <span className="navbar-arrow">&#9662;</span>}
@@ -171,7 +201,7 @@ export default function Navbar() {
                       key={sub.href}
                       href={sub.href}
                       className="navbar-dropdown-link"
-                      onClick={sub.href.startsWith('/#') ? (e) => handleHashClick(e, sub.href, false) : undefined}
+                      onClick={sub.href.includes('#') ? (e) => handleHashClick(e, sub.href, false) : undefined}
                     >
                       {sub.label}
                     </Link>
@@ -263,7 +293,7 @@ export default function Navbar() {
               <Link
                 href={item.href}
                 className="navbar-mobile-link"
-                onClick={item.href.startsWith('/#')
+                onClick={item.href.includes('#')
                   ? (e) => handleHashClick(e, item.href, true)
                   : () => setMobileOpen(false)
                 }
@@ -277,7 +307,7 @@ export default function Navbar() {
                       key={sub.href}
                       href={sub.href}
                       className="navbar-mobile-sub-link"
-                      onClick={sub.href.startsWith('/#')
+                      onClick={sub.href.includes('#')
                         ? (e) => handleHashClick(e, sub.href, true)
                         : () => setMobileOpen(false)
                       }
@@ -338,11 +368,14 @@ export default function Navbar() {
           </div>
         </div>
       )}
+    </nav>
+    {showAuth && (
       <AuthModal
         isOpen={showAuth}
         onClose={() => setShowAuth(false)}
         onAuth={handleAuth}
       />
-    </nav>
+    )}
+    </>
   );
 }
