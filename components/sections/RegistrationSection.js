@@ -199,235 +199,263 @@ export default function RegistrationSection() {
       <section id="school-rules" className="section">
         <div className="container">
           <div className="section-title">
-            <h2>{r.rulesTitle}</h2>
+            <h2>CIJ Academy &amp; School - School Regulations</h2>
             <span className="accent-line"></span>
           </div>
 
           <div className="content-block">
-            <p style={{ marginBottom: 32 }}>{r.rulesIntro1}</p>
-            <p style={{ marginBottom: 40 }}>{r.rulesIntro2}</p>
+            <p style={{ marginBottom: 32 }}>
+              LILOAN CIJ EDUCATION INC., operating as <strong>CIJ Academy &amp; School</strong> (hereinafter referred to as &ldquo;CIJ&rdquo;), establishes the following policies to maintain a proper academic environment, ensure student safety, and promote a successful study experience.
+            </p>
+            <p style={{ marginBottom: 40 }}>
+              All students are required to comply with these regulations throughout their enrollment period.
+            </p>
 
             {/* Registration Policy */}
             <div style={categoryStyle}>
-              <h3 style={categoryHeadingStyle}>{r.registrationPolicy?.title}</h3>
+              <h3 style={categoryHeadingStyle}>Registration Policy</h3>
               <ol>
-                {(r.registrationPolicy?.items || []).map((item, i) => (
-                  <li key={i} style={ruleItemStyle}>{item}</li>
-                ))}
+                <li style={ruleItemStyle}>Students must complete the official application form and pay a <strong>non-refundable registration fee of USD 150</strong>.</li>
+                <li style={ruleItemStyle}>Full payment of tuition and related fees must be completed at least four (4) weeks prior to departure.</li>
+                <li style={ruleItemStyle}>Enrollment is confirmed only after full payment has been received.</li>
               </ol>
             </div>
 
             {/* General Compliance */}
             <div style={categoryStyle}>
-              <h3 style={categoryHeadingStyle}>{r.generalCompliance?.title}</h3>
+              <h3 style={categoryHeadingStyle}>General Compliance</h3>
               <ol>
-                {(r.generalCompliance?.items || []).map((item, i) => (
-                  <li key={i} style={ruleItemStyle}>
-                    {item.text}
-                    {item.sub && (
-                      <ul style={{ marginTop: 8 }}>
-                        {item.sub.map((s, j) => (
-                          <li key={j}>{s}</li>
-                        ))}
-                      </ul>
-                    )}
-                  </li>
-                ))}
+                <li style={ruleItemStyle}>CIJ and students shall fulfill their obligations in good faith and mutual respect.</li>
+                <li style={ruleItemStyle}>CIJ shall provide proper academic supervision and administrative support until the completion of the program.</li>
+                <li style={ruleItemStyle}>
+                  Students must comply with:
+                  <ul style={{ marginTop: 8 }}>
+                    <li>CIJ regulations</li>
+                    <li>Laws of the Philippines</li>
+                    <li>Laws of their home country</li>
+                    <li>Applicable international laws</li>
+                  </ul>
+                </li>
               </ol>
             </div>
 
             {/* Notification Policy */}
             <div style={categoryStyle}>
-              <h3 style={categoryHeadingStyle}>{r.notificationPolicy?.title}</h3>
-              <p>{r.notificationPolicy?.text}</p>
+              <h3 style={categoryHeadingStyle}>Notification Policy</h3>
+              <p>If CIJ determines that dismissal or early repatriation is necessary due to student misconduct, CIJ shall notify the student&apos;s parent/legal guardian and/or agency before implementing such measures.</p>
             </div>
 
             {/* Authority & Limitation of Liability */}
             <div style={categoryStyle}>
-              <h3 style={categoryHeadingStyle}>{r.authorityLiability?.title}</h3>
+              <h3 style={categoryHeadingStyle}>Authority &amp; Limitation of Liability</h3>
               <ol>
-                {(r.authorityLiability?.items || []).map((item, i) => (
-                  <li key={i} style={ruleItemStyle}>
-                    {item.text}
-                    {item.sub && (
-                      <ul style={{ marginTop: 8 }}>
-                        {item.sub.map((s, j) => (
-                          <li key={j}>{s}</li>
-                        ))}
-                      </ul>
-                    )}
-                  </li>
-                ))}
+                <li style={ruleItemStyle}>
+                  CIJ shall not be held liable for failure to provide classes or dormitory services due to:
+                  <ul style={{ marginTop: 8 }}>
+                    <li>Natural disasters</li>
+                    <li>Airline delays or cancellations</li>
+                    <li>Government orders</li>
+                    <li>Infectious diseases</li>
+                    <li>Civil unrest, terrorism, or emergency situations</li>
+                    <li>Force majeure or circumstances beyond CIJ&apos;s control</li>
+                  </ul>
+                  <p style={{ marginTop: 8 }}>No compensation shall be provided in such cases.</p>
+                </li>
+                <li style={ruleItemStyle}>CIJ is not responsible for incidents occurring outside campus or during unauthorized activities.</li>
+                <li style={ruleItemStyle}>CIJ&apos;s liability is strictly limited to incidents occurring during official class hours and while using designated facilities (classrooms, dormitory, cafeteria).</li>
+                <li style={ruleItemStyle}>
+                  CIJ reserves the right to:
+                  <ul style={{ marginTop: 8 }}>
+                    <li>Adjust tuition due to exchange rate fluctuations or government policies</li>
+                    <li>Modify course start dates, curriculum, and programs</li>
+                    <li>Use student photos for administrative and communication purposes</li>
+                  </ul>
+                </li>
               </ol>
             </div>
 
             {/* Safety & Insurance Policy */}
             <div style={categoryStyle}>
-              <h3 style={categoryHeadingStyle}>{r.safetyInsurance?.title}</h3>
+              <h3 style={categoryHeadingStyle}>Safety &amp; Insurance Policy</h3>
               <ol>
-                {(r.safetyInsurance?.items || []).map((item, i) => (
-                  <li key={i} style={ruleItemStyle}>{item}</li>
-                ))}
+                <li style={ruleItemStyle}>CIJ is not responsible for accidents caused by student negligence.</li>
+                <li style={ruleItemStyle}>CIJ bears no responsibility for accidents during personal travel or outings.</li>
+                <li style={ruleItemStyle}>Compensation is limited to the coverage provided by mandatory student/travel insurance.</li>
+                <li style={ruleItemStyle}>Students are solely responsible for maintaining valid insurance coverage.</li>
               </ol>
             </div>
 
             {/* Immigration & Airport Services */}
             <div style={categoryStyle}>
-              <h3 style={categoryHeadingStyle}>{r.immigrationAirport?.title}</h3>
+              <h3 style={categoryHeadingStyle}>Immigration &amp; Airport Services</h3>
 
-              <p style={{ fontWeight: 600, marginTop: 16, marginBottom: 8 }}>{r.immigrationAirport?.airportPickup?.subtitle}</p>
+              <p style={{ fontWeight: 600, marginTop: 16, marginBottom: 8 }}>Airport Pickup</p>
               <ul>
-                {(r.immigrationAirport?.airportPickup?.items || []).map((item, i) => (
-                  <li key={i} style={ruleItemStyle}>{item}</li>
-                ))}
+                <li style={ruleItemStyle}>Mandatory group pickup on designated dates</li>
+                <li style={ruleItemStyle}>Fee: Php 1,500 per person</li>
+                <li style={ruleItemStyle}>Family Program: Php 2,500 per family</li>
+              </ul>
+              <p style={{ marginTop: 8 }}>Airport sending is not provided except for unaccompanied junior students.</p>
+
+              <p style={{ fontWeight: 600, marginTop: 16, marginBottom: 8 }}>Course Changes</p>
+              <ul>
+                <li style={ruleItemStyle}>Written request required</li>
+                <li style={ruleItemStyle}>Allowed every two (2) weeks</li>
+                <li style={ruleItemStyle}>Fee: Php 2,000</li>
               </ul>
 
-              <p style={{ fontWeight: 600, marginTop: 16, marginBottom: 8 }}>{r.immigrationAirport?.courseChanges?.subtitle}</p>
-              <ul>
-                {(r.immigrationAirport?.courseChanges?.items || []).map((item, i) => (
-                  <li key={i} style={ruleItemStyle}>{item}</li>
-                ))}
-              </ul>
-
-              <p style={{ fontWeight: 600, marginTop: 16, marginBottom: 8 }}>{r.immigrationAirport?.flightBooking?.subtitle}</p>
-              <ul>
-                {(r.immigrationAirport?.flightBooking?.items || []).map((item, i) => (
-                  <li key={i} style={ruleItemStyle}>{item}</li>
-                ))}
-              </ul>
+              <p style={{ fontWeight: 600, marginTop: 16, marginBottom: 8 }}>Flight Booking</p>
+              <p>Students are responsible for accurate return ticket booking. CIJ assumes no liability for airline-related issues.</p>
             </div>
 
             {/* Public Holidays */}
             <div style={categoryStyle}>
-              <h3 style={categoryHeadingStyle}>{r.publicHolidays?.title}</h3>
-              <p>{r.publicHolidays?.text}</p>
+              <h3 style={categoryHeadingStyle}>Public Holidays</h3>
+              <p>No classes are held on Philippine national or special holidays.</p>
+              <p>No make-up classes or refunds will be provided.</p>
             </div>
 
             {/* Security Deposit */}
             <div style={categoryStyle}>
-              <h3 style={categoryHeadingStyle}>{r.securityDeposit?.title}</h3>
-              <p>{r.securityDeposit?.text}</p>
+              <h3 style={categoryHeadingStyle}>Security Deposit</h3>
+              <p>All students must pay a <strong>Php 3,000 deposit</strong> upon check-in.</p>
+              <p>The deposit may be deducted for:</p>
               <ul>
-                {(r.securityDeposit?.items || []).map((item, i) => (
-                  <li key={i} style={ruleItemStyle}>{item}</li>
-                ))}
+                <li style={ruleItemStyle}>Damages</li>
+                <li style={ruleItemStyle}>Unpaid fees</li>
+                <li style={ruleItemStyle}>Excess utility charges</li>
               </ul>
+              <p style={{ marginTop: 8 }}>Refund will be processed upon check-out after room inspection (by 11:00 AM).</p>
             </div>
 
             {/* Academic Regulations */}
             <div style={categoryStyle}>
-              <h3 style={categoryHeadingStyle}>{r.academicRegulations?.title}</h3>
+              <h3 style={categoryHeadingStyle}>Academic Regulations</h3>
 
-              <p style={{ fontWeight: 600, marginTop: 16, marginBottom: 8 }}>{r.academicRegulations?.programChanges?.subtitle}</p>
-              <p>{r.academicRegulations?.programChanges?.text}</p>
+              <p style={{ fontWeight: 600, marginTop: 16, marginBottom: 8 }}>Program Changes</p>
+              <p>CIJ reserves the right to modify programs due to unavoidable circumstances.</p>
 
-              <p style={{ fontWeight: 600, marginTop: 16, marginBottom: 8 }}>{r.academicRegulations?.courseExtension?.subtitle}</p>
-              <p>{r.academicRegulations?.courseExtension?.text}</p>
-
-              <p style={{ fontWeight: 600, marginTop: 16, marginBottom: 8 }}>{r.academicRegulations?.classStructure?.subtitle}</p>
-              <p>{r.academicRegulations?.classStructure?.text}</p>
-
-              <p style={{ fontWeight: 600, marginTop: 16, marginBottom: 8 }}>{r.academicRegulations?.attendancePolicy?.subtitle}</p>
+              <p style={{ fontWeight: 600, marginTop: 16, marginBottom: 8 }}>Course Extension</p>
               <ul>
-                {(r.academicRegulations?.attendancePolicy?.items || []).map((item, i) => (
-                  <li key={i} style={ruleItemStyle}>{item}</li>
-                ))}
+                <li style={ruleItemStyle}>Application required at least 4 weeks prior</li>
+                <li style={ruleItemStyle}>Extensions allowed in 2-week increments</li>
               </ul>
 
-              <p style={{ fontWeight: 600, marginTop: 16, marginBottom: 8 }}>{r.academicRegulations?.classChanges?.subtitle}</p>
-              <p>{r.academicRegulations?.classChanges?.text}</p>
+              <p style={{ fontWeight: 600, marginTop: 16, marginBottom: 8 }}>Class Structure</p>
+              <p>Classes consist of 1:1 and group sessions.</p>
+              <p>Group classes may be adjusted depending on enrollment conditions.</p>
+
+              <p style={{ fontWeight: 600, marginTop: 16, marginBottom: 8 }}>Attendance Policy</p>
+              <ul>
+                <li style={ruleItemStyle}>5–10 minutes late → Tardy</li>
+                <li style={ruleItemStyle}>Over 10 minutes → Absent</li>
+                <li style={ruleItemStyle}>Two unexcused absences within two weeks may result in instructor suspension</li>
+                <li style={ruleItemStyle}>Medical absences require documentation</li>
+              </ul>
+
+              <p style={{ fontWeight: 600, marginTop: 16, marginBottom: 8 }}>Class Changes</p>
+              <p>Conducted weekly every Friday through a designated procedure.</p>
+              <p>New students may request changes within their first two (2) days.</p>
             </div>
 
             {/* Dormitory Regulations */}
             <div style={categoryStyle}>
-              <h3 style={categoryHeadingStyle}>{r.dormitoryRegulations?.title}</h3>
+              <h3 style={categoryHeadingStyle}>Dormitory Regulations</h3>
               <ol>
-                {(r.dormitoryRegulations?.items || []).map((item, i) => (
-                  <li key={i} style={ruleItemStyle}>{item}</li>
-                ))}
+                <li style={ruleItemStyle}>CIJ is not responsible for personal belongings.</li>
+                <li style={ruleItemStyle}>Personal hygiene items are not provided.</li>
+                <li style={ruleItemStyle}>Room changes allowed every two weeks (subject to availability).</li>
+                <li style={ruleItemStyle}>Unauthorized guests and overnight visitors are strictly prohibited.</li>
+                <li style={ruleItemStyle}>Cleaning and laundry services are provided twice weekly.</li>
+                <li style={ruleItemStyle}>Smoking, alcohol consumption, and mixed-gender room sharing are strictly prohibited.</li>
+                <li style={ruleItemStyle}>Quiet hours: 9:00 PM – 7:00 AM.</li>
+                <li style={ruleItemStyle}>CIJ reserves the right to inspect rooms when necessary.</li>
               </ol>
             </div>
 
             {/* Curfew Policy */}
             <div style={categoryStyle}>
-              <h3 style={categoryHeadingStyle}>{r.curfewPolicy?.title}</h3>
+              <h3 style={categoryHeadingStyle}>Curfew Policy</h3>
 
-              <p style={{ fontWeight: 600, marginTop: 16, marginBottom: 8 }}>{r.curfewPolicy?.semiSparta?.subtitle}</p>
+              <p style={{ fontWeight: 600, marginTop: 16, marginBottom: 8 }}>SEMI-SPARTA Course</p>
               <ul>
-                {(r.curfewPolicy?.semiSparta?.items || []).map((item, i) => (
-                  <li key={i} style={ruleItemStyle}>{item}</li>
-                ))}
+                <li style={ruleItemStyle}>Weekdays: 9:00 PM</li>
+                <li style={ruleItemStyle}>Weekends/Public Holidays (no class next day): 12:00 AM</li>
               </ul>
 
-              <p style={{ fontWeight: 600, marginTop: 16, marginBottom: 8 }}>{r.curfewPolicy?.sparta?.subtitle}</p>
+              <p style={{ fontWeight: 600, marginTop: 16, marginBottom: 8 }}>SPARTA Course</p>
               <ul>
-                {(r.curfewPolicy?.sparta?.items || []).map((item, i) => (
-                  <li key={i} style={ruleItemStyle}>{item}</li>
-                ))}
+                <li style={ruleItemStyle}>Weekdays: No outings permitted</li>
+                <li style={ruleItemStyle}>Weekends: 12:00 AM</li>
               </ul>
+              <p style={{ marginTop: 8 }}>Violation results in warning issuance.</p>
             </div>
 
             {/* Outing & Travel Policy */}
             <div style={categoryStyle}>
-              <h3 style={categoryHeadingStyle}>{r.outingTravel?.title}</h3>
+              <h3 style={categoryHeadingStyle}>Outing &amp; Travel Policy</h3>
               <ol>
-                {(r.outingTravel?.items || []).map((item, i) => (
-                  <li key={i} style={ruleItemStyle}>{item}</li>
-                ))}
+                <li style={ruleItemStyle}>Written approval is required for overnight stays or travel.</li>
+                <li style={ruleItemStyle}>Failure to obtain prior approval results in a warning.</li>
+                <li style={ruleItemStyle}>Proof of travel (receipt/photos) must be submitted after return.</li>
               </ol>
             </div>
 
             {/* Warning & Dismissal Policy */}
             <div style={categoryStyle}>
-              <h3 style={categoryHeadingStyle}>{r.warningDismissal?.title}</h3>
-              <p>{r.warningDismissal?.intro}</p>
+              <h3 style={categoryHeadingStyle}>Warning &amp; Dismissal Policy</h3>
+              <p>Warnings are issued for violations.</p>
+              <p>Accumulated warnings may result in dismissal without refund.</p>
+              <p style={{ marginTop: 16 }}>Immediate dismissal (no refund) includes but is not limited to:</p>
               <ul>
-                {(r.warningDismissal?.progressive || []).map((item, i) => (
-                  <li key={i} style={ruleItemStyle}>{item}</li>
-                ))}
+                <li style={ruleItemStyle}>Opposite-gender room sharing</li>
+                <li style={ruleItemStyle}>Alcohol, gambling, casino/KTV visits</li>
+                <li style={ruleItemStyle}>Police involvement</li>
+                <li style={ruleItemStyle}>Property damage</li>
+                <li style={ruleItemStyle}>Unauthorized guests</li>
+                <li style={ruleItemStyle}>Repeated unexcused absences</li>
+                <li style={ruleItemStyle}>Unauthorized overnight stay</li>
               </ul>
-              <p style={{ marginTop: 16, fontWeight: 600 }}>{r.warningDismissal?.immediateTitle}</p>
-              <ul>
-                {(r.warningDismissal?.immediate || []).map((item, i) => (
-                  <li key={i} style={ruleItemStyle}>{item}</li>
-                ))}
-              </ul>
+              <p style={{ marginTop: 8 }}>Warning stages vary according to enrollment duration.</p>
             </div>
 
             {/* Refund Policy */}
             <div style={categoryStyle}>
-              <h3 style={categoryHeadingStyle}>{r.refundPolicy?.title}</h3>
+              <h3 style={categoryHeadingStyle}>Refund Policy</h3>
+              <p>Refunds are calculated in four (4)-week increments only.</p>
 
-              <p style={{ fontWeight: 600, marginTop: 16, marginBottom: 8 }}>{r.refundPolicy?.beforeTitle}</p>
+              <p style={{ fontWeight: 600, marginTop: 16, marginBottom: 8 }}>Before Departure</p>
               <ul>
-                {(r.refundPolicy?.before || []).map((item, i) => (
-                  <li key={i} style={ruleItemStyle}>{item}</li>
-                ))}
+                <li style={ruleItemStyle}>Registration fee: Non-refundable</li>
+                <li style={ruleItemStyle}>21+ days before departure → Full refund (excluding registration fee)</li>
+                <li style={ruleItemStyle}>7–21 days → Deduct 2 weeks dormitory cost</li>
+                <li style={ruleItemStyle}>Within 7 days → Deduct 4 weeks dormitory + 1 week tuition</li>
               </ul>
 
-              <p style={{ fontWeight: 600, marginTop: 16, marginBottom: 8 }}>{r.refundPolicy?.afterTitle}</p>
+              <p style={{ fontWeight: 600, marginTop: 16, marginBottom: 8 }}>After Course Start</p>
               <ul>
-                {(r.refundPolicy?.after || []).map((item, i) => (
-                  <li key={i} style={ruleItemStyle}>{item}</li>
-                ))}
+                <li style={ruleItemStyle}>Within 25% of course period → 50% refund of remaining balance</li>
+                <li style={ruleItemStyle}>25–50% period → 30% refund</li>
+                <li style={ruleItemStyle}>After 50% → No refund</li>
               </ul>
-              <p style={{ marginTop: 8 }}>{r.refundPolicy?.note}</p>
+              <p style={{ marginTop: 8 }}>No refund applies in cases of dismissal or misconduct.</p>
+              <p>Force majeure cases are non-refundable.</p>
             </div>
 
             {/* Check-In & Check-Out */}
             <div style={categoryStyle}>
-              <h3 style={categoryHeadingStyle}>{r.checkInOut?.title}</h3>
+              <h3 style={categoryHeadingStyle}>Check-In &amp; Check-Out</h3>
               <ul>
-                {(r.checkInOut?.items || []).map((item, i) => (
-                  <li key={i} style={ruleItemStyle}>{item}</li>
-                ))}
+                <li style={ruleItemStyle}>Check-in: Saturday 3:00 PM – Sunday</li>
+                <li style={ruleItemStyle}>Check-out: Saturday by 11:00 AM</li>
               </ul>
-              <p style={{ marginTop: 16, fontWeight: 600 }}>{r.checkInOut?.overstayTitle}</p>
+              <p style={{ marginTop: 16 }}>Overstay fees (per night, including meals):</p>
               <ul>
-                {(r.checkInOut?.overstay || []).map((item, i) => (
-                  <li key={i} style={ruleItemStyle}>{item}</li>
-                ))}
+                <li style={ruleItemStyle}>Single: Php 2,200</li>
+                <li style={ruleItemStyle}>Twin: Php 1,800</li>
+                <li style={ruleItemStyle}>Triple/Quad: Php 1,600</li>
               </ul>
+              <p style={{ marginTop: 8 }}>Guest visit (with prior approval): Php 2,000 per day.</p>
             </div>
 
           </div>
