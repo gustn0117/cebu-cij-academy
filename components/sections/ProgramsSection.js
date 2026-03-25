@@ -471,21 +471,19 @@ function JuniorProgram() {
                 <tr><td>07:00 ~ 08:00</td><td></td><td>07:00 ~ 08:00</td><td>Breakfast</td><td></td><td></td></tr>
                 <tr><td>08:00 ~ 08:45</td><td>1st</td><td>08:00 ~ 08:40</td><td>1:1 Class(Speaking)</td><td>Breakfast</td><td>Breakfast</td></tr>
                 <tr><td>08:50 ~ 09:35</td><td>2nd</td><td>08:45 ~ 09:25</td><td>1:1 Class(Reading)</td><td>Activity Orientation</td><td>Level Test</td></tr>
-                <tr><td>09:40 ~ 10:25</td><td>3rd</td><td>09:30 ~ 10:10</td><td>1:1 Class(Grammar)</td><td>Outdoor activity &amp; Lunch</td><td></td></tr>
-                <tr><td>10:30 ~ 11:15</td><td>4th</td><td>10:15 ~ 10:55</td><td>1:1 Class(Writing)</td><td>Plantation-bay Resort +Resort Buffet</td><td></td></tr>
-                <tr><td>11:20 ~ 12:05</td><td>5th</td><td>11:00 ~ 11:40</td><td>1:1 Class(Reading)</td><td>(continued)</td><td></td></tr>
-                <tr><td>12:05 ~ 13:00</td><td></td><td>12:00 ~ 13:00</td><td>Lunch</td><td>Safari Adventure Park + Lunch Dine Out</td><td>Lunch</td></tr>
-                <tr><td>13:00 ~ 13:45</td><td>6th</td><td>13:00 ~ 13:40</td><td>Small Group Class</td><td>City Tour + Lunch Dine Out</td><td>Humanism</td></tr>
-                <tr><td>13:50 ~ 14:35</td><td>7th</td><td>13:45 ~ 14:25</td><td>Small Group Class</td><td>J-Park Resort+Resort Buffet</td><td>Education &amp;</td></tr>
-                <tr><td>14:40 ~ 15:25</td><td>8th</td><td>14:30 ~ 15:10</td><td>Big Group Class</td><td>Westown Lagoon +Lunch Dine Out</td><td>Indoor Activity</td></tr>
-                <tr><td>15:30 ~ 16:15</td><td>9th</td><td>15:15 ~ 15:55</td><td>Physical Activity</td><td>El-Salvador Resort + Resort Buffet</td><td>Study Check-up</td></tr>
-                <tr><td>16:20 ~ 17:05</td><td>10th</td><td>16:00 ~ 16:40</td><td>Physical Activity</td><td>Maribago Bluewater + Resort Buffet</td><td>Check what you studied for a week</td></tr>
-                <tr><td></td><td></td><td></td><td></td><td>Ocean Park Cebu + Lunch dine out</td><td>(Vocabulary, Sentence, English Essay, Books)</td></tr>
-                <tr><td></td><td></td><td></td><td></td><td>※ Can be adjusted</td><td></td></tr>
+                <tr><td>09:40 ~ 10:25</td><td>3rd</td><td>09:30 ~ 10:10</td><td>1:1 Class(Grammar)</td><td rowSpan={9} style={{verticalAlign:'top',lineHeight:1.8,fontSize:'0.88rem'}}><strong>Outdoor activity &amp; Lunch</strong><br/>Plantation-bay Resort +Resort Buffet<br/>Safari Adventure Park + Lunch<br/>City Tour + Lunch Dine Out<br/>J-Park Resort+Resort Buffet<br/>Westown Lagoon +Lunch Dine Out<br/>El-Salvador Resort + Resort Buffet<br/>Maribago Bluewater + Resort Buffet<br/>Ocean Park Cebu + Lunch dine out<br/><span style={{fontSize:'0.82rem',color:'#888'}}>※ Can be adjusted</span></td><td rowSpan={3}></td></tr>
+                <tr><td>10:30 ~ 11:15</td><td>4th</td><td>10:15 ~ 10:55</td><td>1:1 Class(Writing)</td></tr>
+                <tr><td>11:20 ~ 12:05</td><td>5th</td><td>11:00 ~ 11:40</td><td>1:1 Class(Reading)</td></tr>
+                <tr><td>12:05 ~ 13:00</td><td></td><td>12:00 ~ 13:00</td><td>Lunch</td><td>Lunch</td></tr>
+                <tr><td>13:00 ~ 13:45</td><td>6th</td><td>13:00 ~ 13:40</td><td>Small Group Class</td><td rowSpan={5} style={{verticalAlign:'top',lineHeight:1.8,fontSize:'0.88rem'}}>Humanism<br/>Education &amp;<br/>Indoor Activity<br/>Study Check-up<br/>Check what you studied for a week<br/>(Vocabulary, Sentence, English Essay, Books)</td></tr>
+                <tr><td>13:50 ~ 14:35</td><td>7th</td><td>13:45 ~ 14:25</td><td>Small Group Class</td></tr>
+                <tr><td>14:40 ~ 15:25</td><td>8th</td><td>14:30 ~ 15:10</td><td>Big Group Class</td></tr>
+                <tr><td>15:30 ~ 16:15</td><td>9th</td><td>15:15 ~ 15:55</td><td>Physical Activity</td></tr>
+                <tr><td>16:20 ~ 17:05</td><td>10th</td><td>16:00 ~ 16:40</td><td>Physical Activity</td></tr>
                 <tr><td>17:10 ~ 17:55</td><td>11st</td><td>16:45 ~ 17:25</td><td>Self-Study</td><td>Personal Maintenance &amp; Rest</td><td></td></tr>
                 <tr><td>18:00 ~ 18:50</td><td></td><td>18:00 ~ 18:50</td><td>Dinner</td><td>Dinner</td><td>Dinner</td></tr>
-                <tr><td>19:00 ~ 19:45</td><td>12nd</td><td>19:00 ~ 19:50</td><td>Vocabulary &amp; Idiom</td><td>Calling Students' Parents &amp; Watching Movie</td><td>Watching Movie</td></tr>
-                <tr><td>19:50 ~ 20:30</td><td>13rd</td><td>19:50 ~ 20:30</td><td>Vocabulary Test &amp; Snack time</td><td></td><td></td></tr>
+                <tr><td>19:00 ~ 19:45</td><td>12nd</td><td>19:00 ~ 19:50</td><td>Vocabulary &amp; Idiom</td><td rowSpan={2}>Calling Students&apos; Parents &amp;<br/>Watching Movie</td><td>Watching Movie</td></tr>
+                <tr><td>19:50 ~ 20:30</td><td>13rd</td><td>19:50 ~ 20:30</td><td>Vocabulary Test &amp; Snack time</td><td></td></tr>
                 <tr><td>20:30 ~ 21:30</td><td>14th</td><td>20:30 ~ 21:30</td><td>Essay Writing</td><td>Essay Writing</td><td>Essay Writing</td></tr>
                 <tr><td>21:30</td><td></td><td>21:30</td><td>Roll Call &amp; Go to bed</td><td>Roll Call &amp; Go to bed</td><td>Roll Call &amp; Go to Bed</td></tr>
                 <tr><td>22:00 ~ 23:00</td><td></td><td>22:00 ~ 23:00</td><td>Learning Support – For Students Missing Essay Submissions or Failing Vocabulary Tests</td><td>Learning Support – For Students Missing Essay Submissions</td><td>Learning Support – For Students Missing Essay Submissions</td></tr>
@@ -622,18 +620,18 @@ function JuniorCampProgram() {
                 <tr><td>07:00 ~ 08:00</td><td></td><td>Breakfast</td><td></td><td></td></tr>
                 <tr><td>08:00 ~ 08:40</td><td>1st</td><td>1:1 Class(Speaking) or IELTS Class</td><td>Breakfast</td><td>Breakfast</td></tr>
                 <tr><td>08:45 ~ 09:25</td><td>2nd</td><td>1:1 Class(Reading) or IELTS Class</td><td>Activity Orientation</td><td>Level Test</td></tr>
-                <tr><td>09:30 ~ 10:10</td><td>3rd</td><td>1:1 Class(Grammar) or IELTS Class</td><td>Outdoor activity &amp; Lunch</td><td></td></tr>
-                <tr><td>10:10 ~ 10:30</td><td></td><td>Snack</td><td>Plantation-bay Resort +Resort Buffet</td><td></td></tr>
-                <tr><td>10:35 ~ 11:15</td><td>4th</td><td>1:1 Class(Writing) or IELTS Class</td><td>(continued)</td><td></td></tr>
-                <tr><td>11:20 ~ 12:00</td><td>5th</td><td>1:1 Class(Reading)</td><td>Safari Adventure Park + Lunch Dine Out</td><td></td></tr>
-                <tr><td>12:00 ~ 13:00</td><td></td><td>Lunch</td><td>City Tour + Lunch Dine Out</td><td>Lunch</td></tr>
-                <tr><td>13:00 ~ 13:40</td><td>6th</td><td>1:1 Class(Speaking)</td><td>J-Park Resort+Resort Buffet</td><td>Humanism</td></tr>
-                <tr><td>13:45 ~ 14:25</td><td>7th</td><td>Big Group Class</td><td>Westown Lagoon +Lunch Dine Out</td><td>Education &amp;</td></tr>
-                <tr><td>14:30 ~ 15:10</td><td>8th</td><td>Club Activity (guitar,popsong,reading,speech)</td><td>El-Salvador Resort + Resort Buffet</td><td>Indoor Activity</td></tr>
-                <tr><td>15:15 ~ 15:35</td><td></td><td>Snack</td><td>Maribago Bluewater + Resort Buffet</td><td>Study Check-up – Check What You Studied for a Week</td></tr>
-                <tr><td>15:40 ~ 16:20</td><td>9th</td><td>Club Activity (guitar,popsong,reading,speech)</td><td>Ocean Park Cebu + Lunch dine out</td><td>(Vocabulary, Sentence, English Essay, Books)</td></tr>
-                <tr><td>16:25 ~ 17:05</td><td>10th</td><td>Physical Activity</td><td>※ Can be adjusted</td><td></td></tr>
-                <tr><td>17:10 ~ 17:50</td><td>11st</td><td>Physical Activity</td><td>Personal maintenance &amp; Rest</td><td></td></tr>
+                <tr><td>09:30 ~ 10:10</td><td>3rd</td><td>1:1 Class(Grammar) or IELTS Class</td><td rowSpan={9} style={{verticalAlign:'top',lineHeight:1.8,fontSize:'0.88rem'}}><strong>Outdoor activity &amp; Lunch</strong><br/>Plantation-bay Resort +Resort Buffet<br/>Safari Adventure Park + Lunch Dine Out<br/>City Tour + Lunch Dine Out<br/>J-Park Resort+Resort Buffet<br/>Westown Lagoon +Lunch Dine Out<br/>El-Salvador Resort + Resort Buffet<br/>Maribago Bluewater + Resort Buffet<br/>Ocean Park Cebu + Lunch dine out<br/><span style={{fontSize:'0.82rem',color:'#888'}}>※ Can be adjusted</span></td><td rowSpan={3}></td></tr>
+                <tr><td>10:10 ~ 10:30</td><td></td><td>Snack</td></tr>
+                <tr><td>10:35 ~ 11:15</td><td>4th</td><td>1:1 Class(Writing) or IELTS Class</td></tr>
+                <tr><td>11:20 ~ 12:00</td><td>5th</td><td>1:1 Class(Reading)</td><td>Lunch</td></tr>
+                <tr><td>12:00 ~ 13:00</td><td></td><td>Lunch</td><td rowSpan={5} style={{verticalAlign:'top',lineHeight:1.8,fontSize:'0.88rem'}}>Humanism<br/>Education &amp;<br/>Indoor Activity<br/>Study Check-up –<br/>Check What You Studied for a Week<br/>(Vocabulary, Sentence, English Essay, Books)</td></tr>
+                <tr><td>13:00 ~ 13:40</td><td>6th</td><td>1:1 Class(Speaking)</td></tr>
+                <tr><td>13:45 ~ 14:25</td><td>7th</td><td>Big Group Class</td></tr>
+                <tr><td>14:30 ~ 15:10</td><td>8th</td><td>Club Activity (guitar,popsong,reading,speech)</td></tr>
+                <tr><td>15:15 ~ 15:35</td><td></td><td>Snack</td></tr>
+                <tr><td>15:40 ~ 16:20</td><td>9th</td><td>Club Activity (guitar,popsong,reading,speech)</td><td rowSpan={2}>Personal maintenance &amp; Rest</td><td></td></tr>
+                <tr><td>16:25 ~ 17:05</td><td>10th</td><td>Physical Activity</td><td></td></tr>
+                <tr><td>17:10 ~ 17:50</td><td>11st</td><td>Physical Activity</td><td></td><td></td></tr>
                 <tr><td>18:00 ~ 19:00</td><td></td><td>Dinner</td><td>Dinner</td><td>Dinner</td></tr>
                 <tr><td>19:00 ~ 19:40</td><td>12nd</td><td>Vocabulary &amp; Sentence</td><td>Calling student's parents</td><td>Watching Movie</td></tr>
                 <tr><td>19:40 ~ 20:20</td><td>13rd</td><td>Vocabulary Test &amp; Snack time</td><td>Watching Movie</td><td></td></tr>
@@ -662,15 +660,15 @@ function JuniorCampProgram() {
                 </tr>
               </thead>
               <tbody>
-                <tr><td></td><td></td><td>7/2<br/>Arrival</td><td>7/3<br/>Level Test &amp; Orientation</td><td>7/4<br/>Class Start</td><td>7/5<br/>Activity</td><td>7/6<br/>Study Check-up</td></tr>
-                <tr><td>7/7<br/>Regular Class</td><td>7/8<br/>Regular Class</td><td>7/9<br/>Regular Class</td><td>7/10<br/>Regular Class</td><td>7/11<br/>Regular Class</td><td>7/12<br/>Activity</td><td>7/13<br/>Study Check-up</td></tr>
-                <tr><td>7/14<br/>Regular Class</td><td>7/15<br/>Regular Class</td><td>7/16<br/>Regular Class</td><td>7/17<br/>Regular Class</td><td>7/18<br/>Regular Class</td><td>7/19<br/>Activity</td><td>7/20<br/>Study Check-up</td></tr>
-                <tr><td>7/21<br/>Regular Class</td><td>7/22<br/>Regular Class</td><td>7/23<br/>Regular Class</td><td>7/24<br/>Regular Class</td><td>7/25<br/>Level Test</td><td>7/26<br/>Activity</td><td>7/27<br/>Study Check-up</td></tr>
-                <tr><td>7/28<br/>Regular Class</td><td>7/29<br/>Regular Class</td><td>7/30<br/>Regular Class</td><td>7/31<br/>Regular Class</td><td>8/1<br/>Regular Class</td><td>8/2<br/>Activity</td><td>8/3<br/>Study Check-up</td></tr>
-                <tr><td>8/4<br/>Regular Class</td><td>8/5<br/>Regular Class</td><td>8/6<br/>Regular Class</td><td>8/7<br/>Regular Class</td><td>8/8<br/>Regular Class</td><td>8/9<br/>Activity</td><td>8/10<br/>Study Check-up</td></tr>
-                <tr><td>8/11<br/>Regular Class</td><td>8/12<br/>Regular Class</td><td>8/13<br/>Regular Class</td><td>8/14<br/>Regular Class</td><td>8/15<br/>Regular Class</td><td>8/16<br/>Activity</td><td>8/17<br/>Study Check-up</td></tr>
-                <tr><td>8/18<br/>Regular Class</td><td>8/19<br/>Regular Class</td><td>8/20<br/>Regular Class</td><td>8/21<br/>Regular Class</td><td>8/22<br/>Level Test</td><td>8/23<br/>Activity</td><td>8/24<br/>Study Check-up</td></tr>
-                <tr><td>8/25<br/>Regular Class</td><td>8/26<br/>Departure</td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td><strong>July 2 2026</strong><br/><strong>Cebu Arrival</strong><br/>(4, 6, 8 weeks)</td><td><strong>July 3</strong><br/>Placement Test<br/>&amp; Orientation</td><td><strong>July 4</strong><br/><strong>Plantation Bay</strong><br/>Lunch Out<br/>Shopping<br/>Call with Parents</td><td><strong>July 5</strong><br/>Level Test<br/>Indoor Activities</td></tr>
+                <tr><td><strong>July 6</strong><br/>Regular Classes</td><td><strong>July 7</strong><br/>Regular Classes</td><td><strong>July 8</strong><br/>Regular Classes</td><td><strong>July 9</strong><br/>Regular Classes</td><td><strong>July 10</strong><br/>Regular Classes</td><td><strong>July 11</strong><br/><strong>Safari Adventure</strong><br/>Lunch Out<br/>Shopping<br/>Call with Parents</td><td><strong>July 12</strong><br/>Level Test<br/>Weekly Check<br/>&amp; Review</td></tr>
+                <tr><td><strong>July 13</strong><br/>Regular Classes</td><td><strong>July 14</strong><br/>Regular Classes</td><td><strong>July 15</strong><br/>Regular Classes</td><td><strong>July 16</strong><br/><strong>Cebu Arrival</strong><br/>(4, 6 weeks)<br/>Regular Classes</td><td><strong>July 17</strong><br/>Regular Classes</td><td><strong>July 18</strong><br/><strong>Heritage Tour</strong><br/>Lunch Out<br/>Shopping<br/>Call with Parents</td><td><strong>July 19</strong><br/>Level Test<br/>Weekly Check<br/>&amp; Review</td></tr>
+                <tr><td><strong>July 20</strong><br/>Regular Classes</td><td><strong>July 21</strong><br/>Regular Classes</td><td><strong>July 22</strong><br/><strong>El Salvador</strong><br/>Lunch Out<br/>Shopping<br/>Call with Parents</td><td><strong>July 23</strong><br/>Regular Classes</td><td><strong>July 24</strong><br/>Regular Classes</td><td><strong>July 25</strong><br/>Regular Classes</td><td><strong>July 26</strong><br/>Level Test<br/>Weekly Check<br/>&amp; Review</td></tr>
+                <tr><td><strong>July 27</strong><br/>Regular Classes</td><td><strong>July 28</strong><br/>Regular Classes<br/><strong>Cebu Departure</strong><br/>(4Weeks)</td><td><strong>July 29</strong><br/><strong>J-PARK</strong><br/>Lunch Out<br/>Shopping<br/>Call with Parents</td><td><strong>July 30</strong><br/>Regular Classes</td><td><strong>July 31</strong><br/>Regular Classes</td><td><strong>August 1</strong><br/>Regular Classes</td><td><strong>August 2</strong><br/>Level Test<br/>Weekly Check<br/>&amp; Review</td></tr>
+                <tr><td><strong>August 3</strong><br/>Regular Classes</td><td><strong>August 4</strong><br/>Regular Classes</td><td><strong>August 5</strong><br/><strong>City Tour</strong> Lunch Out<br/>Shopping<br/>Call with Parents</td><td><strong>August 6</strong><br/>Regular Classes</td><td><strong>August 7</strong><br/>Regular Classes</td><td><strong>August 8</strong><br/>Regular Classes</td><td><strong>August 9</strong><br/>Level Test<br/>Weekly Check<br/>&amp; Review</td></tr>
+                <tr><td><strong>August 10</strong><br/>Regular Classes</td><td><strong>August 11</strong><br/>Regular Classes</td><td><strong>August 12</strong><br/><strong>West Lagoon Cebu</strong><br/>Lunch Out<br/>Shopping<br/>Call with Parents<br/><strong>Cebu Departure</strong><br/>(4,6Weeks)</td><td><strong>August 13</strong><br/>Regular Classes</td><td><strong>August 14</strong><br/>Regular Classes</td><td><strong>August 15</strong><br/>Regular Classes</td><td><strong>August 16</strong><br/>Level Test<br/>Weekly Check<br/>&amp; Review</td></tr>
+                <tr><td><strong>August 17</strong><br/><strong>Regular Classes</strong></td><td><strong>August 18</strong><br/>Regular Classes</td><td><strong>August 19</strong><br/><strong>Ocean Park Cebu</strong><br/>Lunch Out<br/>Shopping<br/>Call with Parents</td><td><strong>August 20</strong><br/>Regular Classes</td><td><strong>August 21</strong><br/>Regular Classes</td><td><strong>August 22</strong><br/>Regular Classes</td><td><strong>August 23</strong><br/>Level Test<br/>Weekly Check<br/>&amp; Review</td></tr>
+                <tr><td><strong>August 24</strong><br/>Regular Classes</td><td><strong>August 25</strong><br/>Regular Classes</td><td><strong>August 26</strong><br/><strong>Cebu Departure</strong><br/>(6,8Weeks)</td><td></td><td></td><td></td><td></td></tr>
               </tbody>
             </table>
           </div>
@@ -679,7 +677,9 @@ function JuniorCampProgram() {
         {/* Notes */}
         <div className="content-block">
           <div className="program-notes">
-            <p>※ Classes Are Subject to Change Due to Unexpected Circumstances</p>
+            <p>※ Classes are subject to change due to unforeseen circumstances.</p>
+            <p>※ Small Group Classes are held for 3 to 5 students.</p>
+            <p>※ Big Group Classes are held for 8 to 10 students.</p>
           </div>
         </div>
       </div>
@@ -847,23 +847,23 @@ function FamilyProgram() {
                 </tr>
               </thead>
               <tbody>
-                <tr><td>07:20 ~ 08:00</td><td></td><td>07:00 ~ 08:00</td><td>Breakfast</td><td>End of the Morning Class</td></tr>
-                <tr><td>08:00 ~ 08:20</td><td>1st</td><td>08:00 ~ 08:20</td><td>Meeting Time</td><td></td></tr>
-                <tr><td>08:20 ~ 08:45</td><td>2nd</td><td>08:20 ~ 08:40</td><td>Warm up Activity (Music &amp; Dance class)</td><td></td></tr>
-                <tr><td>08:50 ~ 09:10</td><td>3rd</td><td>08:45 ~ 09:05</td><td>1:1 Class(Math)</td><td></td></tr>
-                <tr><td>09:10 ~ 09:35</td><td>4th</td><td>09:05 ~ 09:25</td><td>Elephant – 1:1 Alphabet &amp; Vocabulary / Whale – 1:1 Phonics &amp; Vocabulary</td><td></td></tr>
-                <tr><td>09:40 ~ 10:00</td><td>5th</td><td>09:30 ~ 09:50</td><td>1:1 Class (Story Book)</td><td></td></tr>
-                <tr><td>10:00 ~ 10:25</td><td>6th</td><td>09:50 ~ 10:10</td><td>1:1 Class (Art: Drawing, Making, etc.)</td><td></td></tr>
-                <tr><td>10:30 ~ 10:50</td><td>7th</td><td>10:15 ~ 10:35</td><td>Social Communication Class</td><td></td></tr>
-                <tr><td>10:50 ~ 11:15</td><td>8th</td><td>10:35 ~ 10:55</td><td>Physical Activity (Gardening / Play game) &amp; Cleanup activities</td><td></td></tr>
-                <tr><td>11:20 ~ 11:40</td><td></td><td>11:00 ~ 11:20</td><td>Free Time with Guardian</td><td></td></tr>
-                <tr><td>11:40 ~ 12:05</td><td></td><td>11:20 ~ 11:40</td><td></td><td></td></tr>
-                <tr><td>12:05 ~ 13:00</td><td></td><td>12:05 ~ 13:00</td><td>Lunch</td><td></td></tr>
-                <tr><td>13:05 ~ 13:50</td><td>9th</td><td>13:00 ~ 13:20</td><td>Froebel Game / LEGO Block</td><td>End of the All-Day Class</td></tr>
-                <tr><td>13:55 ~ 14:15</td><td>10th</td><td>13:20 ~ 13:40</td><td>Elephant – 1:1 Intensive Alphabet &amp; Vocabulary Class / Whale – 1:1 Intensive Phonics &amp; Vocabulary Class</td><td></td></tr>
-                <tr><td>14:15 ~ 14:40</td><td>11st</td><td>13:45 ~ 14:05</td><td>1:1 Class(Story book)</td><td></td></tr>
-                <tr><td>14:45 ~ 15:30</td><td>12nd</td><td>14:05 ~ 14:25</td><td>1:1 Class(Art : Drawing, Making, etc.)</td><td></td></tr>
-                <tr><td>15:35 ~ 16:20</td><td>13rd</td><td>14:30 ~ 14:50</td><td>Physical Activity (Gardening / Play game) &amp; Cleanup activities</td><td></td></tr>
+                <tr><td>07:20 ~ 08:00</td><td></td><td>07:00 ~ 08:00</td><td>Breakfast</td><td rowSpan={12} style={{verticalAlign:'middle',textAlign:'center',fontSize:'0.88rem'}}>End of the<br/>Morning Class</td></tr>
+                <tr><td>08:00 ~ 08:20</td><td>1st</td><td>08:00 ~ 08:20</td><td>Meeting Time</td></tr>
+                <tr><td>08:20 ~ 08:45</td><td>2nd</td><td>08:20 ~ 08:40</td><td>Warm up Activity (Music &amp; Dance class)</td></tr>
+                <tr><td>08:50 ~ 09:10</td><td>3rd</td><td>08:45 ~ 09:05</td><td>1:1 Class(Math)</td></tr>
+                <tr><td>09:10 ~ 09:35</td><td>4th</td><td>09:05 ~ 09:25</td><td>Elephant – 1:1 Alphabet &amp; Vocabulary / Whale – 1:1 Phonics &amp; Vocabulary</td></tr>
+                <tr><td>09:40 ~ 10:00</td><td>5th</td><td>09:30 ~ 09:50</td><td>1:1 Class (Story Book)</td></tr>
+                <tr><td>10:00 ~ 10:25</td><td>6th</td><td>09:50 ~ 10:10</td><td>1:1 Class (Art: Drawing, Making, etc.)</td></tr>
+                <tr><td>10:30 ~ 10:50</td><td>7th</td><td>10:15 ~ 10:35</td><td>Social Communication Class</td></tr>
+                <tr><td>10:50 ~ 11:15</td><td>8th</td><td>10:35 ~ 10:55</td><td>Physical Activity (Gardening / Play game) &amp; Cleanup activities</td></tr>
+                <tr><td>11:20 ~ 11:40</td><td></td><td>11:00 ~ 11:20</td><td>Free Time with Guardian</td></tr>
+                <tr><td>11:40 ~ 12:05</td><td></td><td>11:20 ~ 11:40</td><td></td></tr>
+                <tr><td>12:05 ~ 13:00</td><td></td><td>12:05 ~ 13:00</td><td>Lunch</td></tr>
+                <tr><td>13:05 ~ 13:50</td><td>9th</td><td>13:00 ~ 13:20</td><td>Froebel Game / LEGO Block</td><td rowSpan={5} style={{verticalAlign:'middle',textAlign:'center',fontSize:'0.88rem'}}>End of the<br/>All-Day Class</td></tr>
+                <tr><td>13:55 ~ 14:15</td><td>10th</td><td>13:20 ~ 13:40</td><td>Elephant – 1:1 Intensive Alphabet &amp; Vocabulary Class / Whale – 1:1 Intensive Phonics &amp; Vocabulary Class</td></tr>
+                <tr><td>14:15 ~ 14:40</td><td>11st</td><td>13:45 ~ 14:05</td><td>1:1 Class(Story book)</td></tr>
+                <tr><td>14:45 ~ 15:30</td><td>12nd</td><td>14:05 ~ 14:25</td><td>1:1 Class(Art : Drawing, Making, etc.)</td></tr>
+                <tr><td>15:35 ~ 16:20</td><td>13rd</td><td>14:30 ~ 14:50</td><td>Physical Activity (Gardening / Play game) &amp; Cleanup activities</td></tr>
               </tbody>
             </table>
           </div>
@@ -1020,25 +1020,25 @@ function FamilyProgram() {
                 </tr>
               </thead>
               <tbody>
-                <tr><td>07:20 ~ 08:00</td><td></td><td>Breakfast</td><td>End of the Morning Class</td></tr>
-                <tr><td>08:00 ~ 08:20</td><td>1st</td><td>Meeting Time</td><td></td></tr>
-                <tr><td>08:20 ~ 08:40</td><td>2nd</td><td>Warm up Activity (Music &amp; Dance class)</td><td></td></tr>
-                <tr><td>08:45 ~ 09:05</td><td>3rd</td><td>1:1 Class(Math)</td><td></td></tr>
-                <tr><td>09:05 ~ 09:25</td><td>4th</td><td>Elephant – 1:1 Alphabet &amp; Vocabulary / Whale – 1:1 Phonics &amp; Vocabulary</td><td></td></tr>
-                <tr><td>09:30 ~ 09:50</td><td>5th</td><td>Social Communication Class</td><td></td></tr>
-                <tr><td>09:50 ~ 10:10</td><td>6th</td><td>1:1 Class (Art: Drawing, Making, etc.)</td><td></td></tr>
-                <tr><td>10:15 ~ 10:35</td><td></td><td>Snack(Optional)</td><td></td></tr>
-                <tr><td>10:35 ~ 10:55</td><td>7th</td><td>1:1 Class(Story book)</td><td></td></tr>
-                <tr><td>10:55 ~ 11:15</td><td>8th</td><td>Physical Activity (Gardening / Play game)</td><td></td></tr>
-                <tr><td>11:20 ~ 11:40</td><td>9th</td><td>Physical Activity (Gardening / Play game)</td><td></td></tr>
-                <tr><td>11:40 ~ 12:00</td><td>10th</td><td>Physical Activity &amp; Cleanup Activity</td><td></td></tr>
-                <tr><td>12:00 ~ 13:00</td><td></td><td>Lunch</td><td></td></tr>
-                <tr><td>13:00 ~ 13:40</td><td>11st</td><td>Froebel Game / LEGO Block</td><td>End of the All-Day Class</td></tr>
-                <tr><td>13:45 ~ 14:05</td><td>12nd</td><td>Elephant – 1:1 Intensive Alphabet &amp; Vocabulary Class / Whale – 1:1 Intensive Phonics &amp; Vocabulary Class</td><td></td></tr>
-                <tr><td>14:05 ~ 14:25</td><td>13rd</td><td>1:1 Class(Story book)</td><td></td></tr>
-                <tr><td>14:30 ~ 15:10</td><td>14th</td><td>1:1 Class (Art: Drawing, Making, etc.)</td><td></td></tr>
-                <tr><td>15:15 ~ 15:35</td><td></td><td>Snack(Optional)</td><td></td></tr>
-                <tr><td>15:40 ~ 16:20</td><td>15th</td><td>Physical Activity&amp; Cleanup activities</td><td></td></tr>
+                <tr><td>07:20 ~ 08:00</td><td></td><td>Breakfast</td><td rowSpan={13} style={{verticalAlign:'middle',textAlign:'center',fontSize:'0.88rem'}}>End of the<br/>Morning Class</td></tr>
+                <tr><td>08:00 ~ 08:20</td><td>1st</td><td>Meeting Time</td></tr>
+                <tr><td>08:20 ~ 08:40</td><td>2nd</td><td>Warm up Activity (Music &amp; Dance class)</td></tr>
+                <tr><td>08:45 ~ 09:05</td><td>3rd</td><td>1:1 Class(Math)</td></tr>
+                <tr><td>09:05 ~ 09:25</td><td>4th</td><td>Elephant – 1:1 Alphabet &amp; Vocabulary / Whale – 1:1 Phonics &amp; Vocabulary</td></tr>
+                <tr><td>09:30 ~ 09:50</td><td>5th</td><td>Social Communication Class</td></tr>
+                <tr><td>09:50 ~ 10:10</td><td>6th</td><td>1:1 Class (Art: Drawing, Making, etc.)</td></tr>
+                <tr><td>10:15 ~ 10:35</td><td></td><td>Snack(Optional)</td></tr>
+                <tr><td>10:35 ~ 10:55</td><td>7th</td><td>1:1 Class(Story book)</td></tr>
+                <tr><td>10:55 ~ 11:15</td><td>8th</td><td>Physical Activity (Gardening / Play game)</td></tr>
+                <tr><td>11:20 ~ 11:40</td><td>9th</td><td>Physical Activity (Gardening / Play game)</td></tr>
+                <tr><td>11:40 ~ 12:00</td><td>10th</td><td>Physical Activity &amp; Cleanup Activity</td></tr>
+                <tr><td>12:00 ~ 13:00</td><td></td><td>Lunch</td></tr>
+                <tr><td>13:00 ~ 13:40</td><td>11st</td><td>Froebel Game / LEGO Block</td><td rowSpan={6} style={{verticalAlign:'middle',textAlign:'center',fontSize:'0.88rem'}}>End of the<br/>All-Day Class</td></tr>
+                <tr><td>13:45 ~ 14:05</td><td>12nd</td><td>Elephant – 1:1 Intensive Alphabet &amp; Vocabulary Class / Whale – 1:1 Intensive Phonics &amp; Vocabulary Class</td></tr>
+                <tr><td>14:05 ~ 14:25</td><td>13rd</td><td>1:1 Class(Story book)</td></tr>
+                <tr><td>14:30 ~ 15:10</td><td>14th</td><td>1:1 Class (Art: Drawing, Making, etc.)</td></tr>
+                <tr><td>15:15 ~ 15:35</td><td></td><td>Snack(Optional)</td></tr>
+                <tr><td>15:40 ~ 16:20</td><td>15th</td><td>Physical Activity&amp; Cleanup activities</td></tr>
               </tbody>
             </table>
           </div>
