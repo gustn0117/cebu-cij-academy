@@ -213,7 +213,7 @@ export default function Navbar() {
         </ul>
 
         {/* Login / User Button (Desktop) */}
-        <div className="navbar-auth" style={{ display: 'flex', alignItems: 'center', marginRight: 8 }}>
+        <div className="navbar-auth" style={{ display: 'flex', alignItems: 'center', marginRight: 8, flexShrink: 0 }}>
           {user ? (
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#1A1A2E', whiteSpace: 'nowrap' }}>

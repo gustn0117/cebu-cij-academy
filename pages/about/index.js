@@ -618,18 +618,38 @@ export default function About() {
               </div>
             </div>
 
-            {/* Google Maps Embed */}
-            <div style={{ borderRadius: 'var(--radius)', overflow: 'hidden', boxShadow: 'var(--shadow-md)' }}>
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3924.614!2d123.9973!3d10.4015!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33a9a143df1a2e13%3A0x9c4f4c6b8c5e8e0a!2sCIJ%20Academy%20Sparta%20Campus!5e0!3m2!1sen!2sph!4v1"
-                width="100%"
-                height="400"
-                style={{ border: 0, display: 'block' }}
-                allowFullScreen=""
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                title="CIJ Academy Location"
-              />
+            {/* Google Maps Embeds */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 24 }}>
+              <div>
+                <h4 style={{ fontSize: '0.95rem', fontWeight: 600, marginBottom: 8, color: 'var(--gray-700)' }}>Liloan Campus</h4>
+                <div style={{ borderRadius: 'var(--radius)', overflow: 'hidden', boxShadow: 'var(--shadow-md)' }}>
+                  <iframe
+                    src="https://maps.google.com/maps?q=CIJ+Sparta+Liloan+Cebu+Philippines&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                    width="100%"
+                    height="300"
+                    style={{ border: 0, display: 'block' }}
+                    allowFullScreen=""
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="CIJ Academy Liloan Campus"
+                  />
+                </div>
+              </div>
+              <div>
+                <h4 style={{ fontSize: '0.95rem', fontWeight: 600, marginBottom: 8, color: 'var(--gray-700)' }}>Premium Dormitory</h4>
+                <div style={{ borderRadius: 'var(--radius)', overflow: 'hidden', boxShadow: 'var(--shadow-md)' }}>
+                  <iframe
+                    src="https://maps.google.com/maps?q=Fatima+Road+Jubay+Liloan+Cebu+Philippines&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                    width="100%"
+                    height="300"
+                    style={{ border: 0, display: 'block' }}
+                    allowFullScreen=""
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="CIJ Premium Dormitory"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
