@@ -339,13 +339,14 @@ export default function AuthModal({ isOpen, onClose, onAuth }) {
               />
             </div>
             <div style={{ marginBottom: 16 }}>
-              <label style={labelStyle}>Birthdate</label>
+              <label style={labelStyle}>Birthdate (YYYY-MM-DD)</label>
               <input
                 style={inputStyle}
                 type="date"
                 value={form.birthdate}
                 onChange={(e) => setForm({ ...form, birthdate: e.target.value })}
                 required
+                placeholder="YYYY-MM-DD"
               />
             </div>
             <div style={{ marginBottom: 16 }}>

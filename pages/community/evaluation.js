@@ -12,6 +12,7 @@ export default function Evaluation() {
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState('');
 
   // Password modal state
   const [selectedReport, setSelectedReport] = useState(null);
@@ -32,8 +33,13 @@ export default function Evaluation() {
       .catch(() => setLoading(false));
   }, []);
 
-  const totalPages = Math.ceil(reports.length / PER_PAGE);
-  const currentReports = reports.slice((page - 1) * PER_PAGE, page * PER_PAGE);
+  const filteredReports = searchQuery.trim()
+    ? reports.filter((r) =>
+        (r.title || '').toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : reports;
+  const totalPages = Math.ceil(filteredReports.length / PER_PAGE);
+  const currentReports = filteredReports.slice((page - 1) * PER_PAGE, page * PER_PAGE);
 
   const handleReportClick = (report) => {
     setSelectedReport(report);
@@ -148,10 +154,30 @@ export default function Evaluation() {
       />
       <section className="section">
         <div className="container">
+          {/* Search */}
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 20 }}>
+            <div style={{ position: 'relative', width: 280 }}>
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => { setSearchQuery(e.target.value); setPage(1); }}
+                placeholder="Search by title..."
+                style={{
+                  width: '100%', padding: '10px 14px 10px 36px', border: '1px solid #dee2e6',
+                  borderRadius: 8, fontSize: '0.9rem', fontFamily: 'inherit',
+                  outline: 'none', boxSizing: 'border-box',
+                }}
+              />
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)' }}>
+                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+            </div>
+          </div>
+
           {loading ? (
             <p style={{ textAlign: 'center', padding: '60px 0', color: '#6c757d' }}>Loading...</p>
-          ) : reports.length === 0 ? (
-            <p style={{ textAlign: 'center', padding: '60px 0', color: '#6c757d' }}>No reports available.</p>
+          ) : filteredReports.length === 0 ? (
+            <p style={{ textAlign: 'center', padding: '60px 0', color: '#6c757d' }}>{searchQuery ? 'No matching reports found.' : 'No reports available.'}</p>
           ) : (
             <div className="board">
               <table className="board-table">
@@ -165,7 +191,7 @@ export default function Evaluation() {
                 <tbody>
                   {currentReports.map((report, i) => (
                     <tr key={report.id} style={{ cursor: 'pointer' }} onClick={() => handleReportClick(report)}>
-                      <td className="board-no">{reports.length - ((page - 1) * PER_PAGE + i)}</td>
+                      <td className="board-no">{filteredReports.length - ((page - 1) * PER_PAGE + i)}</td>
                       <td className="board-title">
                         <span style={{ color: '#1A1A2E', cursor: 'pointer' }}>{report.title}</span>
                       </td>

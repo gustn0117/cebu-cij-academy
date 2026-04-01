@@ -1,19 +1,12 @@
-import Layout from '@/components/Layout';
-import PageHeader from '@/components/PageHeader';
-import ProgramsSection from '@/components/sections/ProgramsSection';
-import { useLanguage } from '@/lib/LanguageContext';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
-export default function Programs() {
-  const { t } = useLanguage();
+export default function ProgramsIndex() {
+  const router = useRouter();
 
-  return (
-    <Layout title={t.nav.programs}>
-      <PageHeader
-        title={t.nav.programs}
-        description={t.prog?.subtitle || 'Explore our English programs'}
-        breadcrumbs={[{ label: t.nav.programs }]}
-      />
-      <ProgramsSection />
-    </Layout>
-  );
+  useEffect(() => {
+    router.replace('/programs/semi-sparta');
+  }, [router]);
+
+  return null;
 }

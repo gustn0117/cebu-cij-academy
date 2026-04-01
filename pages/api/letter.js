@@ -1,25 +1,85 @@
 import { supabase } from '@/lib/supabase';
+import jwt from 'jsonwebtoken';
+
+const JWT_SECRET = 'cij-academy-secret-2024';
+
+function getUserFromToken(req) {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) return null;
+  try {
+    return jwt.verify(authHeader.split(' ')[1], JWT_SECRET);
+  } catch {
+    return null;
+  }
+}
 
 export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+  if (req.method === 'GET') {
+    const { data, error } = await supabase
+      .from('letters')
+      .select('id, title, student_name, created_at, user_id')
+      .order('created_at', { ascending: false });
+
+    if (error) return res.status(500).json({ error: error.message });
+    return res.status(200).json(data);
   }
 
-  const { title, studentName, content } = req.body;
+  if (req.method === 'POST') {
+    const decoded = getUserFromToken(req);
+    if (!decoded) return res.status(401).json({ error: 'Authentication required' });
 
-  if (!title || !studentName || !content) {
-    return res.status(400).json({ error: 'All fields are required' });
+    const { title, studentName, content } = req.body;
+
+    if (!title || !studentName || !content) {
+      return res.status(400).json({ error: 'All fields are required' });
+    }
+
+    const { data, error } = await supabase
+      .from('letters')
+      .insert({ title, student_name: studentName, content, user_id: decoded.id })
+      .select()
+      .single();
+
+    if (error) {
+      return res.status(500).json({ error: error.message });
+    }
+
+    return res.status(200).json({ success: true, id: data.id, letter: data });
   }
 
-  const { data, error } = await supabase
-    .from('letters')
-    .insert({ title, student_name: studentName, content })
-    .select()
-    .single();
+  if (req.method === 'PUT') {
+    const decoded = getUserFromToken(req);
+    if (!decoded) return res.status(401).json({ error: 'Authentication required' });
 
-  if (error) {
-    return res.status(500).json({ error: error.message });
+    const { id, title, studentName, content } = req.body;
+    if (!id) return res.status(400).json({ error: 'ID required' });
+
+    // Verify ownership
+    const { data: existing } = await supabase
+      .from('letters')
+      .select('user_id')
+      .eq('id', Number(id))
+      .single();
+
+    if (!existing || existing.user_id !== decoded.id) {
+      return res.status(403).json({ error: 'You can only edit your own letters' });
+    }
+
+    const updates = {};
+    if (title !== undefined) updates.title = title;
+    if (studentName !== undefined) updates.student_name = studentName;
+    if (content !== undefined) updates.content = content;
+
+    const { data, error } = await supabase
+      .from('letters')
+      .update(updates)
+      .eq('id', Number(id))
+      .select()
+      .single();
+
+    if (error) return res.status(500).json({ error: error.message });
+    return res.status(200).json({ success: true, letter: data });
   }
 
-  return res.status(200).json({ success: true, id: data.id });
+  return res.status(405).json({ error: 'Method not allowed' });
 }

@@ -47,9 +47,9 @@ export default async function handler(req, res) {
     const decoded = getUserFromToken(req);
     if (!decoded) return res.status(401).json({ error: 'Authentication required' });
 
-    const { title, text, rating } = req.body;
-    if (!text || !rating) {
-      return res.status(400).json({ error: 'Text and rating are required' });
+    const { title, text, image_url } = req.body;
+    if (!text) {
+      return res.status(400).json({ error: 'Review text is required' });
     }
 
     // Get user name from users table
@@ -59,15 +59,17 @@ export default async function handler(req, res) {
       .eq('id', decoded.id)
       .single();
 
+    const insertData = {
+      title: title || null,
+      text,
+      user_id: decoded.id,
+      name: user?.name || 'Anonymous',
+    };
+    if (image_url) insertData.image_url = image_url;
+
     const { data, error } = await supabase
       .from('reviews')
-      .insert({
-        title: title || null,
-        text,
-        rating: Number(rating),
-        user_id: decoded.id,
-        name: user?.name || 'Anonymous',
-      })
+      .insert(insertData)
       .select()
       .single();
 
@@ -79,7 +81,7 @@ export default async function handler(req, res) {
     const decoded = getUserFromToken(req);
     if (!decoded) return res.status(401).json({ error: 'Authentication required' });
 
-    const { id, title, text, rating } = req.body;
+    const { id, title, text, image_url } = req.body;
     if (!id) return res.status(400).json({ error: 'Review ID is required' });
 
     // Verify ownership
@@ -96,7 +98,7 @@ export default async function handler(req, res) {
     const updates = {};
     if (title !== undefined) updates.title = title;
     if (text !== undefined) updates.text = text;
-    if (rating !== undefined) updates.rating = Number(rating);
+    if (image_url !== undefined) updates.image_url = image_url;
 
     const { data, error } = await supabase
       .from('reviews')

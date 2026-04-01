@@ -27,10 +27,11 @@ export default function Footer() {
           <div>
             <h4>{t.nav.programs}</h4>
             <ul className="footer-links">
-              <li><Link href="/programs#esl">{t.nav.eslProgram}</Link></li>
-              <li><Link href="/programs#ielts">{t.nav.ieltsProgram}</Link></li>
-              <li><Link href="/programs#toeic">{t.nav.toeicProgram}</Link></li>
-              <li><Link href="/programs#business">{t.nav.businessEnglish}</Link></li>
+              <li><Link href="/programs/semi-sparta">{t.nav.semiSparta || 'Semi Sparta'}</Link></li>
+              <li><Link href="/programs/sparta">{t.nav.sparta || 'Sparta'}</Link></li>
+              <li><Link href="/programs/junior">{t.nav.junior || 'Junior'}</Link></li>
+              <li><Link href="/programs/junior-camp">{t.nav.juniorCamp || 'Junior Camp'}</Link></li>
+              <li><Link href="/programs/family">{t.nav.family || 'Family'}</Link></li>
             </ul>
           </div>
           <div>

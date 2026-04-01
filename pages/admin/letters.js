@@ -131,6 +131,13 @@ function LettersTab() {
   const [letters, setLetters] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [checkedIds, setCheckedIds] = useState(new Set());
+  const [showForm, setShowForm] = useState(false);
+  const [editModal, setEditModal] = useState(null);
+  const [form, setForm] = useState({ title: '', student_name: '', content: '' });
+  const [editForm, setEditForm] = useState({ title: '', student_name: '', content: '' });
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => { fetchLetters(); }, []);
 
@@ -144,6 +151,51 @@ function LettersTab() {
     setLoading(false);
   };
 
+  const filtered = searchQuery.trim()
+    ? letters.filter((l) => (l.title || '').toLowerCase().includes(searchQuery.toLowerCase()))
+    : letters;
+
+  const handleCreate = async (e) => {
+    e.preventDefault();
+    if (!form.title.trim() || !form.student_name.trim() || !form.content.trim()) return alert('All fields are required.');
+    setSubmitting(true);
+    try {
+      const res = await fetch('/api/admin/letters', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+      const newLetter = await res.json();
+      setLetters((prev) => [newLetter, ...prev]);
+      setForm({ title: '', student_name: '', content: '' });
+      setShowForm(false);
+    } catch (err) { console.error(err); alert('Failed to add letter.'); }
+    setSubmitting(false);
+  };
+
+  const openEdit = (letter) => {
+    setEditModal(letter);
+    setEditForm({ title: letter.title || '', student_name: letter.student_name || '', content: letter.content || '' });
+  };
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+    if (!editForm.title.trim()) return alert('Title is required.');
+    setSubmitting(true);
+    try {
+      const res = await fetch('/api/admin/letters', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: editModal.id, ...editForm }),
+      });
+      const updated = await res.json();
+      setLetters((prev) => prev.map((l) => l.id === editModal.id ? updated : l));
+      setEditModal(null);
+      if (selected?.id === editModal.id) setSelected(updated);
+    } catch (err) { console.error(err); alert('Failed to update.'); }
+    setSubmitting(false);
+  };
+
   const deleteLetter = async (id) => {
     if (!confirm('Delete this letter?')) return;
     await fetch(`/api/admin/letters?id=${id}`, { method: 'DELETE' });
@@ -151,35 +203,132 @@ function LettersTab() {
     if (selected?.id === id) setSelected(null);
   };
 
+  const toggleCheck = (id) => {
+    setCheckedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      return next;
+    });
+  };
+
+  const toggleAll = () => {
+    if (checkedIds.size === filtered.length) {
+      setCheckedIds(new Set());
+    } else {
+      setCheckedIds(new Set(filtered.map((l) => l.id)));
+    }
+  };
+
+  const deleteSelected = async () => {
+    if (checkedIds.size === 0) return;
+    if (!confirm(`Delete ${checkedIds.size} selected letter(s)?`)) return;
+    const ids = [...checkedIds].join(',');
+    await fetch(`/api/admin/letters?id=${ids}`, { method: 'DELETE' });
+    setLetters((prev) => prev.filter((l) => !checkedIds.has(l.id)));
+    setCheckedIds(new Set());
+    if (selected && checkedIds.has(selected.id)) setSelected(null);
+  };
+
   return (
     <div>
       <div style={styles.pageHeader}>
-        <h1 style={styles.pageTitle}>Letters from Parents</h1>
-        <span style={styles.badge}>{letters.length} total</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <h1 style={styles.pageTitle}>Letters from Parents</h1>
+          <span style={styles.badge}>{letters.length} total</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{ position: 'relative' }}>
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search by title..."
+              style={{ ...styles.input, marginBottom: 0, paddingLeft: 32, width: 220 }}
+            />
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#999" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)' }}>
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+          </div>
+          <button onClick={() => setShowForm(!showForm)} style={styles.btnPrimary}>
+            {showForm ? 'Cancel' : '+ Add Letter'}
+          </button>
+        </div>
       </div>
+
+      {showForm && (
+        <form onSubmit={handleCreate} style={styles.formCard}>
+          <h3 style={styles.formTitle}>New Letter</h3>
+          <input type="text" placeholder="Title *" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} style={styles.input} />
+          <input type="text" placeholder="Student Name *" value={form.student_name} onChange={(e) => setForm({ ...form, student_name: e.target.value })} style={styles.input} />
+          <textarea placeholder="Content *" value={form.content} onChange={(e) => setForm({ ...form, content: e.target.value })} style={{ ...styles.input, minHeight: 120, resize: 'vertical' }} />
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <button type="submit" disabled={submitting} style={styles.btnPrimary}>{submitting ? 'Saving...' : 'Save Letter'}</button>
+          </div>
+        </form>
+      )}
+
+      {/* Edit Modal */}
+      {editModal && (
+        <div style={styles.modalOverlay} onClick={() => setEditModal(null)}>
+          <div style={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+            <form onSubmit={handleEditSubmit}>
+              <h3 style={styles.formTitle}>Edit Letter</h3>
+              <input type="text" placeholder="Title *" value={editForm.title} onChange={(e) => setEditForm({ ...editForm, title: e.target.value })} style={styles.input} />
+              <input type="text" placeholder="Student Name *" value={editForm.student_name} onChange={(e) => setEditForm({ ...editForm, student_name: e.target.value })} style={styles.input} />
+              <textarea placeholder="Content *" value={editForm.content} onChange={(e) => setEditForm({ ...editForm, content: e.target.value })} style={{ ...styles.input, minHeight: 120, resize: 'vertical' }} />
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+                <button type="button" onClick={() => setEditModal(null)} style={styles.btnSmallDanger}>Cancel</button>
+                <button type="submit" disabled={submitting} style={styles.btnPrimary}>{submitting ? 'Saving...' : 'Update Letter'}</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {checkedIds.size > 0 && (
+        <div style={{ marginBottom: 16, display: 'flex', alignItems: 'center', gap: 12 }}>
+          <button onClick={deleteSelected} style={{ ...styles.btnDanger, display: 'flex', alignItems: 'center', gap: 6 }}>
+            Delete Selected ({checkedIds.size})
+          </button>
+        </div>
+      )}
+
       {loading ? (
         <LoadingState />
-      ) : letters.length === 0 ? (
-        <EmptyState message="No letters yet" />
+      ) : filtered.length === 0 ? (
+        <EmptyState message={searchQuery ? 'No matching letters' : 'No letters yet'} />
       ) : (
         <div style={styles.splitLayout}>
           <div style={styles.splitList}>
-            {letters.map((letter) => (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 12px', borderBottom: '1px solid #eee', marginBottom: 4 }}>
+              <input type="checkbox" checked={checkedIds.size === filtered.length && filtered.length > 0} onChange={toggleAll} style={{ cursor: 'pointer' }} />
+              <span style={{ fontSize: '0.8rem', color: '#888' }}>Select All</span>
+            </div>
+            {filtered.map((letter) => (
               <div
                 key={letter.id}
-                onClick={() => setSelected(letter)}
                 style={{
                   ...styles.listCard,
                   ...(selected?.id === letter.id ? styles.listCardActive : {}),
+                  display: 'flex', alignItems: 'flex-start', gap: 10,
                 }}
               >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
-                  <strong style={{ fontSize: '0.93rem', color: '#1a1a2e' }}>{letter.title}</strong>
-                  <span style={{ fontSize: '0.75rem', color: '#999', flexShrink: 0, marginLeft: 8 }}>
-                    {formatDate(letter.created_at)}
-                  </span>
+                <input
+                  type="checkbox"
+                  checked={checkedIds.has(letter.id)}
+                  onChange={() => toggleCheck(letter.id)}
+                  onClick={(e) => e.stopPropagation()}
+                  style={{ cursor: 'pointer', marginTop: 4 }}
+                />
+                <div onClick={() => setSelected(letter)} style={{ flex: 1, cursor: 'pointer' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
+                    <strong style={{ fontSize: '0.93rem', color: '#1a1a2e' }}>{letter.title}</strong>
+                    <span style={{ fontSize: '0.75rem', color: '#999', flexShrink: 0, marginLeft: 8 }}>
+                      {formatDate(letter.created_at)}
+                    </span>
+                  </div>
+                  <span style={{ fontSize: '0.82rem', color: '#888' }}>To: {letter.student_name}</span>
                 </div>
-                <span style={{ fontSize: '0.82rem', color: '#888' }}>To: {letter.student_name}</span>
               </div>
             ))}
           </div>
@@ -188,7 +337,10 @@ function LettersTab() {
               <>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16 }}>
                   <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#1a1a2e', margin: 0 }}>{selected.title}</h2>
-                  <button onClick={() => deleteLetter(selected.id)} style={styles.btnDanger}>Delete</button>
+                  <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
+                    <button onClick={() => openEdit(selected)} style={styles.btnSmallDanger}>Edit</button>
+                    <button onClick={() => deleteLetter(selected.id)} style={styles.btnDanger}>Delete</button>
+                  </div>
                 </div>
                 <div style={{ display: 'flex', gap: 24, fontSize: '0.88rem', color: '#666', marginBottom: 20, paddingBottom: 16, borderBottom: '1px solid #eee' }}>
                   <span><strong>Student:</strong> {selected.student_name}</span>
@@ -224,6 +376,14 @@ function NoticesTab() {
   const [expanded, setExpanded] = useState(null);
   const [form, setForm] = useState({ title: '', content: '' });
   const [submitting, setSubmitting] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [checkedIds, setCheckedIds] = useState(new Set());
+  const [file, setFile] = useState(null);
+  const [preview, setPreview] = useState(null);
+  const [editModal, setEditModal] = useState(null);
+  const [editForm, setEditForm] = useState({ title: '', content: '' });
+  const [editFile, setEditFile] = useState(null);
+  const [editPreview, setEditPreview] = useState(null);
 
   useEffect(() => { fetchNotices(); }, []);
 
@@ -237,21 +397,75 @@ function NoticesTab() {
     setLoading(false);
   };
 
+  const filtered = searchQuery.trim()
+    ? notices.filter((n) => (n.title || '').toLowerCase().includes(searchQuery.toLowerCase()))
+    : notices;
+
+  const handleFileChange = (e, isEdit) => {
+    const f = e.target.files[0];
+    if (!f) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      if (isEdit) { setEditFile(f); setEditPreview(ev.target.result); }
+      else { setFile(f); setPreview(ev.target.result); }
+    };
+    reader.readAsDataURL(f);
+  };
+
+  const uploadImage = async (fileToUpload) => {
+    const formData = new FormData();
+    formData.append('file', fileToUpload);
+    const uploadRes = await fetch('/api/admin/upload', { method: 'POST', body: formData });
+    const uploadData = await uploadRes.json();
+    if (!uploadData.url) throw new Error(uploadData.error || 'Upload failed');
+    return uploadData.url;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.title.trim() || !form.content.trim()) return alert('Please fill in all fields.');
     setSubmitting(true);
     try {
+      let image_url = null;
+      if (file) image_url = await uploadImage(file);
       const res = await fetch('/api/admin/notices', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, image_url }),
       });
       const newNotice = await res.json();
       setNotices((prev) => [newNotice, ...prev]);
       setForm({ title: '', content: '' });
+      setFile(null);
+      setPreview(null);
       setShowForm(false);
     } catch (err) { console.error(err); alert('Failed to add notice.'); }
+    setSubmitting(false);
+  };
+
+  const openEdit = (notice) => {
+    setEditModal(notice);
+    setEditForm({ title: notice.title || '', content: notice.content || '' });
+    setEditFile(null);
+    setEditPreview(notice.image_url || null);
+  };
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+    if (!editForm.title.trim()) return alert('Title is required.');
+    setSubmitting(true);
+    try {
+      let image_url = editModal.image_url || null;
+      if (editFile) image_url = await uploadImage(editFile);
+      const res = await fetch('/api/admin/notices', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: editModal.id, ...editForm, image_url }),
+      });
+      const updated = await res.json();
+      setNotices((prev) => prev.map((n) => n.id === editModal.id ? updated : n));
+      setEditModal(null);
+    } catch (err) { console.error(err); alert('Failed to update: ' + err.message); }
     setSubmitting(false);
   };
 
@@ -262,6 +476,31 @@ function NoticesTab() {
     if (expanded === id) setExpanded(null);
   };
 
+  const toggleCheck = (id) => {
+    setCheckedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      return next;
+    });
+  };
+
+  const toggleAll = () => {
+    if (checkedIds.size === filtered.length) {
+      setCheckedIds(new Set());
+    } else {
+      setCheckedIds(new Set(filtered.map((n) => n.id)));
+    }
+  };
+
+  const deleteSelected = async () => {
+    if (checkedIds.size === 0) return;
+    if (!confirm(`Delete ${checkedIds.size} selected notice(s)?`)) return;
+    const ids = [...checkedIds].join(',');
+    await fetch(`/api/admin/notices?id=${ids}`, { method: 'DELETE' });
+    setNotices((prev) => prev.filter((n) => !checkedIds.has(n.id)));
+    setCheckedIds(new Set());
+  };
+
   return (
     <div>
       <div style={styles.pageHeader}>
@@ -269,64 +508,130 @@ function NoticesTab() {
           <h1 style={styles.pageTitle}>Notices</h1>
           <span style={styles.badge}>{notices.length} total</span>
         </div>
-        <button onClick={() => setShowForm(!showForm)} style={styles.btnPrimary}>
-          {showForm ? 'Cancel' : '+ Add Notice'}
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{ position: 'relative' }}>
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search by title..."
+              style={{ ...styles.input, marginBottom: 0, paddingLeft: 32, width: 220 }}
+            />
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#999" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)' }}>
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+          </div>
+          <button onClick={() => { setShowForm(!showForm); setFile(null); setPreview(null); setForm({ title: '', content: '' }); }} style={styles.btnPrimary}>
+            {showForm ? 'Cancel' : '+ Add Notice'}
+          </button>
+        </div>
       </div>
 
       {showForm && (
         <form onSubmit={handleSubmit} style={styles.formCard}>
           <h3 style={styles.formTitle}>New Notice</h3>
-          <input
-            type="text"
-            placeholder="Title"
-            value={form.title}
-            onChange={(e) => setForm({ ...form, title: e.target.value })}
-            style={styles.input}
-          />
-          <textarea
-            placeholder="Content"
-            value={form.content}
-            onChange={(e) => setForm({ ...form, content: e.target.value })}
-            style={{ ...styles.input, minHeight: 120, resize: 'vertical' }}
-          />
+          <input type="text" placeholder="Title" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} style={styles.input} />
+          <textarea placeholder="Content" value={form.content} onChange={(e) => setForm({ ...form, content: e.target.value })} style={{ ...styles.input, minHeight: 120, resize: 'vertical' }} />
+          <div
+            onClick={() => document.getElementById('notice-file-input').click()}
+            style={{ border: '2px dashed #ddd', borderRadius: 12, padding: preview ? 0 : '32px 20px', textAlign: 'center', cursor: 'pointer', marginBottom: 12, overflow: 'hidden', background: '#fafafa' }}
+          >
+            {preview ? (
+              <img src={preview} alt="Preview" style={{ width: '100%', maxHeight: 200, objectFit: 'cover', display: 'block' }} />
+            ) : (
+              <p style={{ margin: 0, color: '#999', fontSize: '0.88rem' }}>Click to select image (optional)</p>
+            )}
+          </div>
+          <input id="notice-file-input" type="file" accept="image/*" onChange={(e) => handleFileChange(e, false)} style={{ display: 'none' }} />
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <button type="submit" disabled={submitting} style={styles.btnPrimary}>
-              {submitting ? 'Saving...' : 'Save Notice'}
-            </button>
+            <button type="submit" disabled={submitting} style={styles.btnPrimary}>{submitting ? 'Saving...' : 'Save Notice'}</button>
           </div>
         </form>
       )}
 
+      {/* Edit Modal */}
+      {editModal && (
+        <div style={styles.modalOverlay} onClick={() => setEditModal(null)}>
+          <div style={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+            <form onSubmit={handleEditSubmit}>
+              <h3 style={styles.formTitle}>Edit Notice</h3>
+              <input type="text" placeholder="Title *" value={editForm.title} onChange={(e) => setEditForm({ ...editForm, title: e.target.value })} style={styles.input} />
+              <textarea placeholder="Content" value={editForm.content} onChange={(e) => setEditForm({ ...editForm, content: e.target.value })} style={{ ...styles.input, minHeight: 120, resize: 'vertical' }} />
+              <div
+                onClick={() => document.getElementById('notice-edit-file-input').click()}
+                style={{ border: '2px dashed #ddd', borderRadius: 12, padding: editPreview ? 0 : '32px 20px', textAlign: 'center', cursor: 'pointer', marginBottom: 12, overflow: 'hidden', background: '#fafafa' }}
+              >
+                {editPreview ? (
+                  <img src={editPreview} alt="Preview" style={{ width: '100%', maxHeight: 200, objectFit: 'cover', display: 'block' }} />
+                ) : (
+                  <p style={{ margin: 0, color: '#999', fontSize: '0.88rem' }}>Click to select image (optional)</p>
+                )}
+              </div>
+              <input id="notice-edit-file-input" type="file" accept="image/*" onChange={(e) => handleFileChange(e, true)} style={{ display: 'none' }} />
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+                <button type="button" onClick={() => setEditModal(null)} style={styles.btnSmallDanger}>Cancel</button>
+                <button type="submit" disabled={submitting} style={styles.btnPrimary}>{submitting ? 'Saving...' : 'Update Notice'}</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {checkedIds.size > 0 && (
+        <div style={{ marginBottom: 16, display: 'flex', alignItems: 'center', gap: 12 }}>
+          <button onClick={deleteSelected} style={{ ...styles.btnDanger, display: 'flex', alignItems: 'center', gap: 6 }}>
+            Delete Selected ({checkedIds.size})
+          </button>
+        </div>
+      )}
+
       {loading ? (
         <LoadingState />
-      ) : notices.length === 0 ? (
-        <EmptyState message="No notices yet" />
+      ) : filtered.length === 0 ? (
+        <EmptyState message={searchQuery ? 'No matching notices' : 'No notices yet'} />
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          {notices.map((notice) => (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 12px' }}>
+            <input type="checkbox" checked={checkedIds.size === filtered.length && filtered.length > 0} onChange={toggleAll} style={{ cursor: 'pointer' }} />
+            <span style={{ fontSize: '0.8rem', color: '#888' }}>Select All</span>
+          </div>
+          {filtered.map((notice) => (
             <div key={notice.id} style={styles.tableRow}>
               <div
-                onClick={() => setExpanded(expanded === notice.id ? null : notice.id)}
                 style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', padding: '16px 20px' }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12, flex: 1, minWidth: 0 }}>
+                  <input
+                    type="checkbox"
+                    checked={checkedIds.has(notice.id)}
+                    onChange={() => toggleCheck(notice.id)}
+                    onClick={(e) => e.stopPropagation()}
+                    style={{ cursor: 'pointer' }}
+                  />
                   <svg
                     width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-                    style={{ transform: expanded === notice.id ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.2s', flexShrink: 0 }}
+                    style={{ transform: expanded === notice.id ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.2s', flexShrink: 0, cursor: 'pointer' }}
+                    onClick={() => setExpanded(expanded === notice.id ? null : notice.id)}
                   >
                     <polyline points="9 18 15 12 9 6" />
                   </svg>
-                  <strong style={{ fontSize: '0.93rem', color: '#1a1a2e', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{notice.title}</strong>
+                  <strong
+                    onClick={() => setExpanded(expanded === notice.id ? null : notice.id)}
+                    style={{ fontSize: '0.93rem', color: '#1a1a2e', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', cursor: 'pointer' }}
+                  >{notice.title}</strong>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0, marginLeft: 16 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0, marginLeft: 16 }}>
                   <span style={{ fontSize: '0.8rem', color: '#999' }}>{formatDate(notice.created_at)}</span>
+                  <button onClick={(e) => { e.stopPropagation(); openEdit(notice); }} style={styles.btnSmallDanger}>Edit</button>
                   <button onClick={(e) => { e.stopPropagation(); deleteNotice(notice.id); }} style={styles.btnSmallDanger}>Delete</button>
                 </div>
               </div>
               {expanded === notice.id && (
                 <div style={{ padding: '0 20px 20px 48px', fontSize: '0.9rem', lineHeight: 1.7, color: '#444', borderTop: '1px solid #f0f0f0' }}>
                   <div style={{ paddingTop: 16 }}>
+                    {notice.image_url && (
+                      <img src={notice.image_url} alt={notice.title} style={{ maxWidth: '100%', maxHeight: 240, objectFit: 'cover', borderRadius: 8, marginBottom: 12 }} />
+                    )}
                     {(notice.content || '').split('\n').map((line, i) => (
                       <p key={i} style={{ margin: '0 0 6px' }}>{line || '\u00A0'}</p>
                     ))}
@@ -507,8 +812,12 @@ function ReviewsTab() {
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
-  const [form, setForm] = useState({ name: '', country: '', flag: '', program: '', duration: '', rating: 5, text: '' });
+  const [form, setForm] = useState({ name: '', title: '', text: '' });
   const [submitting, setSubmitting] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [checkedIds, setCheckedIds] = useState(new Set());
+  const [editModal, setEditModal] = useState(null);
+  const [editForm, setEditForm] = useState({ name: '', title: '', text: '' });
 
   useEffect(() => { fetchReviews(); }, []);
 
@@ -522,6 +831,10 @@ function ReviewsTab() {
     setLoading(false);
   };
 
+  const filtered = searchQuery.trim()
+    ? reviews.filter((r) => (r.title || r.text || '').toLowerCase().includes(searchQuery.toLowerCase()))
+    : reviews;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.name.trim() || !form.text.trim()) return alert('Name and review text are required.');
@@ -530,13 +843,35 @@ function ReviewsTab() {
       const res = await fetch('/api/admin/reviews', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, rating: Number(form.rating) }),
+        body: JSON.stringify(form),
       });
       const newReview = await res.json();
       setReviews((prev) => [newReview, ...prev]);
-      setForm({ name: '', country: '', flag: '', program: '', duration: '', rating: 5, text: '' });
+      setForm({ name: '', title: '', text: '' });
       setShowForm(false);
     } catch (err) { console.error(err); alert('Failed to add review.'); }
+    setSubmitting(false);
+  };
+
+  const openEdit = (review) => {
+    setEditModal(review);
+    setEditForm({ name: review.name || '', title: review.title || '', text: review.text || '' });
+  };
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+    if (!editForm.text.trim()) return alert('Review text is required.');
+    setSubmitting(true);
+    try {
+      const res = await fetch('/api/admin/reviews', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: editModal.id, ...editForm }),
+      });
+      const updated = await res.json();
+      setReviews((prev) => prev.map((r) => r.id === editModal.id ? updated : r));
+      setEditModal(null);
+    } catch (err) { console.error(err); alert('Failed to update: ' + err.message); }
     setSubmitting(false);
   };
 
@@ -546,10 +881,29 @@ function ReviewsTab() {
     setReviews((prev) => prev.filter((r) => r.id !== id));
   };
 
-  const renderStars = (rating) => {
-    return Array.from({ length: 5 }, (_, i) => (
-      <span key={i} style={{ color: i < rating ? '#F59E0B' : '#ddd', fontSize: '1rem' }}>★</span>
-    ));
+  const toggleCheck = (id) => {
+    setCheckedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      return next;
+    });
+  };
+
+  const toggleAll = () => {
+    if (checkedIds.size === filtered.length) {
+      setCheckedIds(new Set());
+    } else {
+      setCheckedIds(new Set(filtered.map((r) => r.id)));
+    }
+  };
+
+  const deleteSelected = async () => {
+    if (checkedIds.size === 0) return;
+    if (!confirm(`Delete ${checkedIds.size} selected review(s)?`)) return;
+    const ids = [...checkedIds].join(',');
+    await fetch(`/api/admin/reviews?id=${ids}`, { method: 'DELETE' });
+    setReviews((prev) => prev.filter((r) => !checkedIds.has(r.id)));
+    setCheckedIds(new Set());
   };
 
   return (
@@ -559,108 +913,109 @@ function ReviewsTab() {
           <h1 style={styles.pageTitle}>Reviews</h1>
           <span style={styles.badge}>{reviews.length} total</span>
         </div>
-        <button onClick={() => setShowForm(!showForm)} style={styles.btnPrimary}>
-          {showForm ? 'Cancel' : '+ Add Review'}
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{ position: 'relative' }}>
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search by title..."
+              style={{ ...styles.input, marginBottom: 0, paddingLeft: 32, width: 220 }}
+            />
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#999" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)' }}>
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+          </div>
+          <button onClick={() => setShowForm(!showForm)} style={styles.btnPrimary}>
+            {showForm ? 'Cancel' : '+ Add Review'}
+          </button>
+        </div>
       </div>
 
       {showForm && (
         <form onSubmit={handleSubmit} style={styles.formCard}>
           <h3 style={styles.formTitle}>New Review</h3>
           <div style={styles.formGrid}>
-            <input
-              type="text"
-              placeholder="Name *"
-              value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
-              style={styles.input}
-            />
-            <input
-              type="text"
-              placeholder="Country (e.g. Japan)"
-              value={form.country}
-              onChange={(e) => setForm({ ...form, country: e.target.value })}
-              style={styles.input}
-            />
-            <input
-              type="text"
-              placeholder="Flag emoji (e.g. 🇯🇵)"
-              value={form.flag}
-              onChange={(e) => setForm({ ...form, flag: e.target.value })}
-              style={styles.input}
-            />
-            <input
-              type="text"
-              placeholder="Program (e.g. ESL Intensive)"
-              value={form.program}
-              onChange={(e) => setForm({ ...form, program: e.target.value })}
-              style={styles.input}
-            />
-            <input
-              type="text"
-              placeholder="Duration (e.g. 12 weeks)"
-              value={form.duration}
-              onChange={(e) => setForm({ ...form, duration: e.target.value })}
-              style={styles.input}
-            />
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <label style={{ fontSize: '0.88rem', color: '#666', flexShrink: 0 }}>Rating:</label>
-              <select
-                value={form.rating}
-                onChange={(e) => setForm({ ...form, rating: e.target.value })}
-                style={{ ...styles.input, marginBottom: 0, flex: 1 }}
-              >
-                {[5, 4, 3, 2, 1].map((n) => (
-                  <option key={n} value={n}>{'★'.repeat(n)}{'☆'.repeat(5 - n)} ({n})</option>
-                ))}
-              </select>
-            </div>
+            <input type="text" placeholder="Name *" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} style={styles.input} />
+            <input type="text" placeholder="Title" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} style={styles.input} />
           </div>
-          <textarea
-            placeholder="Review text *"
-            value={form.text}
-            onChange={(e) => setForm({ ...form, text: e.target.value })}
-            style={{ ...styles.input, minHeight: 100, resize: 'vertical' }}
-          />
+          <textarea placeholder="Review text *" value={form.text} onChange={(e) => setForm({ ...form, text: e.target.value })} style={{ ...styles.input, minHeight: 100, resize: 'vertical' }} />
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <button type="submit" disabled={submitting} style={styles.btnPrimary}>
-              {submitting ? 'Saving...' : 'Save Review'}
-            </button>
+            <button type="submit" disabled={submitting} style={styles.btnPrimary}>{submitting ? 'Saving...' : 'Save Review'}</button>
           </div>
         </form>
       )}
 
+      {/* Edit Modal */}
+      {editModal && (
+        <div style={styles.modalOverlay} onClick={() => setEditModal(null)}>
+          <div style={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+            <form onSubmit={handleEditSubmit}>
+              <h3 style={styles.formTitle}>Edit Review</h3>
+              <input type="text" placeholder="Name" value={editForm.name} onChange={(e) => setEditForm({ ...editForm, name: e.target.value })} style={styles.input} />
+              <input type="text" placeholder="Title" value={editForm.title} onChange={(e) => setEditForm({ ...editForm, title: e.target.value })} style={styles.input} />
+              <textarea placeholder="Review text *" value={editForm.text} onChange={(e) => setEditForm({ ...editForm, text: e.target.value })} style={{ ...styles.input, minHeight: 100, resize: 'vertical' }} />
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+                <button type="button" onClick={() => setEditModal(null)} style={styles.btnSmallDanger}>Cancel</button>
+                <button type="submit" disabled={submitting} style={styles.btnPrimary}>{submitting ? 'Saving...' : 'Update Review'}</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {checkedIds.size > 0 && (
+        <div style={{ marginBottom: 16, display: 'flex', alignItems: 'center', gap: 12 }}>
+          <button onClick={deleteSelected} style={{ ...styles.btnDanger, display: 'flex', alignItems: 'center', gap: 6 }}>
+            Delete Selected ({checkedIds.size})
+          </button>
+        </div>
+      )}
+
       {loading ? (
         <LoadingState />
-      ) : reviews.length === 0 ? (
-        <EmptyState message="No reviews yet" />
+      ) : filtered.length === 0 ? (
+        <EmptyState message={searchQuery ? 'No matching reviews' : 'No reviews yet'} />
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          {reviews.map((review) => (
-            <div key={review.id} style={styles.reviewCard}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                  <div style={styles.reviewAvatar}>
-                    {review.flag || review.name?.charAt(0)?.toUpperCase() || '?'}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '4px 12px' }}>
+            <input type="checkbox" checked={checkedIds.size === filtered.length && filtered.length > 0} onChange={toggleAll} style={{ cursor: 'pointer' }} />
+            <span style={{ fontSize: '0.8rem', color: '#888' }}>Select All</span>
+          </div>
+          {filtered.map((review) => (
+            <div key={review.id} style={{ ...styles.reviewCard, display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+              <input
+                type="checkbox"
+                checked={checkedIds.has(review.id)}
+                onChange={() => toggleCheck(review.id)}
+                style={{ cursor: 'pointer', marginTop: 4 }}
+              />
+              <div style={{ flex: 1 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                    <div style={styles.reviewAvatar}>
+                      {review.flag || review.name?.charAt(0)?.toUpperCase() || '?'}
+                    </div>
+                    <div>
+                      <div style={{ fontWeight: 600, fontSize: '0.95rem', color: '#1a1a2e' }}>
+                        {review.name}
+                        {review.country && <span style={{ fontWeight: 400, color: '#888', marginLeft: 8, fontSize: '0.85rem' }}>{review.country}</span>}
+                      </div>
+                      {review.title && (
+                        <div style={{ fontSize: '0.85rem', color: '#666', marginTop: 2 }}>{review.title}</div>
+                      )}
+                    </div>
                   </div>
-                  <div>
-                    <div style={{ fontWeight: 600, fontSize: '0.95rem', color: '#1a1a2e' }}>
-                      {review.name}
-                      {review.country && <span style={{ fontWeight: 400, color: '#888', marginLeft: 8, fontSize: '0.85rem' }}>{review.country}</span>}
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 2 }}>
-                      <span>{renderStars(review.rating || 0)}</span>
-                      {review.program && <span style={{ fontSize: '0.8rem', color: '#888' }}>{review.program}</span>}
-                      {review.duration && <span style={{ fontSize: '0.8rem', color: '#aaa' }}>{review.duration}</span>}
-                    </div>
+                  <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
+                    <button onClick={() => openEdit(review)} style={styles.btnSmallDanger}>Edit</button>
+                    <button onClick={() => deleteReview(review.id)} style={styles.btnSmallDanger}>Delete</button>
                   </div>
                 </div>
-                <button onClick={() => deleteReview(review.id)} style={styles.btnSmallDanger}>Delete</button>
+                <p style={{ margin: '14px 0 0', fontSize: '0.9rem', lineHeight: 1.7, color: '#444' }}>{review.text}</p>
+                {review.created_at && (
+                  <div style={{ marginTop: 10, fontSize: '0.75rem', color: '#bbb' }}>{formatDate(review.created_at)}</div>
+                )}
               </div>
-              <p style={{ margin: '14px 0 0', fontSize: '0.9rem', lineHeight: 1.7, color: '#444' }}>{review.text}</p>
-              {review.created_at && (
-                <div style={{ marginTop: 10, fontSize: '0.75rem', color: '#bbb' }}>{formatDate(review.created_at)}</div>
-              )}
             </div>
           ))}
         </div>
@@ -683,6 +1038,8 @@ function ReportsTab() {
   const [editForm, setEditForm] = useState({ title: '', content: '', image_url: '', password: '' });
   const [editFile, setEditFile] = useState(null);
   const [editPreview, setEditPreview] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [checkedIds, setCheckedIds] = useState(new Set());
 
   useEffect(() => { fetchReports(); }, []);
 
@@ -738,11 +1095,40 @@ function ReportsTab() {
     setSubmitting(false);
   };
 
+  const filtered = searchQuery.trim()
+    ? reports.filter((r) => (r.title || '').toLowerCase().includes(searchQuery.toLowerCase()))
+    : reports;
+
   const deleteReport = async (id) => {
     if (!confirm('Delete this report?')) return;
     await fetch(`/api/admin/reports?id=${id}`, { method: 'DELETE' });
     setReports((prev) => prev.filter((r) => r.id !== id));
     if (expanded === id) setExpanded(null);
+  };
+
+  const toggleCheck = (id) => {
+    setCheckedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      return next;
+    });
+  };
+
+  const toggleAll = () => {
+    if (checkedIds.size === filtered.length) {
+      setCheckedIds(new Set());
+    } else {
+      setCheckedIds(new Set(filtered.map((r) => r.id)));
+    }
+  };
+
+  const deleteSelected = async () => {
+    if (checkedIds.size === 0) return;
+    if (!confirm(`Delete ${checkedIds.size} selected report(s)?`)) return;
+    const ids = [...checkedIds].join(',');
+    await fetch(`/api/admin/reports?id=${ids}`, { method: 'DELETE' });
+    setReports((prev) => prev.filter((r) => !checkedIds.has(r.id)));
+    setCheckedIds(new Set());
   };
 
   const openEdit = (report) => {
@@ -778,9 +1164,23 @@ function ReportsTab() {
           <h1 style={styles.pageTitle}>Reports</h1>
           <span style={styles.badge}>{reports.length} total</span>
         </div>
-        <button onClick={() => { setShowForm(!showForm); setFile(null); setPreview(null); setForm({ title: '', content: '', image_url: '', password: '' }); }} style={styles.btnPrimary}>
-          {showForm ? 'Cancel' : '+ Add Report'}
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{ position: 'relative' }}>
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search by title..."
+              style={{ ...styles.input, marginBottom: 0, paddingLeft: 32, width: 220 }}
+            />
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#999" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)' }}>
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+          </div>
+          <button onClick={() => { setShowForm(!showForm); setFile(null); setPreview(null); setForm({ title: '', content: '', image_url: '', password: '' }); }} style={styles.btnPrimary}>
+            {showForm ? 'Cancel' : '+ Add Report'}
+          </button>
+        </div>
       </div>
 
       {showForm && (
@@ -835,26 +1235,48 @@ function ReportsTab() {
         </div>
       )}
 
+      {checkedIds.size > 0 && (
+        <div style={{ marginBottom: 16, display: 'flex', alignItems: 'center', gap: 12 }}>
+          <button onClick={deleteSelected} style={{ ...styles.btnDanger, display: 'flex', alignItems: 'center', gap: 6 }}>
+            Delete Selected ({checkedIds.size})
+          </button>
+        </div>
+      )}
+
       {loading ? (
         <LoadingState />
-      ) : reports.length === 0 ? (
-        <EmptyState message="No reports yet" />
+      ) : filtered.length === 0 ? (
+        <EmptyState message={searchQuery ? 'No matching reports' : 'No reports yet'} />
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          {reports.map((report) => (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 12px' }}>
+            <input type="checkbox" checked={checkedIds.size === filtered.length && filtered.length > 0} onChange={toggleAll} style={{ cursor: 'pointer' }} />
+            <span style={{ fontSize: '0.8rem', color: '#888' }}>Select All</span>
+          </div>
+          {filtered.map((report) => (
             <div key={report.id} style={styles.tableRow}>
               <div
-                onClick={() => setExpanded(expanded === report.id ? null : report.id)}
                 style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', padding: '16px 20px' }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12, flex: 1, minWidth: 0 }}>
+                  <input
+                    type="checkbox"
+                    checked={checkedIds.has(report.id)}
+                    onChange={() => toggleCheck(report.id)}
+                    onClick={(e) => e.stopPropagation()}
+                    style={{ cursor: 'pointer' }}
+                  />
                   <svg
                     width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-                    style={{ transform: expanded === report.id ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.2s', flexShrink: 0 }}
+                    style={{ transform: expanded === report.id ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.2s', flexShrink: 0, cursor: 'pointer' }}
+                    onClick={() => setExpanded(expanded === report.id ? null : report.id)}
                   >
                     <polyline points="9 18 15 12 9 6" />
                   </svg>
-                  <strong style={{ fontSize: '0.93rem', color: '#1a1a2e', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{report.title}</strong>
+                  <strong
+                    onClick={() => setExpanded(expanded === report.id ? null : report.id)}
+                    style={{ fontSize: '0.93rem', color: '#1a1a2e', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', cursor: 'pointer' }}
+                  >{report.title}</strong>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0, marginLeft: 16 }}>
                   <span style={{ fontSize: '0.8rem', color: '#999' }}>{formatDate(report.created_at)}</span>
@@ -926,6 +1348,7 @@ function MembersTab() {
                 <tr style={{ borderBottom: '2px solid #eee', textAlign: 'left' }}>
                   <th style={{ padding: '10px 12px', color: '#666', fontWeight: 600 }}>Username</th>
                   <th style={{ padding: '10px 12px', color: '#666', fontWeight: 600 }}>Name</th>
+                  <th style={{ padding: '10px 12px', color: '#666', fontWeight: 600 }}>Password</th>
                   <th style={{ padding: '10px 12px', color: '#666', fontWeight: 600 }}>Email</th>
                   <th style={{ padding: '10px 12px', color: '#666', fontWeight: 600 }}>Phone</th>
                   <th style={{ padding: '10px 12px', color: '#666', fontWeight: 600 }}>Birthdate</th>
@@ -938,6 +1361,7 @@ function MembersTab() {
                   <tr key={member.id} style={{ borderBottom: '1px solid #f0f0f0' }}>
                     <td style={{ padding: '12px', color: '#1a1a2e', fontWeight: 500 }}>{member.username || '-'}</td>
                     <td style={{ padding: '12px', color: '#1a1a2e' }}>{member.name || '-'}</td>
+                    <td style={{ padding: '12px', color: '#666', fontFamily: 'monospace', fontSize: '0.82rem' }}>{member.password || '-'}</td>
                     <td style={{ padding: '12px', color: '#666' }}>{member.email || '-'}</td>
                     <td style={{ padding: '12px', color: '#666' }}>{member.phone || '-'}</td>
                     <td style={{ padding: '12px', color: '#666' }}>{member.birthdate || '-'}</td>

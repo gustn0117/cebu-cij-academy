@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 export default function PopupModal() {
+  const router = useRouter();
   const [popups, setPopups] = useState([]);
   const [dismissed, setDismissed] = useState({});
 
@@ -45,6 +47,8 @@ export default function PopupModal() {
 
   const visiblePopups = popups.filter((p) => !dismissed[p.id]);
 
+  // Only show popups on the main page
+  if (router.pathname !== '/') return null;
   if (visiblePopups.length === 0) return null;
 
   return (

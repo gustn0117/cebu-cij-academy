@@ -6,30 +6,6 @@ import { useLanguage } from '@/lib/LanguageContext';
 
 const PER_PAGE = 14;
 
-function StarRating({ rating, interactive, onRate }) {
-  const [hover, setHover] = useState(0);
-  return (
-    <div style={{ display: 'inline-flex', gap: 2 }}>
-      {[1, 2, 3, 4, 5].map((star) => (
-        <svg
-          key={star}
-          width={interactive ? 28 : 14}
-          height={interactive ? 28 : 14}
-          viewBox="0 0 24 24"
-          fill={(interactive ? (hover || rating) : rating) >= star ? '#F59E0B' : '#E5E7EB'}
-          stroke="none"
-          style={interactive ? { cursor: 'pointer' } : undefined}
-          onMouseEnter={interactive ? () => setHover(star) : undefined}
-          onMouseLeave={interactive ? () => setHover(0) : undefined}
-          onClick={interactive ? () => onRate(star) : undefined}
-        >
-          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-        </svg>
-      ))}
-    </div>
-  );
-}
-
 const modalOverlayStyle = {
   position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
   background: 'rgba(0,0,0,0.5)', zIndex: 9999,
@@ -68,29 +44,52 @@ const closeBtn = {
 };
 
 function ReviewFormModal({ isOpen, onClose, onSubmit, editData }) {
-  const [form, setForm] = useState({ title: '', text: '', rating: 5 });
+  const [form, setForm] = useState({ title: '', text: '' });
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
     if (editData) {
-      setForm({ title: editData.title || '', text: editData.text || '', rating: editData.rating || 5 });
+      setForm({ title: editData.title || '', text: editData.text || '' });
+      setImagePreview(editData.image_url || null);
+      setImageFile(null);
     } else {
-      setForm({ title: '', text: '', rating: 5 });
+      setForm({ title: '', text: '' });
+      setImageFile(null);
+      setImagePreview(null);
     }
     setError('');
   }, [editData, isOpen]);
 
   if (!isOpen) return null;
 
+  const handleFileChange = (e) => {
+    const f = e.target.files[0];
+    if (!f) return;
+    setImageFile(f);
+    const reader = new FileReader();
+    reader.onload = (ev) => setImagePreview(ev.target.result);
+    reader.readAsDataURL(f);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.text.trim()) { setError('Review content is required'); return; }
-    if (form.rating < 1 || form.rating > 5) { setError('Please select a rating'); return; }
     setLoading(true);
     setError('');
     try {
-      await onSubmit(form, editData?.id);
+      let image_url = editData?.image_url || null;
+      if (imageFile) {
+        const formData = new FormData();
+        formData.append('file', imageFile);
+        const uploadRes = await fetch('/api/admin/upload', { method: 'POST', body: formData });
+        const uploadData = await uploadRes.json();
+        if (!uploadData.url) throw new Error(uploadData.error || 'Image upload failed');
+        image_url = uploadData.url;
+      }
+      await onSubmit({ ...form, image_url }, editData?.id);
       onClose();
     } catch (err) {
       setError(err.message || 'Failed to save review');
@@ -118,10 +117,6 @@ function ReviewFormModal({ isOpen, onClose, onSubmit, editData }) {
 
         <form onSubmit={handleSubmit}>
           <div style={{ marginBottom: 16 }}>
-            <label style={labelStyle}>Rating</label>
-            <StarRating rating={form.rating} interactive onRate={(r) => setForm({ ...form, rating: r })} />
-          </div>
-          <div style={{ marginBottom: 16 }}>
             <label style={labelStyle}>Title</label>
             <input
               style={inputStyle}
@@ -131,7 +126,7 @@ function ReviewFormModal({ isOpen, onClose, onSubmit, editData }) {
               placeholder="Brief summary of your experience"
             />
           </div>
-          <div style={{ marginBottom: 24 }}>
+          <div style={{ marginBottom: 16 }}>
             <label style={labelStyle}>Review</label>
             <textarea
               style={{ ...inputStyle, minHeight: 120, resize: 'vertical' }}
@@ -139,6 +134,30 @@ function ReviewFormModal({ isOpen, onClose, onSubmit, editData }) {
               onChange={(e) => setForm({ ...form, text: e.target.value })}
               required
               placeholder="Tell us about your experience..."
+            />
+          </div>
+          <div style={{ marginBottom: 24 }}>
+            <label style={labelStyle}>Image (optional)</label>
+            <div
+              onClick={() => document.getElementById('review-image-input').click()}
+              style={{
+                border: '2px dashed #dee2e6', borderRadius: 12,
+                padding: imagePreview ? 0 : '24px 16px', textAlign: 'center',
+                cursor: 'pointer', overflow: 'hidden', background: '#fafafa',
+              }}
+            >
+              {imagePreview ? (
+                <img src={imagePreview} alt="Preview" style={{ width: '100%', maxHeight: 200, objectFit: 'cover', display: 'block' }} />
+              ) : (
+                <p style={{ margin: 0, color: '#999', fontSize: '0.88rem' }}>Click to select image</p>
+              )}
+            </div>
+            <input
+              id="review-image-input"
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              style={{ display: 'none' }}
             />
           </div>
           <button type="submit" style={{ ...btnPrimary, width: '100%' }} disabled={loading}>
@@ -229,8 +248,8 @@ export default function Review() {
   const handleReviewSubmit = async (formData, editId) => {
     const method = editId ? 'PUT' : 'POST';
     const body = editId
-      ? { id: editId, title: formData.title, text: formData.text, rating: formData.rating }
-      : { title: formData.title, text: formData.text, rating: formData.rating };
+      ? { id: editId, title: formData.title, text: formData.text, image_url: formData.image_url }
+      : { title: formData.title, text: formData.text, image_url: formData.image_url };
 
     const res = await fetch('/api/reviews', {
       method,
@@ -313,22 +332,20 @@ export default function Review() {
               <table className="board-table">
                 <thead>
                   <tr>
-                    <th className="board-col-no" style={{ width: 80 }}>Rating</th>
+                    <th className="board-col-no">{t.comm?.boardNo || 'No'}</th>
                     <th className="board-col-title">{t.comm?.boardTitle || 'Title'}</th>
                     <th className="board-col-date" style={{ width: 100 }}>Author</th>
                     <th className="board-col-date">{t.comm?.boardDate || 'Date'}</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {currentReviews.map((review) => (
+                  {currentReviews.map((review, i) => (
                     <React.Fragment key={review.id}>
                       <tr
                         style={{ cursor: 'pointer' }}
                         onClick={() => setExpandedId(expandedId === review.id ? null : review.id)}
                       >
-                        <td className="board-no" style={{ width: 80 }}>
-                          <StarRating rating={review.rating} />
-                        </td>
+                        <td className="board-no">{reviews.length - ((page - 1) * PER_PAGE + i)}</td>
                         <td className="board-title">
                           <span style={{ color: '#1A1A2E' }}>{getDisplayTitle(review)}</span>
                         </td>
@@ -342,7 +359,6 @@ export default function Review() {
                           <td colSpan="4" style={{ padding: '20px 24px', background: '#FAFAFA', borderBottom: '1px solid #eee' }}>
                             <div style={{ maxWidth: 700 }}>
                               <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
-                                <StarRating rating={review.rating} />
                                 <span style={{ fontSize: '0.85rem', color: '#6c757d' }}>
                                   by <strong>{review.name || 'Anonymous'}</strong>
                                   {review.created_at && ` on ${new Date(review.created_at).toLocaleDateString()}`}
@@ -352,6 +368,15 @@ export default function Review() {
                                 <h4 style={{ fontSize: '1.05rem', fontWeight: 600, color: '#1A1A2E', marginBottom: 8 }}>
                                   {review.title}
                                 </h4>
+                              )}
+                              {review.image_url && (
+                                <div style={{ marginBottom: 16 }}>
+                                  <img
+                                    src={review.image_url}
+                                    alt={review.title || 'Review image'}
+                                    style={{ maxWidth: '100%', maxHeight: 300, borderRadius: 8, objectFit: 'cover' }}
+                                  />
+                                </div>
                               )}
                               <p style={{ fontSize: '0.95rem', lineHeight: 1.7, color: '#333', margin: 0, whiteSpace: 'pre-wrap' }}>
                                 {review.text}

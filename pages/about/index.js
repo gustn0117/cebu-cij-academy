@@ -497,7 +497,7 @@ export default function About() {
       <section id="address" className="section section-alt">
         <div className="container">
           <div className="section-title">
-            <h2>CIJ Academy&amp;School Address</h2>
+            <h2>Location</h2>
             <span className="accent-line"></span>
           </div>
 
@@ -506,6 +506,13 @@ export default function About() {
             <h3 style={{ fontSize: '1.4rem', fontWeight: 700, marginBottom: 12 }}>Airport Pickup &amp; Arrival Guide</h3>
             <p>CIJ Academy &amp; School provides a safe and convenient airport pickup service to ensure that students arrive smoothly in Cebu.</p>
             <p>For first-time visitors to the Philippines, please refer to the guide below for a clear understanding of the arrival process.</p>
+            <div style={{ marginTop: 24, borderRadius: 'var(--radius)', overflow: 'hidden', boxShadow: 'var(--shadow-md)' }}>
+              <img
+                src="/images/cebu-mactan-airport.jpg"
+                alt="Cebu-Mactan International Airport"
+                style={{ width: '100%', height: 'auto', display: 'block' }}
+              />
+            </div>
           </div>
 
           <div className="content-block" style={{ marginTop: 40 }}>
@@ -619,36 +626,34 @@ export default function About() {
             </div>
 
             {/* Google Maps Embeds */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 24 }}>
-              <div>
-                <h4 style={{ fontSize: '0.95rem', fontWeight: 600, marginBottom: 8, color: 'var(--gray-700)' }}>Liloan Campus</h4>
-                <div style={{ borderRadius: 'var(--radius)', overflow: 'hidden', boxShadow: 'var(--shadow-md)' }}>
-                  <iframe
-                    src="https://maps.google.com/maps?q=CIJ+Sparta+Liloan+Cebu+Philippines&t=&z=15&ie=UTF8&iwloc=&output=embed"
-                    width="100%"
-                    height="300"
-                    style={{ border: 0, display: 'block' }}
-                    allowFullScreen=""
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    title="CIJ Academy Liloan Campus"
-                  />
-                </div>
+            <div style={{ marginBottom: 32 }}>
+              <h4 style={{ fontSize: '1.05rem', fontWeight: 600, marginBottom: 12, color: 'var(--gray-700)' }}>Liloan Campus</h4>
+              <div style={{ borderRadius: 'var(--radius)', overflow: 'hidden', boxShadow: 'var(--shadow-md)' }}>
+                <iframe
+                  src="https://maps.google.com/maps?q=CIJ+Sparta+Liloan+Cebu+Philippines&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                  width="100%"
+                  height="450"
+                  style={{ border: 0, display: 'block' }}
+                  allowFullScreen=""
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="CIJ Academy Liloan Campus"
+                />
               </div>
-              <div>
-                <h4 style={{ fontSize: '0.95rem', fontWeight: 600, marginBottom: 8, color: 'var(--gray-700)' }}>Premium Dormitory</h4>
-                <div style={{ borderRadius: 'var(--radius)', overflow: 'hidden', boxShadow: 'var(--shadow-md)' }}>
-                  <iframe
-                    src="https://maps.google.com/maps?q=Fatima+Road+Jubay+Liloan+Cebu+Philippines&t=&z=15&ie=UTF8&iwloc=&output=embed"
-                    width="100%"
-                    height="300"
-                    style={{ border: 0, display: 'block' }}
-                    allowFullScreen=""
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    title="CIJ Premium Dormitory"
-                  />
-                </div>
+            </div>
+            <div>
+              <h4 style={{ fontSize: '1.05rem', fontWeight: 600, marginBottom: 12, color: 'var(--gray-700)' }}>Premium Dormitory</h4>
+              <div style={{ borderRadius: 'var(--radius)', overflow: 'hidden', boxShadow: 'var(--shadow-md)' }}>
+                <iframe
+                  src="https://maps.google.com/maps?q=Weber+Hotel+Liloan+Cebu+Philippines&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                  width="100%"
+                  height="450"
+                  style={{ border: 0, display: 'block' }}
+                  allowFullScreen=""
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="CIJ Premium Dormitory (Weber Hotel)"
+                />
               </div>
             </div>
           </div>

@@ -50,6 +50,15 @@ export default function NoticeDetail() {
               <p style={{ fontSize: '0.88rem', color: 'var(--gray-500)', marginBottom: 32 }}>
                 {new Date(post.created_at).toLocaleDateString('ko-KR')}
               </p>
+              {post.image_url && (
+                <div style={{ marginBottom: 32 }}>
+                  <img
+                    src={post.image_url}
+                    alt={post.title}
+                    style={{ maxWidth: '100%', borderRadius: 12, boxShadow: '0 4px 16px rgba(0,0,0,0.08)' }}
+                  />
+                </div>
+              )}
               <div style={{ lineHeight: 1.9 }}>
                 {post.content.split('\n').map((line, i) => (
                   <p key={i} style={{ marginBottom: 8 }}>{line || '\u00A0'}</p>
