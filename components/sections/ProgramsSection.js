@@ -586,15 +586,15 @@ function JuniorCampProgram() {
                 <tr><td>09:30 ~ 10:10</td><td>3rd</td><td>1:1 Class(Grammar) or IELTS Class</td><td rowSpan={9} style={{verticalAlign:'top',lineHeight:1.8,fontSize:'0.88rem'}}><strong>Outdoor activity &amp; Lunch</strong><br/>Plantation-bay Resort +Resort Buffet<br/>Safari Adventure Park + Lunch Dine Out<br/>City Tour + Lunch Dine Out<br/>J-Park Resort+Resort Buffet<br/>Westown Lagoon +Lunch Dine Out<br/>El-Salvador Resort + Resort Buffet<br/>Maribago Bluewater + Resort Buffet<br/>Ocean Park Cebu + Lunch dine out<br/><span style={{fontSize:'0.82rem',color:'#888'}}>※ Can be adjusted</span></td><td rowSpan={3}></td></tr>
                 <tr><td>10:10 ~ 10:30</td><td></td><td>Snack</td></tr>
                 <tr><td>10:35 ~ 11:15</td><td>4th</td><td>1:1 Class(Writing) or IELTS Class</td></tr>
-                <tr><td>11:20 ~ 12:00</td><td>5th</td><td>1:1 Class(Reading)</td><td>Lunch</td></tr>
-                <tr><td>12:00 ~ 13:00</td><td></td><td>Lunch</td><td rowSpan={5} style={{verticalAlign:'top',lineHeight:1.8,fontSize:'0.88rem'}}>Humanism<br/>Education &amp;<br/>Indoor Activity<br/>Study Check-up –<br/>Check What You Studied for a Week<br/>(Vocabulary, Sentence, English Essay, Books)</td></tr>
-                <tr><td>13:00 ~ 13:40</td><td>6th</td><td>1:1 Class(Speaking)</td></tr>
+                <tr><td>11:20 ~ 12:00</td><td>5th</td><td>1:1 Class(Reading)</td><td></td></tr>
+                <tr><td>12:00 ~ 13:00</td><td></td><td>Lunch</td><td>Lunch</td></tr>
+                <tr><td>13:00 ~ 13:40</td><td>6th</td><td>1:1 Class(Speaking)</td><td rowSpan={2} style={{verticalAlign:'top',lineHeight:1.7,fontSize:'0.85rem'}}>Humanism<br/>Education &amp;<br/>Indoor Activity</td></tr>
                 <tr><td>13:45 ~ 14:25</td><td>7th</td><td>Big Group Class</td></tr>
-                <tr><td>14:30 ~ 15:10</td><td>8th</td><td>Club Activity (guitar,popsong,reading,speech)</td></tr>
+                <tr><td>14:30 ~ 15:10</td><td>8th</td><td>Club Activity (guitar,popsong,reading,speech)</td><td rowSpan={5} style={{verticalAlign:'top',lineHeight:1.7,fontSize:'0.85rem'}}>Study Check-up –<br/>Check What You<br/>Studied for a Week<br/>(Vocabulary, Sentence,<br/>English Essay, Books)</td></tr>
                 <tr><td>15:15 ~ 15:35</td><td></td><td>Snack</td></tr>
-                <tr><td>15:40 ~ 16:20</td><td>9th</td><td>Club Activity (guitar,popsong,reading,speech)</td><td rowSpan={2}>Personal maintenance &amp; Rest</td><td></td></tr>
-                <tr><td>16:25 ~ 17:05</td><td>10th</td><td>Physical Activity</td><td></td></tr>
-                <tr><td>17:10 ~ 17:50</td><td>11th</td><td>Physical Activity</td><td></td><td></td></tr>
+                <tr><td>15:40 ~ 16:20</td><td>9th</td><td>Club Activity (guitar,popsong,reading,speech)</td><td rowSpan={3}>Personal maintenance &amp; Rest</td></tr>
+                <tr><td>16:25 ~ 17:05</td><td>10th</td><td>Physical Activity</td></tr>
+                <tr><td>17:10 ~ 17:50</td><td>11th</td><td>Physical Activity</td></tr>
                 <tr><td>18:00 ~ 19:00</td><td></td><td>Dinner</td><td>Dinner</td><td>Dinner</td></tr>
                 <tr><td>19:00 ~ 19:40</td><td>12th</td><td>Vocabulary &amp; Sentence</td><td>Calling student's parents</td><td>Watching Movie</td></tr>
                 <tr><td>19:40 ~ 20:20</td><td>13th</td><td>Vocabulary Test &amp; Snack time</td><td>Watching Movie</td><td></td></tr>

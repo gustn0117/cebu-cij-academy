@@ -1146,7 +1146,6 @@ img { max-width: 100%; height: auto; }
 .styled-table td { padding: 10px 14px; border-bottom: 1px solid var(--gray-300); font-size: 0.88rem; color: var(--gray-700); line-height: 1.6; }
 .styled-table tbody tr:hover { background: var(--gray-100); }
 .styled-table td:first-child, .styled-table th:first-child { white-space: nowrap; }
-.styled-table td:nth-child(2) { white-space: nowrap; }
 
 /* ─── Navbar ─── */
 .navbar {
