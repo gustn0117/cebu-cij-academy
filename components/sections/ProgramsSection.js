@@ -269,23 +269,23 @@ function SpartaProgram() {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr><td>06:30 ~ 07:20</td><td>Vocabulary Test</td><td>06:30 ~ 07:20</td><td></td></tr>
-                  <tr><td>07:20 ~ 08:00</td><td>Meal Time</td><td>07:20 ~ 08:00</td><td rowSpan={5} style={{verticalAlign:'top',lineHeight:1.8,fontSize:'0.88rem'}}><strong>※ Regular Class</strong><br/>■ Each class lasts 45 minutes, with a 5-minute break in between.<br/>■ Students can choose their classes from 1 to 10 according to their curriculum.<br/>■ Mandatory self-study</td></tr>
+                  <tr><td>06:30 ~ 07:20</td><td>Vocabulary Test</td><td>06:30 ~ 07:20</td><td rowSpan={18} style={{verticalAlign:'top',lineHeight:1.8,fontSize:'0.88rem'}}><strong>※ Regular Class</strong><br/>■ Each class lasts 45 minutes, with a 5-minute break in between.<br/>■ Students can choose their classes from 1 to 10 according to their curriculum.<br/>■ Mandatory self-study<br/><br/><strong>※ Self-Study</strong><br/>■ Students are required to attend 1 session every day, excluding weekends and holidays.<br/><br/><strong>※ Vocabulary Test &amp; Sentence Test</strong><br/>■ Sparta Course students are required to join these tests.<br/>■ Penalties will apply if students fail the test.</td></tr>
+                  <tr><td>07:20 ~ 08:00</td><td>Meal Time</td><td>07:20 ~ 08:00</td></tr>
                   <tr><td>08:00 ~ 08:45</td><td>1st Class</td><td>08:00 ~ 08:40</td></tr>
                   <tr><td>08:50 ~ 09:35</td><td>2nd Class</td><td>08:45 ~ 09:25</td></tr>
                   <tr><td>09:40 ~ 10:25</td><td>3rd Class</td><td>09:30 ~ 10:10</td></tr>
                   <tr><td>10:30 ~ 11:15</td><td>4th Class</td><td>10:15 ~ 10:55</td></tr>
-                  <tr><td>11:20 ~ 12:05</td><td>5th Class</td><td>11:00 ~ 11:40</td><td rowSpan={2} style={{verticalAlign:'top',lineHeight:1.8,fontSize:'0.88rem'}}><strong>※ Self-Study</strong><br/>■ Students are required to attend 1 session every day, excluding weekends and holidays.</td></tr>
+                  <tr><td>11:20 ~ 12:05</td><td>5th Class</td><td>11:00 ~ 11:40</td></tr>
                   <tr><td>12:05 ~ 13:00</td><td>Meal time</td><td>12:00 ~ 13:00</td></tr>
-                  <tr><td>13:00 ~ 13:45</td><td>6th Class</td><td>13:00 ~ 13:40</td><td></td></tr>
-                  <tr><td>13:50 ~ 14:35</td><td>7th Class</td><td>13:45 ~ 14:25</td><td rowSpan={4} style={{verticalAlign:'top',lineHeight:1.8,fontSize:'0.88rem'}}><strong>※ Vocabulary Test &amp; Sentence Test</strong><br/>■ Sparta Course students are required to join these tests.<br/>■ Penalties will apply if students fail the test.</td></tr>
+                  <tr><td>13:00 ~ 13:45</td><td>6th Class</td><td>13:00 ~ 13:40</td></tr>
+                  <tr><td>13:50 ~ 14:35</td><td>7th Class</td><td>13:45 ~ 14:25</td></tr>
                   <tr><td>14:40 ~ 15:25</td><td>8th Class</td><td>14:30 ~ 15:10</td></tr>
                   <tr><td>15:30 ~ 16:15</td><td>9th Class</td><td>15:15 ~ 15:55</td></tr>
                   <tr><td>16:20 ~ 17:05</td><td>10th Class</td><td>16:00 ~ 16:40</td></tr>
-                  <tr><td>17:10 ~ 17:55</td><td>11th Class</td><td>16:45 ~ 17:25</td><td></td></tr>
-                  <tr><td>18:00 ~ 18:50</td><td>Meal time</td><td>18:00 ~ 18:50</td><td></td></tr>
-                  <tr><td>19:00 ~ 19:50</td><td>Self Study</td><td></td><td></td></tr>
-                  <tr><td>20:00 ~ 20:50</td><td>Sentence Test</td><td></td><td></td></tr>
+                  <tr><td>17:10 ~ 17:55</td><td>11th Class</td><td>16:45 ~ 17:25</td></tr>
+                  <tr><td>18:00 ~ 18:50</td><td>Meal time</td><td>18:00 ~ 18:50</td></tr>
+                  <tr><td>19:00 ~ 19:50</td><td>Self Study</td><td>None</td></tr>
+                  <tr><td>20:00 ~ 20:50</td><td>Sentence Test</td><td>None</td></tr>
                 </tbody>
               </table></div>
         </div>
