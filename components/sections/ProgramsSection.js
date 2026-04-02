@@ -103,19 +103,18 @@ function SemiSpartaProgram() {
         {/* Time Table */}
         <div className="content-block">
           <h3>Time Table</h3>
-          <div className="program-timetable-wrapper">
-            <div className="program-timetable-main">
-              <div className="styled-table-wrap"><table className="styled-table">
+          <div className="styled-table-wrap"><table className="styled-table">
                 <thead>
                   <tr>
                     <th>Time</th>
                     <th>Class</th>
                     <th>Friday</th>
+                    <th>Notice</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr><td>07:20 ~ 08:00</td><td>Meal Time</td><td>07:20 ~ 08:00</td></tr>
-                  <tr><td>08:00 ~ 08:45</td><td>1st Class</td><td>08:00 ~ 08:40</td></tr>
+                  <tr><td>07:20 ~ 08:00</td><td>Meal Time</td><td>07:20 ~ 08:00</td><td></td></tr>
+                  <tr><td>08:00 ~ 08:45</td><td>1st Class</td><td>08:00 ~ 08:40</td><td rowSpan={11} style={{verticalAlign:'top',lineHeight:1.8,fontSize:'0.88rem'}}><strong>※ Regular Class</strong><br/>■ Each class lasts 45 minutes, with a 5-minute break in between.<br/>■ Students can choose their classes from 1 to 10 according to their curriculum.<br/>■ Mandatory self study<br/><br/><strong>※ Self-Study</strong><br/>■ Students are required to attend self-study every day, excluding weekends and holidays.</td></tr>
                   <tr><td>08:50 ~ 09:35</td><td>2nd Class</td><td>08:45 ~ 09:25</td></tr>
                   <tr><td>09:40 ~ 10:25</td><td>3rd Class</td><td>09:30 ~ 10:10</td></tr>
                   <tr><td>10:30 ~ 11:15</td><td>4th Class</td><td>10:15 ~ 10:55</td></tr>
@@ -127,24 +126,9 @@ function SemiSpartaProgram() {
                   <tr><td>15:30 ~ 16:15</td><td>9th Class</td><td>15:15 ~ 15:55</td></tr>
                   <tr><td>16:20 ~ 17:05</td><td>10th Class</td><td>16:00 ~ 16:40</td></tr>
                   <tr><td>17:10 ~ 17:55</td><td>11th Class</td><td>16:45 ~ 17:25</td></tr>
-                  <tr><td>18:00 ~ 18:50</td><td>Meal time</td><td>18:00 ~ 18:50</td></tr>
+                  <tr><td>18:00 ~ 18:50</td><td>Meal time</td><td>18:00 ~ 18:50</td><td></td></tr>
                 </tbody>
               </table></div>
-            </div>
-
-            <div className="program-timetable-notice">
-              <div className="program-notice-block">
-                <p><strong>※ Regular Class</strong></p>
-                <p>■ Each class lasts 45 minutes, with a 5-minute break in between.</p>
-                <p>■ Students can choose their classes from 1 to 10 according to their curriculum.</p>
-                <p>■ Mandatory self study</p>
-              </div>
-              <div className="program-notice-block">
-                <p><strong>※ Self-Study</strong></p>
-                <p>■ Students are required to attend self-study every day, excluding weekends and holidays.</p>
-              </div>
-            </div>
-          </div>
         </div>
 
         {/* Notes */}
@@ -275,56 +259,35 @@ function SpartaProgram() {
         {/* Time Table */}
         <div className="content-block">
           <h3>Time Table</h3>
-          <div className="program-timetable-wrapper">
-            <div className="program-timetable-main">
-              <div className="styled-table-wrap"><table className="styled-table">
+          <div className="styled-table-wrap"><table className="styled-table">
                 <thead>
                   <tr>
                     <th>Time</th>
                     <th>Class</th>
                     <th>Friday</th>
+                    <th>Notice</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr><td>06:30 ~ 07:20</td><td>Vocabulary Test</td><td>06:30 ~ 07:20</td></tr>
-                  <tr><td>07:20 ~ 08:00</td><td>Meal Time</td><td>07:20 ~ 08:00</td></tr>
+                  <tr><td>06:30 ~ 07:20</td><td>Vocabulary Test</td><td>06:30 ~ 07:20</td><td></td></tr>
+                  <tr><td>07:20 ~ 08:00</td><td>Meal Time</td><td>07:20 ~ 08:00</td><td rowSpan={5} style={{verticalAlign:'top',lineHeight:1.8,fontSize:'0.88rem'}}><strong>※ Regular Class</strong><br/>■ Each class lasts 45 minutes, with a 5-minute break in between.<br/>■ Students can choose their classes from 1 to 10 according to their curriculum.<br/>■ Mandatory self-study</td></tr>
                   <tr><td>08:00 ~ 08:45</td><td>1st Class</td><td>08:00 ~ 08:40</td></tr>
                   <tr><td>08:50 ~ 09:35</td><td>2nd Class</td><td>08:45 ~ 09:25</td></tr>
                   <tr><td>09:40 ~ 10:25</td><td>3rd Class</td><td>09:30 ~ 10:10</td></tr>
                   <tr><td>10:30 ~ 11:15</td><td>4th Class</td><td>10:15 ~ 10:55</td></tr>
-                  <tr><td>11:20 ~ 12:05</td><td>5th Class</td><td>11:00 ~ 11:40</td></tr>
+                  <tr><td>11:20 ~ 12:05</td><td>5th Class</td><td>11:00 ~ 11:40</td><td rowSpan={2} style={{verticalAlign:'top',lineHeight:1.8,fontSize:'0.88rem'}}><strong>※ Self-Study</strong><br/>■ Students are required to attend 1 session every day, excluding weekends and holidays.</td></tr>
                   <tr><td>12:05 ~ 13:00</td><td>Meal time</td><td>12:00 ~ 13:00</td></tr>
-                  <tr><td>13:00 ~ 13:45</td><td>6th Class</td><td>13:00 ~ 13:40</td></tr>
-                  <tr><td>13:50 ~ 14:35</td><td>7th Class</td><td>13:45 ~ 14:25</td></tr>
+                  <tr><td>13:00 ~ 13:45</td><td>6th Class</td><td>13:00 ~ 13:40</td><td></td></tr>
+                  <tr><td>13:50 ~ 14:35</td><td>7th Class</td><td>13:45 ~ 14:25</td><td rowSpan={4} style={{verticalAlign:'top',lineHeight:1.8,fontSize:'0.88rem'}}><strong>※ Vocabulary Test &amp; Sentence Test</strong><br/>■ Sparta Course students are required to join these tests.<br/>■ Penalties will apply if students fail the test.</td></tr>
                   <tr><td>14:40 ~ 15:25</td><td>8th Class</td><td>14:30 ~ 15:10</td></tr>
                   <tr><td>15:30 ~ 16:15</td><td>9th Class</td><td>15:15 ~ 15:55</td></tr>
                   <tr><td>16:20 ~ 17:05</td><td>10th Class</td><td>16:00 ~ 16:40</td></tr>
-                  <tr><td>17:10 ~ 17:55</td><td>11th Class</td><td>16:45 ~ 17:25</td></tr>
-                  <tr><td>18:00 ~ 18:50</td><td>Meal time</td><td>18:00 ~ 18:50</td></tr>
-                  <tr><td>19:00 ~ 19:50</td><td>Self Study</td><td></td></tr>
-                  <tr><td>20:00 ~ 20:50</td><td>Sentence Test</td><td></td></tr>
+                  <tr><td>17:10 ~ 17:55</td><td>11th Class</td><td>16:45 ~ 17:25</td><td></td></tr>
+                  <tr><td>18:00 ~ 18:50</td><td>Meal time</td><td>18:00 ~ 18:50</td><td></td></tr>
+                  <tr><td>19:00 ~ 19:50</td><td>Self Study</td><td></td><td></td></tr>
+                  <tr><td>20:00 ~ 20:50</td><td>Sentence Test</td><td></td><td></td></tr>
                 </tbody>
               </table></div>
-            </div>
-
-            <div className="program-timetable-notice">
-              <div className="program-notice-block">
-                <p><strong>※ Regular Class</strong></p>
-                <p>■ Each class lasts 45 minutes, with a 5-minute break in between.</p>
-                <p>■ Students can choose their classes from 1 to 10 according to their curriculum.</p>
-                <p>■ Mandatory self study</p>
-              </div>
-              <div className="program-notice-block">
-                <p><strong>※ Self-Study</strong></p>
-                <p>■ Students are required to attend 1 session every day, excluding weekends and holidays.</p>
-              </div>
-              <div className="program-notice-block">
-                <p><strong>※ Vocabulary Test &amp; Sentence Test</strong></p>
-                <p>■ Sparta Course students are required to join these tests.</p>
-                <p>■ Penalties will apply if students fail the test.</p>
-              </div>
-            </div>
-          </div>
         </div>
 
         {/* Notes */}
@@ -475,12 +438,12 @@ function JuniorProgram() {
                 <tr><td>10:30 ~ 11:15</td><td>4th</td><td>10:15 ~ 10:55</td><td>1:1 Class(Writing)</td></tr>
                 <tr><td>11:20 ~ 12:05</td><td>5th</td><td>11:00 ~ 11:40</td><td>1:1 Class(Reading)</td></tr>
                 <tr><td>12:05 ~ 13:00</td><td></td><td>12:00 ~ 13:00</td><td>Lunch</td><td>Lunch</td></tr>
-                <tr><td>13:00 ~ 13:45</td><td>6th</td><td>13:00 ~ 13:40</td><td>Small Group Class</td><td rowSpan={5} style={{verticalAlign:'top',lineHeight:1.8,fontSize:'0.88rem'}}>Humanism<br/>Education &amp;<br/>Indoor Activity<br/>Study Check-up<br/>Check what you studied for a week<br/>(Vocabulary, Sentence, English Essay, Books)</td></tr>
+                <tr><td>13:00 ~ 13:45</td><td>6th</td><td>13:00 ~ 13:40</td><td>Small Group Class</td><td rowSpan={2} style={{verticalAlign:'top',lineHeight:1.8,fontSize:'0.88rem'}}>Humanism Education &amp;<br/>Indoor Activity</td></tr>
                 <tr><td>13:50 ~ 14:35</td><td>7th</td><td>13:45 ~ 14:25</td><td>Small Group Class</td></tr>
-                <tr><td>14:40 ~ 15:25</td><td>8th</td><td>14:30 ~ 15:10</td><td>Big Group Class</td></tr>
+                <tr><td>14:40 ~ 15:25</td><td>8th</td><td>14:30 ~ 15:10</td><td>Big Group Class</td><td rowSpan={4} style={{verticalAlign:'top',lineHeight:1.8,fontSize:'0.88rem'}}>Study Check-up –<br/>Check what you studied for a week<br/>(Vocabulary, Sentence, English Essay, Books)</td></tr>
                 <tr><td>15:30 ~ 16:15</td><td>9th</td><td>15:15 ~ 15:55</td><td>Physical Activity</td></tr>
                 <tr><td>16:20 ~ 17:05</td><td>10th</td><td>16:00 ~ 16:40</td><td>Physical Activity</td></tr>
-                <tr><td>17:10 ~ 17:55</td><td>11th</td><td>16:45 ~ 17:25</td><td>Self-Study</td><td>Personal Maintenance &amp; Rest</td><td></td></tr>
+                <tr><td>17:10 ~ 17:55</td><td>11th</td><td>16:45 ~ 17:25</td><td>Self-Study</td><td>Personal Maintenance &amp; Rest</td></tr>
                 <tr><td>18:00 ~ 18:50</td><td></td><td>18:00 ~ 18:50</td><td>Dinner</td><td>Dinner</td><td>Dinner</td></tr>
                 <tr><td>19:00 ~ 19:45</td><td>12th</td><td>19:00 ~ 19:50</td><td>Vocabulary &amp; Idiom</td><td rowSpan={2}>Calling Students&apos; Parents &amp;<br/>Watching Movie</td><td>Watching Movie</td></tr>
                 <tr><td>19:50 ~ 20:30</td><td>13th</td><td>19:50 ~ 20:30</td><td>Vocabulary Test &amp; Snack time</td><td></td></tr>
