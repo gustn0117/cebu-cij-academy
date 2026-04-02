@@ -609,8 +609,8 @@ function JuniorCampProgram() {
         {/* Weekly Schedule */}
         <div className="content-block">
           <h3>Weekly Schedule</h3>
-          
-            <div className="styled-table-wrap"><table className="styled-table">
+
+            <div className="styled-table-wrap"><table className="styled-table" style={{minWidth:750}}>
               <thead>
                 <tr>
                   <th>Mon</th>

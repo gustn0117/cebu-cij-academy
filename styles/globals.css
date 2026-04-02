@@ -1147,7 +1147,6 @@ img { max-width: 100%; height: auto; }
 .styled-table tbody tr:hover { background: var(--gray-100); }
 .styled-table td:first-child, .styled-table th:first-child { white-space: nowrap; }
 .styled-table td:nth-child(2) { white-space: nowrap; }
-.styled-table td:nth-child(3) { white-space: nowrap; }
 
 /* ─── Navbar ─── */
 .navbar {
