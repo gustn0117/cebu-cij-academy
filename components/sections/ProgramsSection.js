@@ -68,7 +68,7 @@ function SemiSpartaProgram() {
         {/* Program Curriculum */}
         <div className="content-block">
           <h3>Program Curriculum</h3>
-          <div className="styled-table-wrap"><table className="styled-table">
+          <div className="styled-table-wrap"><table className="styled-table curriculum">
             <thead>
               <tr>
                 <th>Category</th>
@@ -216,7 +216,7 @@ function SpartaProgram() {
         {/* Program Curriculum */}
         <div className="content-block">
           <h3>Program Curriculum</h3>
-          <div className="styled-table-wrap"><table className="styled-table">
+          <div className="styled-table-wrap"><table className="styled-table curriculum">
             <thead>
               <tr>
                 <th>Category</th>
@@ -370,7 +370,7 @@ function JuniorProgram() {
         {/* Program Curriculum */}
         <div className="content-block">
           <h3>Program Curriculum</h3>
-          <div className="styled-table-wrap"><table className="styled-table">
+          <div className="styled-table-wrap"><table className="styled-table curriculum">
             <thead>
               <tr>
                 <th>Category</th>
@@ -520,7 +520,7 @@ function JuniorCampProgram() {
         {/* Program Curriculum */}
         <div className="content-block">
           <h3>Program Curriculum</h3>
-          <div className="styled-table-wrap"><table className="styled-table">
+          <div className="styled-table-wrap"><table className="styled-table curriculum">
             <thead>
               <tr>
                 <th>Category</th>
@@ -728,7 +728,7 @@ function FamilyProgram() {
         {/* Program Curriculum */}
         <div className="content-block">
           <h3>Program Curriculum</h3>
-          <div className="styled-table-wrap"><table className="styled-table">
+          <div className="styled-table-wrap"><table className="styled-table curriculum">
             <thead>
               <tr>
                 <th>Category</th>
@@ -913,7 +913,7 @@ function FamilyProgram() {
         {/* Program Curriculum */}
         <div className="content-block">
           <h3>Program Curriculum</h3>
-          <div className="styled-table-wrap"><table className="styled-table">
+          <div className="styled-table-wrap"><table className="styled-table curriculum">
             <thead>
               <tr>
                 <th>Category</th>
