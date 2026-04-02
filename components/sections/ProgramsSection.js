@@ -68,7 +68,7 @@ function SemiSpartaProgram() {
         {/* Program Curriculum */}
         <div className="content-block">
           <h3>Program Curriculum</h3>
-          <table className="styled-table">
+          <div className="styled-table-wrap"><table className="styled-table">
             <thead>
               <tr>
                 <th>Category</th>
@@ -97,7 +97,7 @@ function SemiSpartaProgram() {
                 <td>Club Filipino</td>
               </tr>
             </tbody>
-          </table>
+          </table></div>
         </div>
 
         {/* Time Table */}
@@ -105,7 +105,7 @@ function SemiSpartaProgram() {
           <h3>Time Table</h3>
           <div className="program-timetable-wrapper">
             <div className="program-timetable-main">
-              <table className="styled-table">
+              <div className="styled-table-wrap"><table className="styled-table">
                 <thead>
                   <tr>
                     <th>Time</th>
@@ -129,7 +129,7 @@ function SemiSpartaProgram() {
                   <tr><td>17:10 ~ 17:55</td><td>11th Class</td><td>16:45 ~ 17:25</td></tr>
                   <tr><td>18:00 ~ 18:50</td><td>Meal time</td><td>18:00 ~ 18:50</td></tr>
                 </tbody>
-              </table>
+              </table></div>
             </div>
 
             <div className="program-timetable-notice">
@@ -232,7 +232,7 @@ function SpartaProgram() {
         {/* Program Curriculum */}
         <div className="content-block">
           <h3>Program Curriculum</h3>
-          <table className="styled-table">
+          <div className="styled-table-wrap"><table className="styled-table">
             <thead>
               <tr>
                 <th>Category</th>
@@ -269,7 +269,7 @@ function SpartaProgram() {
                 <td>Vocabulary Test : 1time before breakfast / Sentence Test : 1time after dinner</td>
               </tr>
             </tbody>
-          </table>
+          </table></div>
         </div>
 
         {/* Time Table */}
@@ -277,7 +277,7 @@ function SpartaProgram() {
           <h3>Time Table</h3>
           <div className="program-timetable-wrapper">
             <div className="program-timetable-main">
-              <table className="styled-table">
+              <div className="styled-table-wrap"><table className="styled-table">
                 <thead>
                   <tr>
                     <th>Time</th>
@@ -304,7 +304,7 @@ function SpartaProgram() {
                   <tr><td>19:00 ~ 19:50</td><td>Self Study</td><td></td></tr>
                   <tr><td>20:00 ~ 20:50</td><td>Sentence Test</td><td></td></tr>
                 </tbody>
-              </table>
+              </table></div>
             </div>
 
             <div className="program-timetable-notice">
@@ -407,7 +407,7 @@ function JuniorProgram() {
         {/* Program Curriculum */}
         <div className="content-block">
           <h3>Program Curriculum</h3>
-          <table className="styled-table">
+          <div className="styled-table-wrap"><table className="styled-table">
             <thead>
               <tr>
                 <th>Category</th>
@@ -448,14 +448,14 @@ function JuniorProgram() {
                 <td>Essay writing by topic</td>
               </tr>
             </tbody>
-          </table>
+          </table></div>
         </div>
 
         {/* Time Table */}
         <div className="content-block">
           <h3>Time Table</h3>
-          <div style={{ overflowX: 'auto' }}>
-            <table className="styled-table">
+          
+            <div className="styled-table-wrap"><table className="styled-table">
               <thead>
                 <tr>
                   <th>Time</th>
@@ -488,8 +488,8 @@ function JuniorProgram() {
                 <tr><td>21:30</td><td></td><td>21:30</td><td>Roll Call &amp; Go to bed</td><td>Roll Call &amp; Go to bed</td><td>Roll Call &amp; Go to Bed</td></tr>
                 <tr><td>22:00 ~ 23:00</td><td></td><td>22:00 ~ 23:00</td><td>Learning Support – For Students Missing Essay Submissions or Failing Vocabulary Tests</td><td>Learning Support – For Students Missing Essay Submissions</td><td>Learning Support – For Students Missing Essay Submissions</td></tr>
               </tbody>
-            </table>
-          </div>
+            </table></div>
+
         </div>
 
         {/* Notes */}
@@ -557,7 +557,7 @@ function JuniorCampProgram() {
         {/* Program Curriculum */}
         <div className="content-block">
           <h3>Program Curriculum</h3>
-          <table className="styled-table">
+          <div className="styled-table-wrap"><table className="styled-table">
             <thead>
               <tr>
                 <th>Category</th>
@@ -598,14 +598,14 @@ function JuniorCampProgram() {
                 <td>Essay writing by topic</td>
               </tr>
             </tbody>
-          </table>
+          </table></div>
         </div>
 
         {/* Time Table */}
         <div className="content-block">
           <h3>Time Table</h3>
-          <div style={{ overflowX: 'auto' }}>
-            <table className="styled-table">
+          
+            <div className="styled-table-wrap"><table className="styled-table">
               <thead>
                 <tr>
                   <th>Time</th>
@@ -639,15 +639,15 @@ function JuniorCampProgram() {
                 <tr><td>21:30</td><td></td><td>Roll Call &amp; Go to bed</td><td>Roll Call &amp; Go to bed</td><td>Roll Call &amp; Go to Bed</td></tr>
                 <tr><td>22:00 ~ 23:00</td><td></td><td>Learning support for students missing essay submissions or failing vocabulary tests</td><td>Learning support for students missing essay submissions</td><td>Learning Support – For Students Missing Essay Submissions</td></tr>
               </tbody>
-            </table>
-          </div>
+            </table></div>
+
         </div>
 
         {/* Weekly Schedule */}
         <div className="content-block">
           <h3>Weekly Schedule</h3>
-          <div style={{ overflowX: 'auto' }}>
-            <table className="styled-table">
+          
+            <div className="styled-table-wrap"><table className="styled-table">
               <thead>
                 <tr>
                   <th>Mon</th>
@@ -688,8 +688,8 @@ function JuniorCampProgram() {
                 <tr style={{background:'#FFF8E1'}}><td><strong>August 24</strong></td><td><strong>August 25</strong></td><td><strong>August 26</strong></td><td></td><td></td><td></td><td></td></tr>
                 <tr><td>Regular Classes</td><td>Regular Classes</td><td><strong>Cebu Departure</strong><br/>(6,8Weeks)</td><td></td><td></td><td></td><td></td></tr>
               </tbody>
-            </table>
-          </div>
+            </table></div>
+
         </div>
 
         {/* Notes */}
@@ -765,7 +765,7 @@ function FamilyProgram() {
         {/* Program Curriculum */}
         <div className="content-block">
           <h3>Program Curriculum</h3>
-          <table className="styled-table">
+          <div className="styled-table-wrap"><table className="styled-table">
             <thead>
               <tr>
                 <th>Category</th>
@@ -806,14 +806,14 @@ function FamilyProgram() {
                 <td>Essay Writing by Topic</td>
               </tr>
             </tbody>
-          </table>
+          </table></div>
         </div>
 
         {/* Junior ESL Course Time Table (Off Season) */}
         <div className="content-block">
           <h3>Junior ESL Course – Time Table</h3>
-          <div style={{ overflowX: 'auto' }}>
-            <table className="styled-table">
+          
+            <div className="styled-table-wrap"><table className="styled-table">
               <thead>
                 <tr>
                   <th>Time</th>
@@ -838,8 +838,8 @@ function FamilyProgram() {
                 <tr><td>17:10 ~ 17:55</td><td>11th</td><td>16:45 ~ 17:25</td><td>Self Study</td></tr>
                 <tr><td>18:00 ~ 18:50</td><td></td><td>18:00 ~ 18:50</td><td>Dinner</td></tr>
               </tbody>
-            </table>
-          </div>
+            </table></div>
+
 
           <div className="program-notes" style={{ marginTop: 16 }}>
             <p>※ Classes are subject to change due to unforeseen circumstances.</p>
@@ -853,8 +853,8 @@ function FamilyProgram() {
         {/* Kinder Course Time Table (Off Season) */}
         <div className="content-block">
           <h3>Kinder Course – Time Table</h3>
-          <div style={{ overflowX: 'auto' }}>
-            <table className="styled-table">
+          
+            <div className="styled-table-wrap"><table className="styled-table">
               <thead>
                 <tr>
                   <th>Time</th>
@@ -883,8 +883,8 @@ function FamilyProgram() {
                 <tr><td>14:45 ~ 15:30</td><td>12th</td><td>14:05 ~ 14:25</td><td>1:1 Class(Art : Drawing, Making, etc.)</td></tr>
                 <tr><td>15:35 ~ 16:20</td><td>13th</td><td>14:30 ~ 14:50</td><td>Physical Activity (Gardening / Play game) &amp; Cleanup activities</td></tr>
               </tbody>
-            </table>
-          </div>
+            </table></div>
+
 
           <div className="program-notes" style={{ marginTop: 16 }}>
             <p>※ Classes are subject to change due to unexpected circumstances.</p>
@@ -950,7 +950,7 @@ function FamilyProgram() {
         {/* Program Curriculum */}
         <div className="content-block">
           <h3>Program Curriculum</h3>
-          <table className="styled-table">
+          <div className="styled-table-wrap"><table className="styled-table">
             <thead>
               <tr>
                 <th>Category</th>
@@ -979,14 +979,14 @@ function FamilyProgram() {
                 <td>Guitar, Pop Song, etc. – Student-Requested Activities</td>
               </tr>
             </tbody>
-          </table>
+          </table></div>
         </div>
 
         {/* Junior ESL Course Time Table (Peak) */}
         <div className="content-block">
           <h3>Junior ESL Course – Time Table (Peak Season)</h3>
-          <div style={{ overflowX: 'auto' }}>
-            <table className="styled-table">
+          
+            <div className="styled-table-wrap"><table className="styled-table">
               <thead>
                 <tr>
                   <th>Time</th>
@@ -1012,8 +1012,8 @@ function FamilyProgram() {
                 <tr><td>17:10 ~ 17:50</td><td>11th</td><td>Physical Activity</td></tr>
                 <tr><td>18:00 ~ 19:00</td><td></td><td>Dinner</td></tr>
               </tbody>
-            </table>
-          </div>
+            </table></div>
+
 
           <div className="program-notes" style={{ marginTop: 16 }}>
             <p>※ There is an additional $100 for snacks per 4 weeks.</p>
@@ -1027,8 +1027,8 @@ function FamilyProgram() {
         {/* Kinder Course Time Table (Peak Season) */}
         <div className="content-block">
           <h3>Kinder Course – Time Table (Peak Season)</h3>
-          <div style={{ overflowX: 'auto' }}>
-            <table className="styled-table">
+          
+            <div className="styled-table-wrap"><table className="styled-table">
               <thead>
                 <tr>
                   <th>Time</th>
@@ -1058,8 +1058,8 @@ function FamilyProgram() {
                 <tr><td>15:15 ~ 15:35</td><td></td><td>Snack(Optional)</td></tr>
                 <tr><td>15:40 ~ 16:20</td><td>15th</td><td>Physical Activity&amp; Cleanup activities</td></tr>
               </tbody>
-            </table>
-          </div>
+            </table></div>
+
 
           {/* Elephant & Whale descriptions (Peak) */}
           <div className="program-info-box" style={{ marginTop: 24 }}>

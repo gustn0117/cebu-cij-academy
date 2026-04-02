@@ -1139,12 +1139,13 @@ img { max-width: 100%; height: auto; }
 .step-content p { color: var(--gray-700); font-size: 0.95rem; }
 
 /* ─── Table ─── */
-.styled-table { width: 100%; border-collapse: collapse; border-radius: var(--radius); box-shadow: var(--shadow-sm); margin: 24px 0; }
-.content-block { overflow-x: auto; }
+.styled-table-wrap { overflow-x: auto; margin: 24px 0; border-radius: var(--radius); box-shadow: var(--shadow-sm); -webkit-overflow-scrolling: touch; }
+.styled-table { width: 100%; border-collapse: collapse; min-width: 500px; }
 .styled-table thead { background: var(--primary); color: var(--white); }
-.styled-table th { padding: 16px 20px; text-align: left; font-weight: 600; font-size: 0.95rem; white-space: nowrap; }
-.styled-table td { padding: 14px 20px; border-bottom: 1px solid var(--gray-300); font-size: 0.95rem; color: var(--gray-700); }
+.styled-table th { padding: 14px 16px; text-align: left; font-weight: 600; font-size: 0.9rem; white-space: nowrap; }
+.styled-table td { padding: 12px 16px; border-bottom: 1px solid var(--gray-300); font-size: 0.9rem; color: var(--gray-700); }
 .styled-table tbody tr:hover { background: var(--gray-100); }
+.styled-table td:first-child, .styled-table th:first-child { white-space: nowrap; }
 
 /* ─── Navbar ─── */
 .navbar {
