@@ -43,7 +43,7 @@ const closeBtn = {
 };
 
 function LetterFormModal({ isOpen, onClose, onSubmit, editData }) {
-  const [form, setForm] = useState({ title: '', studentName: '', content: '' });
+  const [form, setForm] = useState({ title: '', studentName: '', content: '', password: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -53,9 +53,10 @@ function LetterFormModal({ isOpen, onClose, onSubmit, editData }) {
         title: editData.title || '',
         studentName: editData.student_name || '',
         content: editData.content || '',
+        password: '',
       });
     } else {
-      setForm({ title: '', studentName: '', content: '' });
+      setForm({ title: '', studentName: '', content: '', password: '' });
     }
     setError('');
   }, [editData, isOpen]);
@@ -64,7 +65,7 @@ function LetterFormModal({ isOpen, onClose, onSubmit, editData }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.title.trim() || !form.studentName.trim() || !form.content.trim()) {
+    if (!form.title.trim() || !form.studentName.trim() || !form.content.trim() || !form.password.trim()) {
       setError('All fields are required');
       return;
     }
@@ -120,7 +121,7 @@ function LetterFormModal({ isOpen, onClose, onSubmit, editData }) {
               required
             />
           </div>
-          <div style={{ marginBottom: 24 }}>
+          <div style={{ marginBottom: 16 }}>
             <label style={labelStyle}>Message</label>
             <textarea
               style={{ ...inputStyle, minHeight: 150, resize: 'vertical' }}
@@ -128,6 +129,17 @@ function LetterFormModal({ isOpen, onClose, onSubmit, editData }) {
               onChange={(e) => setForm({ ...form, content: e.target.value })}
               required
               placeholder="Write your message here..."
+            />
+          </div>
+          <div style={{ marginBottom: 24 }}>
+            <label style={labelStyle}>{editData ? 'Password (enter the password you set when writing)' : 'Password (required to edit/delete later)'}</label>
+            <input
+              style={inputStyle}
+              type="password"
+              value={form.password}
+              onChange={(e) => setForm({ ...form, password: e.target.value })}
+              required
+              placeholder={editData ? 'Enter your password' : 'Set a password'}
             />
           </div>
           <button type="submit" style={{ ...btnPrimary, width: '100%' }} disabled={loading}>
@@ -213,11 +225,10 @@ export default function Letter() {
   const handleSubmit = async (formData, editId) => {
     const method = editId ? 'PUT' : 'POST';
     const body = editId
-      ? { id: editId, title: formData.title, studentName: formData.studentName, content: formData.content }
-      : { title: formData.title, studentName: formData.studentName, content: formData.content };
+      ? { id: editId, title: formData.title, studentName: formData.studentName, content: formData.content, password: formData.password }
+      : { title: formData.title, studentName: formData.studentName, content: formData.content, password: formData.password };
 
     const headers = { 'Content-Type': 'application/json' };
-    if (token) headers.Authorization = `Bearer ${token}`;
 
     const res = await fetch('/api/letter', {
       method,
