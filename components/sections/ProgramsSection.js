@@ -103,7 +103,7 @@ function SemiSpartaProgram() {
         {/* Time Table */}
         <div className="content-block">
           <h3>Time Table</h3>
-          <div className="styled-table-wrap"><table className="styled-table">
+          <div className="styled-table-wrap"><table className="styled-table" style={{minWidth:800}}>
                 <thead>
                   <tr>
                     <th>Time</th>
@@ -259,7 +259,7 @@ function SpartaProgram() {
         {/* Time Table */}
         <div className="content-block">
           <h3>Time Table</h3>
-          <div className="styled-table-wrap"><table className="styled-table">
+          <div className="styled-table-wrap"><table className="styled-table" style={{minWidth:800}}>
                 <thead>
                   <tr>
                     <th>Time</th>
@@ -418,7 +418,7 @@ function JuniorProgram() {
         <div className="content-block">
           <h3>Time Table</h3>
           
-            <div className="styled-table-wrap"><table className="styled-table">
+            <div className="styled-table-wrap"><table className="styled-table" style={{minWidth:800}}>
               <thead>
                 <tr>
                   <th>Time</th>
@@ -568,7 +568,7 @@ function JuniorCampProgram() {
         <div className="content-block">
           <h3>Time Table</h3>
           
-            <div className="styled-table-wrap"><table className="styled-table">
+            <div className="styled-table-wrap"><table className="styled-table" style={{minWidth:800}}>
               <thead>
                 <tr>
                   <th>Time</th>
@@ -776,7 +776,7 @@ function FamilyProgram() {
         <div className="content-block">
           <h3>Junior ESL Course – Time Table</h3>
           
-            <div className="styled-table-wrap"><table className="styled-table">
+            <div className="styled-table-wrap"><table className="styled-table" style={{minWidth:800}}>
               <thead>
                 <tr>
                   <th>Time</th>
@@ -817,7 +817,7 @@ function FamilyProgram() {
         <div className="content-block">
           <h3>Kinder Course – Time Table</h3>
           
-            <div className="styled-table-wrap"><table className="styled-table">
+            <div className="styled-table-wrap"><table className="styled-table" style={{minWidth:800}}>
               <thead>
                 <tr>
                   <th>Time</th>
@@ -949,7 +949,7 @@ function FamilyProgram() {
         <div className="content-block">
           <h3>Junior ESL Course – Time Table (Peak Season)</h3>
           
-            <div className="styled-table-wrap"><table className="styled-table">
+            <div className="styled-table-wrap"><table className="styled-table" style={{minWidth:800}}>
               <thead>
                 <tr>
                   <th>Time</th>
@@ -991,7 +991,7 @@ function FamilyProgram() {
         <div className="content-block">
           <h3>Kinder Course – Time Table (Peak Season)</h3>
           
-            <div className="styled-table-wrap"><table className="styled-table">
+            <div className="styled-table-wrap"><table className="styled-table" style={{minWidth:800}}>
               <thead>
                 <tr>
                   <th>Time</th>
