@@ -321,19 +321,17 @@ export default function Letter() {
                               <p style={{ fontSize: '0.95rem', lineHeight: 1.7, color: '#333', margin: 0, whiteSpace: 'pre-wrap' }}>
                                 {letter.content}
                               </p>
-                              {user && letter.user_id === user.id && (
-                                <button
-                                  onClick={(e) => handleEditClick(e, letter)}
-                                  style={{
-                                    marginTop: 16,
-                                    background: 'none', border: '1px solid #B91C1C', borderRadius: 6,
-                                    padding: '6px 16px', fontSize: '0.85rem', color: '#B91C1C',
-                                    cursor: 'pointer', fontFamily: 'inherit', fontWeight: 600,
-                                  }}
-                                >
-                                  Edit
-                                </button>
-                              )}
+                              <button
+                                onClick={(e) => handleEditClick(e, letter)}
+                                style={{
+                                  marginTop: 16,
+                                  background: 'none', border: '1px solid #B91C1C', borderRadius: 6,
+                                  padding: '6px 16px', fontSize: '0.85rem', color: '#B91C1C',
+                                  cursor: 'pointer', fontFamily: 'inherit', fontWeight: 600,
+                                }}
+                              >
+                                Edit
+                              </button>
                             </div>
                           </td>
                         </tr>
