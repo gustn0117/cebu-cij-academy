@@ -113,7 +113,7 @@ function SemiSpartaProgram() {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr><td>07:20 ~ 08:00</td><td>Meal Time</td><td>07:20 ~ 08:00</td><td rowSpan={14} style={{verticalAlign:'top',lineHeight:1.8,fontSize:'0.88rem'}}><strong>※ Regular Class</strong><br/>■ Each class lasts 45 minutes, with a 5-minute break in between.<br/>■ Students can choose their classes from 1 to 10 according to their curriculum.<br/>■ Mandatory self study<br/><br/><strong>※ Self-Study</strong><br/>■ Students are required to attend self-study every day, excluding weekends and holidays.</td></tr>
+                  <tr><td>07:20 ~ 08:00</td><td>Meal Time</td><td>07:20 ~ 08:00</td><td rowSpan={14} style={{verticalAlign:'middle',lineHeight:1.8,fontSize:'0.88rem'}}><strong>※ Regular Class</strong><br/>■ Each class lasts 45 minutes, with a 5-minute break in between.<br/>■ Students can choose their classes from 1 to 10 according to their curriculum.<br/>■ Mandatory self study<br/><br/><strong>※ Self-Study</strong><br/>■ Students are required to attend self-study every day, excluding weekends and holidays.</td></tr>
                   <tr><td>08:00 ~ 08:45</td><td>1st Class</td><td>08:00 ~ 08:40</td></tr>
                   <tr><td>08:50 ~ 09:35</td><td>2nd Class</td><td>08:45 ~ 09:25</td></tr>
                   <tr><td>09:40 ~ 10:25</td><td>3rd Class</td><td>09:30 ~ 10:10</td></tr>
@@ -269,7 +269,7 @@ function SpartaProgram() {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr><td>06:30 ~ 07:20</td><td>Vocabulary Test</td><td>06:30 ~ 07:20</td><td rowSpan={18} style={{verticalAlign:'top',lineHeight:1.8,fontSize:'0.88rem'}}><strong>※ Regular Class</strong><br/>■ Each class lasts 45 minutes, with a 5-minute break in between.<br/>■ Students can choose their classes from 1 to 10 according to their curriculum.<br/>■ Mandatory self-study<br/><br/><strong>※ Self-Study</strong><br/>■ Students are required to attend 1 session every day, excluding weekends and holidays.<br/><br/><strong>※ Vocabulary Test &amp; Sentence Test</strong><br/>■ Sparta Course students are required to join these tests.<br/>■ Penalties will apply if students fail the test.</td></tr>
+                  <tr><td>06:30 ~ 07:20</td><td>Vocabulary Test</td><td>06:30 ~ 07:20</td><td rowSpan={18} style={{verticalAlign:'middle',lineHeight:1.8,fontSize:'0.88rem'}}><strong>※ Regular Class</strong><br/>■ Each class lasts 45 minutes, with a 5-minute break in between.<br/>■ Students can choose their classes from 1 to 10 according to their curriculum.<br/>■ Mandatory self-study<br/><br/><strong>※ Self-Study</strong><br/>■ Students are required to attend 1 session every day, excluding weekends and holidays.<br/><br/><strong>※ Vocabulary Test &amp; Sentence Test</strong><br/>■ Sparta Course students are required to join these tests.<br/>■ Penalties will apply if students fail the test.</td></tr>
                   <tr><td>07:20 ~ 08:00</td><td>Meal Time</td><td>07:20 ~ 08:00</td></tr>
                   <tr><td>08:00 ~ 08:45</td><td>1st Class</td><td>08:00 ~ 08:40</td></tr>
                   <tr><td>08:50 ~ 09:35</td><td>2nd Class</td><td>08:45 ~ 09:25</td></tr>
