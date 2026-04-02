@@ -17,7 +17,7 @@ export default async function handler(req, res) {
   if (req.method === 'GET') {
     const { data, error } = await supabase
       .from('letters')
-      .select('id, title, student_name, created_at, user_id')
+      .select('id, title, student_name, content, created_at, user_id')
       .order('created_at', { ascending: false });
 
     if (error) return res.status(500).json({ error: error.message });
@@ -26,7 +26,6 @@ export default async function handler(req, res) {
 
   if (req.method === 'POST') {
     const decoded = getUserFromToken(req);
-    if (!decoded) return res.status(401).json({ error: 'Authentication required' });
 
     const { title, studentName, content } = req.body;
 
@@ -34,9 +33,12 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'All fields are required' });
     }
 
+    const insertData = { title, student_name: studentName, content };
+    if (decoded) insertData.user_id = decoded.id;
+
     const { data, error } = await supabase
       .from('letters')
-      .insert({ title, student_name: studentName, content, user_id: decoded.id })
+      .insert(insertData)
       .select()
       .single();
 

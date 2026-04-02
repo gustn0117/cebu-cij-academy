@@ -200,12 +200,8 @@ export default function Letter() {
   };
 
   const handleWriteClick = () => {
-    if (!user) {
-      setShowAuth(true);
-    } else {
-      setEditingLetter(null);
-      setShowForm(true);
-    }
+    setEditingLetter(null);
+    setShowForm(true);
   };
 
   const handleEditClick = (e, letter) => {
@@ -220,12 +216,12 @@ export default function Letter() {
       ? { id: editId, title: formData.title, studentName: formData.studentName, content: formData.content }
       : { title: formData.title, studentName: formData.studentName, content: formData.content };
 
+    const headers = { 'Content-Type': 'application/json' };
+    if (token) headers.Authorization = `Bearer ${token}`;
+
     const res = await fetch('/api/letter', {
       method,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
+      headers,
       body: JSON.stringify(body),
     });
 
@@ -273,15 +269,9 @@ export default function Letter() {
 
           {/* Action bar */}
           <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 28 }}>
-            {user ? (
-              <button onClick={handleWriteClick} style={btnPrimary}>
-                {lt.formTitle || 'Write a Letter'}
-              </button>
-            ) : (
-              <button onClick={() => setShowAuth(true)} style={btnPrimary}>
-                Log In to Write Letter
-              </button>
-            )}
+            <button onClick={handleWriteClick} style={btnPrimary}>
+              {lt.formTitle || 'Write a Letter'}
+            </button>
           </div>
 
           {loading ? (

@@ -1139,10 +1139,10 @@ img { max-width: 100%; height: auto; }
 .step-content p { color: var(--gray-700); font-size: 0.95rem; }
 
 /* ─── Table ─── */
-.styled-table { width: 100%; border-collapse: collapse; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm); margin: 24px 0; min-width: 600px; }
+.styled-table { width: 100%; border-collapse: collapse; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm); margin: 24px 0; }
 .styled-table thead { background: var(--primary); color: var(--white); }
 .styled-table th { padding: 16px 20px; text-align: left; font-weight: 600; font-size: 0.95rem; white-space: nowrap; }
-.styled-table td { padding: 14px 20px; border-bottom: 1px solid var(--gray-300); font-size: 0.95rem; color: var(--gray-700); white-space: nowrap; }
+.styled-table td { padding: 14px 20px; border-bottom: 1px solid var(--gray-300); font-size: 0.95rem; color: var(--gray-700); }
 .styled-table tbody tr:hover { background: var(--gray-100); }
 
 /* ─── Navbar ─── */
@@ -1942,8 +1942,8 @@ img { max-width: 100%; height: auto; }
 .popup-container {
   position: absolute;
   transform: translate(-50%, -50%);
-  max-width: 560px;
-  width: 90vw;
+  max-width: 640px;
+  width: 92vw;
   animation: popupFadeIn 0.3s ease-out;
 }
 

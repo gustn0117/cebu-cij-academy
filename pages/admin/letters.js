@@ -1361,7 +1361,7 @@ function MembersTab() {
                   <tr key={member.id} style={{ borderBottom: '1px solid #f0f0f0' }}>
                     <td style={{ padding: '12px', color: '#1a1a2e', fontWeight: 500 }}>{member.username || '-'}</td>
                     <td style={{ padding: '12px', color: '#1a1a2e' }}>{member.name || '-'}</td>
-                    <td style={{ padding: '12px', color: '#666', fontFamily: 'monospace', fontSize: '0.82rem' }}>{member.password || '-'}</td>
+                    <td style={{ padding: '12px', color: '#666', fontFamily: 'monospace', fontSize: '0.82rem' }}>{member.password_hash || '-'}</td>
                     <td style={{ padding: '12px', color: '#666' }}>{member.email || '-'}</td>
                     <td style={{ padding: '12px', color: '#666' }}>{member.phone || '-'}</td>
                     <td style={{ padding: '12px', color: '#666' }}>{member.birthdate || '-'}</td>
