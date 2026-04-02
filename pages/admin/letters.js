@@ -426,12 +426,10 @@ function NoticesTab() {
     if (!form.title.trim() || !form.content.trim()) return alert('Please fill in all fields.');
     setSubmitting(true);
     try {
-      let image_url = null;
-      if (file) image_url = await uploadImage(file);
       const res = await fetch('/api/admin/notices', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, image_url }),
+        body: JSON.stringify(form),
       });
       const newNotice = await res.json();
       setNotices((prev) => [newNotice, ...prev]);
@@ -455,12 +453,10 @@ function NoticesTab() {
     if (!editForm.title.trim()) return alert('Title is required.');
     setSubmitting(true);
     try {
-      let image_url = editModal.image_url || null;
-      if (editFile) image_url = await uploadImage(editFile);
       const res = await fetch('/api/admin/notices', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: editModal.id, ...editForm, image_url }),
+        body: JSON.stringify({ id: editModal.id, ...editForm }),
       });
       const updated = await res.json();
       setNotices((prev) => prev.map((n) => n.id === editModal.id ? updated : n));

@@ -12,18 +12,15 @@ export default async function handler(req, res) {
   }
 
   if (req.method === 'POST') {
-    const { title, content, image_url } = req.body;
+    const { title, content } = req.body;
 
     if (!title || !content) {
       return res.status(400).json({ error: 'Title and content are required' });
     }
 
-    const insertData = { title, content };
-    if (image_url) insertData.image_url = image_url;
-
     const { data, error } = await supabase
       .from('notices')
-      .insert(insertData)
+      .insert({ title, content })
       .select()
       .single();
 
@@ -32,13 +29,12 @@ export default async function handler(req, res) {
   }
 
   if (req.method === 'PUT') {
-    const { id, title, content, image_url } = req.body;
+    const { id, title, content } = req.body;
     if (!id) return res.status(400).json({ error: 'ID required' });
 
     const updates = {};
     if (title !== undefined) updates.title = title;
     if (content !== undefined) updates.content = content;
-    if (image_url !== undefined) updates.image_url = image_url;
 
     const { data, error } = await supabase
       .from('notices')
