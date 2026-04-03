@@ -343,6 +343,7 @@ export default function AuthModal({ isOpen, onClose, onAuth }) {
               <input
                 style={inputStyle}
                 type="date"
+                lang="en"
                 value={form.birthdate}
                 onChange={(e) => setForm({ ...form, birthdate: e.target.value })}
                 required

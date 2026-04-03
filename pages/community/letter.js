@@ -43,7 +43,7 @@ const closeBtn = {
 };
 
 function LetterFormModal({ isOpen, onClose, onSubmit, editData }) {
-  const [form, setForm] = useState({ title: '', studentName: '', content: '', password: '' });
+  const [form, setForm] = useState({ title: '', studentName: '', content: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -53,10 +53,9 @@ function LetterFormModal({ isOpen, onClose, onSubmit, editData }) {
         title: editData.title || '',
         studentName: editData.student_name || '',
         content: editData.content || '',
-        password: '',
       });
     } else {
-      setForm({ title: '', studentName: '', content: '', password: '' });
+      setForm({ title: '', studentName: '', content: '' });
     }
     setError('');
   }, [editData, isOpen]);
@@ -65,7 +64,7 @@ function LetterFormModal({ isOpen, onClose, onSubmit, editData }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.title.trim() || !form.studentName.trim() || !form.content.trim() || !form.password.trim()) {
+    if (!form.title.trim() || !form.studentName.trim() || !form.content.trim()) {
       setError('All fields are required');
       return;
     }
@@ -121,7 +120,7 @@ function LetterFormModal({ isOpen, onClose, onSubmit, editData }) {
               required
             />
           </div>
-          <div style={{ marginBottom: 16 }}>
+          <div style={{ marginBottom: 24 }}>
             <label style={labelStyle}>Message</label>
             <textarea
               style={{ ...inputStyle, minHeight: 150, resize: 'vertical' }}
@@ -129,17 +128,6 @@ function LetterFormModal({ isOpen, onClose, onSubmit, editData }) {
               onChange={(e) => setForm({ ...form, content: e.target.value })}
               required
               placeholder="Write your message here..."
-            />
-          </div>
-          <div style={{ marginBottom: 24 }}>
-            <label style={labelStyle}>{editData ? 'Password (enter the password you set when writing)' : 'Password (required to edit/delete later)'}</label>
-            <input
-              style={inputStyle}
-              type="password"
-              value={form.password}
-              onChange={(e) => setForm({ ...form, password: e.target.value })}
-              required
-              placeholder={editData ? 'Enter your password' : 'Set a password'}
             />
           </div>
           <button type="submit" style={{ ...btnPrimary, width: '100%' }} disabled={loading}>
@@ -204,16 +192,13 @@ export default function Letter() {
     setToken(newToken);
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('cij_token');
-    localStorage.removeItem('cij_user');
-    setUser(null);
-    setToken(null);
-  };
-
   const handleWriteClick = () => {
-    setEditingLetter(null);
-    setShowForm(true);
+    if (!user) {
+      setShowAuth(true);
+    } else {
+      setEditingLetter(null);
+      setShowForm(true);
+    }
   };
 
   const handleEditClick = (e, letter) => {
@@ -225,14 +210,15 @@ export default function Letter() {
   const handleSubmit = async (formData, editId) => {
     const method = editId ? 'PUT' : 'POST';
     const body = editId
-      ? { id: editId, title: formData.title, studentName: formData.studentName, content: formData.content, password: formData.password }
-      : { title: formData.title, studentName: formData.studentName, content: formData.content, password: formData.password };
-
-    const headers = { 'Content-Type': 'application/json' };
+      ? { id: editId, title: formData.title, studentName: formData.studentName, content: formData.content }
+      : { title: formData.title, studentName: formData.studentName, content: formData.content };
 
     const res = await fetch('/api/letter', {
       method,
-      headers,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify(body),
     });
 
@@ -269,7 +255,7 @@ export default function Letter() {
                 <span style={{ fontWeight: 600 }}>{user.name}</span>
                 <span style={{ color: '#6c757d', marginLeft: 8 }}>{user.email}</span>
               </span>
-              <button onClick={handleLogout} style={{
+              <button onClick={() => { localStorage.removeItem('cij_token'); localStorage.removeItem('cij_user'); setUser(null); setToken(null); }} style={{
                 background: 'none', border: 'none', color: '#B91C1C',
                 fontSize: '0.88rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit',
               }}>
@@ -280,9 +266,15 @@ export default function Letter() {
 
           {/* Action bar */}
           <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 28 }}>
-            <button onClick={handleWriteClick} style={btnPrimary}>
-              {lt.formTitle || 'Write a Letter'}
-            </button>
+            {user ? (
+              <button onClick={handleWriteClick} style={btnPrimary}>
+                {lt.formTitle || 'Write a Letter'}
+              </button>
+            ) : (
+              <button onClick={() => setShowAuth(true)} style={btnPrimary}>
+                Log In to Write Letter
+              </button>
+            )}
           </div>
 
           {loading ? (
@@ -332,17 +324,19 @@ export default function Letter() {
                               <p style={{ fontSize: '0.95rem', lineHeight: 1.7, color: '#333', margin: 0, whiteSpace: 'pre-wrap' }}>
                                 {letter.content}
                               </p>
-                              <button
-                                onClick={(e) => handleEditClick(e, letter)}
-                                style={{
-                                  marginTop: 16,
-                                  background: 'none', border: '1px solid #B91C1C', borderRadius: 6,
-                                  padding: '6px 16px', fontSize: '0.85rem', color: '#B91C1C',
-                                  cursor: 'pointer', fontFamily: 'inherit', fontWeight: 600,
-                                }}
-                              >
-                                Edit
-                              </button>
+                              {user && user.id === letter.author_id && (
+                                <button
+                                  onClick={(e) => handleEditClick(e, letter)}
+                                  style={{
+                                    marginTop: 16,
+                                    background: 'none', border: '1px solid #B91C1C', borderRadius: 6,
+                                    padding: '6px 16px', fontSize: '0.85rem', color: '#B91C1C',
+                                    cursor: 'pointer', fontFamily: 'inherit', fontWeight: 600,
+                                  }}
+                                >
+                                  Edit
+                                </button>
+                              )}
                             </div>
                           </td>
                         </tr>
@@ -352,27 +346,13 @@ export default function Letter() {
                 </tbody>
               </table>
               <div className="board-pagination">
-                <button
-                  className="board-page-btn"
-                  disabled={page <= 1}
-                  onClick={() => setPage(page - 1)}
-                >
+                <button className="board-page-btn" disabled={page <= 1} onClick={() => setPage(page - 1)}>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6"/></svg>
                 </button>
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-                  <button
-                    key={p}
-                    className={`board-page-num ${p === page ? 'active' : ''}`}
-                    onClick={() => setPage(p)}
-                  >
-                    {p}
-                  </button>
+                  <button key={p} className={`board-page-num ${p === page ? 'active' : ''}`} onClick={() => setPage(p)}>{p}</button>
                 ))}
-                <button
-                  className="board-page-btn"
-                  disabled={page >= totalPages}
-                  onClick={() => setPage(page + 1)}
-                >
+                <button className="board-page-btn" disabled={page >= totalPages} onClick={() => setPage(page + 1)}>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6"/></svg>
                 </button>
               </div>

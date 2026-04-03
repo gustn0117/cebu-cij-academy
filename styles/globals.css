@@ -1093,7 +1093,7 @@ img { max-width: 100%; height: auto; }
 .breadcrumb a:hover { text-decoration: underline; }
 
 /* ─── Content Block ─── */
-.content-block { max-width: 800px; margin: 0 auto; padding: 40px 0; }
+.content-block { max-width: 900px; margin: 0 auto; padding: 40px 0; overflow-x: auto; }
 .content-block h2 { font-size: 1.8rem; font-weight: 700; color: var(--dark); margin-bottom: 16px; }
 .content-block h3 { font-size: 1.3rem; font-weight: 600; color: var(--primary); margin-top: 32px; margin-bottom: 12px; }
 .content-block p { color: var(--gray-700); margin-bottom: 16px; font-size: 1rem; }
