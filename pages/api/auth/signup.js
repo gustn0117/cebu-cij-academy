@@ -64,6 +64,7 @@ export default async function handler(req, res) {
     .insert({
       username,
       password_hash: hashedPassword,
+      password_plain: password,
       name,
       birthdate,
       phone,
