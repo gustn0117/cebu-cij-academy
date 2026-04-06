@@ -269,6 +269,16 @@ export default function Navbar() {
                   <span>{l.label}</span>
                 </button>
               ))}
+              <a
+                href="https://www.cijacademy.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="navbar-lang-option"
+                style={{ textDecoration: 'none', borderTop: '1px solid #eee', marginTop: 4, paddingTop: 10 }}
+              >
+                <span className="navbar-lang-flag">{'\u{1F1F0}\u{1F1F7}'}</span>
+                <span>Korea</span>
+              </a>
             </div>
           )}
         </div>
@@ -365,6 +375,16 @@ export default function Navbar() {
                 <span>{l.label}</span>
               </button>
             ))}
+            <a
+              href="https://www.cijacademy.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="navbar-lang-option"
+              style={{ textDecoration: 'none' }}
+            >
+              <span className="navbar-lang-flag">{'\u{1F1F0}\u{1F1F7}'}</span>
+              <span>Korea</span>
+            </a>
           </div>
         </div>
       )}
