@@ -12,14 +12,17 @@ export default async function handler(req, res) {
   }
 
   if (req.method === 'POST') {
-    const { title, student_name, content } = req.body;
+    const { title, student_name, content, password } = req.body;
     if (!title || !student_name || !content) {
       return res.status(400).json({ error: 'Title, student_name, and content are required' });
     }
 
+    const insertData = { title, student_name, content };
+    if (password) insertData.password = password;
+
     const { data, error } = await supabase
       .from('letters')
-      .insert({ title, student_name, content })
+      .insert(insertData)
       .select()
       .single();
 
@@ -28,13 +31,14 @@ export default async function handler(req, res) {
   }
 
   if (req.method === 'PUT') {
-    const { id, title, student_name, content } = req.body;
+    const { id, title, student_name, content, password } = req.body;
     if (!id) return res.status(400).json({ error: 'ID required' });
 
     const updates = {};
     if (title !== undefined) updates.title = title;
     if (student_name !== undefined) updates.student_name = student_name;
     if (content !== undefined) updates.content = content;
+    if (password !== undefined) updates.password = password;
 
     const { data, error } = await supabase
       .from('letters')

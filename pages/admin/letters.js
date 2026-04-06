@@ -1610,6 +1610,7 @@ function ImagesTab() {
 
   const liloanImages = facilityImages.filter((img) => img.section === 'liloan');
   const premiumImages = facilityImages.filter((img) => img.section === 'premium');
+  const aroundImages = facilityImages.filter((img) => img.section === 'around');
 
   return (
     <div>
@@ -1692,6 +1693,7 @@ function ImagesTab() {
               >
                 <option value="liloan">Liloan Campus</option>
                 <option value="premium">Premium Campus</option>
+                <option value="around">Around the Academy</option>
               </select>
             </div>
             <div style={{ flex: 1, minWidth: 160 }}>
@@ -1750,7 +1752,7 @@ function ImagesTab() {
             </div>
 
             {/* Premium Campus */}
-            <div>
+            <div style={{ marginBottom: 24 }}>
               <h4 style={{ fontSize: '0.95rem', fontWeight: 600, color: '#1a1a2e', marginBottom: 12 }}>
                 Premium Campus
                 <span style={{ ...styles.badge, marginLeft: 8, fontSize: '0.72rem' }}>{premiumImages.length}</span>
@@ -1760,6 +1762,27 @@ function ImagesTab() {
               ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                   {premiumImages.map((img) => (
+                    <div key={img.id} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 14px', background: '#fafafa', borderRadius: 8, border: '1px solid #eee' }}>
+                      <img src={img.image_url} alt={img.title} style={{ width: 60, height: 40, objectFit: 'cover', borderRadius: 6, flexShrink: 0 }} />
+                      <span style={{ flex: 1, fontSize: '0.88rem', color: '#333', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{img.title || '(no title)'}</span>
+                      <button onClick={() => handleFacDelete(img.id)} style={styles.btnSmallDanger}>Delete</button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Around the Academy */}
+            <div>
+              <h4 style={{ fontSize: '0.95rem', fontWeight: 600, color: '#1a1a2e', marginBottom: 12 }}>
+                Around the Academy
+                <span style={{ ...styles.badge, marginLeft: 8, fontSize: '0.72rem' }}>{aroundImages.length}</span>
+              </h4>
+              {aroundImages.length === 0 ? (
+                <p style={{ color: '#bbb', fontSize: '0.88rem' }}>No images uploaded yet.</p>
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                  {aroundImages.map((img) => (
                     <div key={img.id} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 14px', background: '#fafafa', borderRadius: 8, border: '1px solid #eee' }}>
                       <img src={img.image_url} alt={img.title} style={{ width: 60, height: 40, objectFit: 'cover', borderRadius: 6, flexShrink: 0 }} />
                       <span style={{ flex: 1, fontSize: '0.88rem', color: '#333', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{img.title || '(no title)'}</span>

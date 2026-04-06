@@ -14,39 +14,58 @@ function getUserFromToken(req) {
 }
 
 export default async function handler(req, res) {
+  // GET: list letters (only shows id, title, student_name, created_at - content is hidden)
   if (req.method === 'GET') {
+    const { id, password } = req.query;
+
+    // If id + password provided, return single letter with content
+    if (id) {
+      const { data, error } = await supabase
+        .from('letters')
+        .select('id, title, student_name, content, password, created_at, author_id, author_name')
+        .eq('id', Number(id))
+        .single();
+
+      if (error || !data) return res.status(404).json({ error: 'Letter not found' });
+
+      // Check password (birthdate)
+      if (data.password && data.password !== password) {
+        return res.status(403).json({ error: 'Incorrect password' });
+      }
+
+      // Return content (remove password from response)
+      const { password: _, ...letterData } = data;
+      return res.status(200).json(letterData);
+    }
+
+    // List all letters (without content)
     const { data, error } = await supabase
       .from('letters')
-      .select('id, title, student_name, content, created_at, author_name, author_id')
+      .select('id, title, student_name, created_at')
       .order('created_at', { ascending: false });
 
-    if (error) {
-      // author columns may not exist yet, fallback
-      const { data: fallback, error: e2 } = await supabase
-        .from('letters')
-        .select('id, title, student_name, content, created_at')
-        .order('created_at', { ascending: false });
-      if (e2) return res.status(500).json({ error: e2.message });
-      return res.status(200).json(fallback);
-    }
+    if (error) return res.status(500).json({ error: error.message });
     return res.status(200).json(data);
   }
 
+  // POST: create letter (requires login)
   if (req.method === 'POST') {
     const decoded = getUserFromToken(req);
     if (!decoded) return res.status(401).json({ error: 'Login required to write a letter' });
 
-    const { title, studentName, content } = req.body;
-    if (!title || !studentName || !content) {
-      return res.status(400).json({ error: 'All fields are required' });
+    const { title, studentName, content, password } = req.body;
+    if (!title || !studentName || !content || !password) {
+      return res.status(400).json({ error: 'All fields including password (birthdate) are required' });
     }
 
-    const insertData = { title, student_name: studentName, content };
-    // Try to store author info if columns exist
-    try {
-      insertData.author_id = decoded.id;
-      insertData.author_name = decoded.name || decoded.username;
-    } catch {}
+    const insertData = {
+      title,
+      student_name: studentName,
+      content,
+      password,
+      author_id: decoded.id,
+      author_name: decoded.name || decoded.username,
+    };
 
     const { data, error } = await supabase
       .from('letters')
@@ -54,29 +73,19 @@ export default async function handler(req, res) {
       .select()
       .single();
 
-    if (error) {
-      // If author columns don't exist, retry without them
-      delete insertData.author_id;
-      delete insertData.author_name;
-      const { data: d2, error: e2 } = await supabase
-        .from('letters')
-        .insert(insertData)
-        .select()
-        .single();
-      if (e2) return res.status(500).json({ error: e2.message });
-      return res.status(200).json({ success: true, id: d2.id, letter: d2 });
-    }
-    return res.status(200).json({ success: true, id: data.id, letter: data });
+    if (error) return res.status(500).json({ error: error.message });
+    return res.status(200).json({ success: true, id: data.id });
   }
 
+  // PUT: edit letter (requires login + ownership)
   if (req.method === 'PUT') {
     const decoded = getUserFromToken(req);
     if (!decoded) return res.status(401).json({ error: 'Login required' });
 
-    const { id, title, studentName, content } = req.body;
+    const { id, title, studentName, content, password } = req.body;
     if (!id) return res.status(400).json({ error: 'ID required' });
 
-    // Check ownership via author_id
+    // Check ownership
     const { data: existing } = await supabase
       .from('letters')
       .select('author_id')
@@ -91,6 +100,7 @@ export default async function handler(req, res) {
     if (title !== undefined) updates.title = title;
     if (studentName !== undefined) updates.student_name = studentName;
     if (content !== undefined) updates.content = content;
+    if (password !== undefined) updates.password = password;
 
     const { data, error } = await supabase
       .from('letters')
@@ -100,7 +110,7 @@ export default async function handler(req, res) {
       .single();
 
     if (error) return res.status(500).json({ error: error.message });
-    return res.status(200).json({ success: true, letter: data });
+    return res.status(200).json({ success: true });
   }
 
   return res.status(405).json({ error: 'Method not allowed' });

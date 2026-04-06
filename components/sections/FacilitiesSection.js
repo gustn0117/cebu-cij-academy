@@ -17,6 +17,7 @@ export default function FacilitiesSection() {
 
   const liloanImages = images.filter((img) => img.section === 'liloan');
   const premiumImages = images.filter((img) => img.section === 'premium');
+  const aroundImages = images.filter((img) => img.section === 'around');
 
   const openLightbox = (sectionImages, index) => {
     setLightbox({ open: true, images: sectionImages, index });
@@ -101,6 +102,32 @@ export default function FacilitiesSection() {
                   style={{ cursor: 'pointer' }}
                 >
                   <img src={img.image_url} alt={img.title || 'Premium Campus'} />
+                  {img.title && <div className="facility-image-title">{img.title}</div>}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p style={{ color: '#6c757d', fontSize: '0.95rem' }}>No images uploaded yet.</p>
+          )}
+        </div>
+      </section>
+
+      {/* Around the Academy */}
+      <section id="around-academy" className="section">
+        <div className="container">
+          <h2 style={{ fontSize: '1.6rem', fontWeight: 700, marginBottom: 24 }}>
+            Around the Academy
+          </h2>
+          {aroundImages.length > 0 ? (
+            <div className="facility-images-grid">
+              {aroundImages.map((img, i) => (
+                <div
+                  key={img.id}
+                  className="facility-image-item"
+                  onClick={() => openLightbox(aroundImages, i)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <img src={img.image_url} alt={img.title || 'Around the Academy'} />
                   {img.title && <div className="facility-image-title">{img.title}</div>}
                 </div>
               ))}

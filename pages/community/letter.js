@@ -42,20 +42,17 @@ const closeBtn = {
   lineHeight: 1,
 };
 
+/* ── Write/Edit Letter Modal ── */
 function LetterFormModal({ isOpen, onClose, onSubmit, editData }) {
-  const [form, setForm] = useState({ title: '', studentName: '', content: '' });
+  const [form, setForm] = useState({ title: '', studentName: '', content: '', password: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
     if (editData) {
-      setForm({
-        title: editData.title || '',
-        studentName: editData.student_name || '',
-        content: editData.content || '',
-      });
+      setForm({ title: editData.title || '', studentName: editData.student_name || '', content: editData.content || '', password: '' });
     } else {
-      setForm({ title: '', studentName: '', content: '' });
+      setForm({ title: '', studentName: '', content: '', password: '' });
     }
     setError('');
   }, [editData, isOpen]);
@@ -64,7 +61,7 @@ function LetterFormModal({ isOpen, onClose, onSubmit, editData }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.title.trim() || !form.studentName.trim() || !form.content.trim()) {
+    if (!form.title.trim() || !form.studentName.trim() || !form.content.trim() || !form.password.trim()) {
       setError('All fields are required');
       return;
     }
@@ -91,44 +88,26 @@ function LetterFormModal({ isOpen, onClose, onSubmit, editData }) {
         </p>
 
         {error && (
-          <div style={{
-            background: '#FEF2F2', color: '#B91C1C', padding: '10px 14px',
-            borderRadius: 8, fontSize: '0.88rem', marginBottom: 16,
-          }}>{error}</div>
+          <div style={{ background: '#FEF2F2', color: '#B91C1C', padding: '10px 14px', borderRadius: 8, fontSize: '0.88rem', marginBottom: 16 }}>{error}</div>
         )}
 
         <form onSubmit={handleSubmit}>
           <div style={{ marginBottom: 16 }}>
             <label style={labelStyle}>Title</label>
-            <input
-              style={inputStyle}
-              type="text"
-              value={form.title}
-              onChange={(e) => setForm({ ...form, title: e.target.value })}
-              placeholder="Enter letter title"
-              required
-            />
+            <input style={inputStyle} type="text" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} placeholder="Enter letter title" required />
           </div>
           <div style={{ marginBottom: 16 }}>
             <label style={labelStyle}>Student Name</label>
-            <input
-              style={inputStyle}
-              type="text"
-              value={form.studentName}
-              onChange={(e) => setForm({ ...form, studentName: e.target.value })}
-              placeholder="Enter student's full name"
-              required
-            />
+            <input style={inputStyle} type="text" value={form.studentName} onChange={(e) => setForm({ ...form, studentName: e.target.value })} placeholder="Enter student's full name" required />
+          </div>
+          <div style={{ marginBottom: 16 }}>
+            <label style={labelStyle}>Student Birthdate (Password)</label>
+            <input style={inputStyle} type="date" lang="en" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} required />
+            <p style={{ fontSize: '0.78rem', color: '#999', marginTop: 4 }}>Only parents who know this birthdate can read the letter.</p>
           </div>
           <div style={{ marginBottom: 24 }}>
             <label style={labelStyle}>Message</label>
-            <textarea
-              style={{ ...inputStyle, minHeight: 150, resize: 'vertical' }}
-              value={form.content}
-              onChange={(e) => setForm({ ...form, content: e.target.value })}
-              required
-              placeholder="Write your message here..."
-            />
+            <textarea style={{ ...inputStyle, minHeight: 150, resize: 'vertical' }} value={form.content} onChange={(e) => setForm({ ...form, content: e.target.value })} required placeholder="Write your message here..." />
           </div>
           <button type="submit" style={{ ...btnPrimary, width: '100%' }} disabled={loading}>
             {loading ? 'Saving...' : editData ? 'Update Letter' : 'Send Letter'}
@@ -139,6 +118,58 @@ function LetterFormModal({ isOpen, onClose, onSubmit, editData }) {
   );
 }
 
+/* ── Password Prompt Modal ── */
+function PasswordModal({ isOpen, onClose, onSubmit, letterTitle }) {
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => { setPassword(''); setError(''); }, [isOpen]);
+
+  if (!isOpen) return null;
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!password) { setError('Please enter the birthdate'); return; }
+    setLoading(true);
+    setError('');
+    try {
+      await onSubmit(password);
+    } catch (err) {
+      setError(err.message || 'Incorrect password');
+    }
+    setLoading(false);
+  };
+
+  return (
+    <div style={modalOverlayStyle} onClick={(e) => e.target === e.currentTarget && onClose()}>
+      <div style={modalBoxStyle}>
+        <button style={closeBtn} onClick={onClose}>&times;</button>
+        <h2 style={{ fontSize: '1.3rem', fontWeight: 700, marginBottom: 8, color: '#1A1A2E' }}>
+          Enter Password to Read
+        </h2>
+        <p style={{ color: '#6c757d', fontSize: '0.88rem', marginBottom: 20 }}>
+          &ldquo;{letterTitle}&rdquo;<br />
+          Enter the student&apos;s birthdate to view this letter.
+        </p>
+        {error && (
+          <div style={{ background: '#FEF2F2', color: '#B91C1C', padding: '10px 14px', borderRadius: 8, fontSize: '0.88rem', marginBottom: 16 }}>{error}</div>
+        )}
+        <form onSubmit={handleSubmit}>
+          <div style={{ marginBottom: 20 }}>
+            <label style={labelStyle}>Student Birthdate</label>
+            <input style={inputStyle} type="date" lang="en" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          </div>
+          <button type="submit" style={{ ...btnPrimary, width: '100%' }} disabled={loading}>
+            {loading ? 'Verifying...' : 'View Letter'}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+/* ── Main Page ── */
 export default function Letter() {
   const { t } = useLanguage();
   const lt = t.comm?.letter || {};
@@ -150,6 +181,8 @@ export default function Letter() {
   const [showForm, setShowForm] = useState(false);
   const [editingLetter, setEditingLetter] = useState(null);
   const [expandedId, setExpandedId] = useState(null);
+  const [expandedContent, setExpandedContent] = useState(null);
+  const [passwordModal, setPasswordModal] = useState(null); // { id, title }
   const [page, setPage] = useState(1);
 
   const fetchLetters = useCallback(() => {
@@ -162,70 +195,68 @@ export default function Letter() {
       .catch(() => setLoading(false));
   }, []);
 
-  useEffect(() => {
-    fetchLetters();
-  }, [fetchLetters]);
+  useEffect(() => { fetchLetters(); }, [fetchLetters]);
 
   useEffect(() => {
     const savedToken = localStorage.getItem('cij_token');
     if (savedToken) {
-      fetch('/api/auth/me', {
-        headers: { Authorization: `Bearer ${savedToken}` },
-      })
-        .then((res) => {
-          if (!res.ok) throw new Error('Invalid token');
-          return res.json();
-        })
-        .then((userData) => {
-          setUser(userData);
-          setToken(savedToken);
-        })
-        .catch(() => {
-          localStorage.removeItem('cij_token');
-          localStorage.removeItem('cij_user');
-        });
+      fetch('/api/auth/me', { headers: { Authorization: `Bearer ${savedToken}` } })
+        .then((res) => { if (!res.ok) throw new Error(); return res.json(); })
+        .then((userData) => { setUser(userData); setToken(savedToken); })
+        .catch(() => { localStorage.removeItem('cij_token'); localStorage.removeItem('cij_user'); });
     }
   }, []);
 
-  const handleAuth = (userData, newToken) => {
-    setUser(userData);
-    setToken(newToken);
+  const handleAuth = (userData, newToken) => { setUser(userData); setToken(newToken); };
+
+  const handleLetterClick = (letter) => {
+    if (expandedId === letter.id) {
+      setExpandedId(null);
+      setExpandedContent(null);
+      return;
+    }
+    // Show password prompt
+    setPasswordModal({ id: letter.id, title: letter.title });
+  };
+
+  const handlePasswordSubmit = async (password) => {
+    const res = await fetch(`/api/letter?id=${passwordModal.id}&password=${encodeURIComponent(password)}`);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Incorrect password');
+    setExpandedId(passwordModal.id);
+    setExpandedContent(data);
+    setPasswordModal(null);
   };
 
   const handleWriteClick = () => {
-    if (!user) {
-      setShowAuth(true);
-    } else {
-      setEditingLetter(null);
-      setShowForm(true);
-    }
+    if (!user) { setShowAuth(true); return; }
+    setEditingLetter(null);
+    setShowForm(true);
   };
 
-  const handleEditClick = (e, letter) => {
+  const handleEditClick = (e) => {
     e.stopPropagation();
-    setEditingLetter(letter);
+    if (!expandedContent) return;
+    setEditingLetter(expandedContent);
     setShowForm(true);
   };
 
   const handleSubmit = async (formData, editId) => {
     const method = editId ? 'PUT' : 'POST';
     const body = editId
-      ? { id: editId, title: formData.title, studentName: formData.studentName, content: formData.content }
-      : { title: formData.title, studentName: formData.studentName, content: formData.content };
+      ? { id: editId, title: formData.title, studentName: formData.studentName, content: formData.content, password: formData.password }
+      : { title: formData.title, studentName: formData.studentName, content: formData.content, password: formData.password };
 
     const res = await fetch('/api/letter', {
       method,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
       body: JSON.stringify(body),
     });
-
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Failed to save');
-
     setEditingLetter(null);
+    setExpandedId(null);
+    setExpandedContent(null);
     fetchLetters();
   };
 
@@ -244,7 +275,6 @@ export default function Letter() {
       />
       <section className="section">
         <div className="container">
-          {/* User bar */}
           {user && (
             <div style={{
               display: 'flex', alignItems: 'center', justifyContent: 'space-between',
@@ -258,22 +288,15 @@ export default function Letter() {
               <button onClick={() => { localStorage.removeItem('cij_token'); localStorage.removeItem('cij_user'); setUser(null); setToken(null); }} style={{
                 background: 'none', border: 'none', color: '#B91C1C',
                 fontSize: '0.88rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit',
-              }}>
-                Log Out
-              </button>
+              }}>Log Out</button>
             </div>
           )}
 
-          {/* Action bar */}
           <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 28 }}>
             {user ? (
-              <button onClick={handleWriteClick} style={btnPrimary}>
-                {lt.formTitle || 'Write a Letter'}
-              </button>
+              <button onClick={handleWriteClick} style={btnPrimary}>{lt.formTitle || 'Write a Letter'}</button>
             ) : (
-              <button onClick={() => setShowAuth(true)} style={btnPrimary}>
-                Log In to Write Letter
-              </button>
+              <button onClick={() => setShowAuth(true)} style={btnPrimary}>Log In to Write Letter</button>
             )}
           </div>
 
@@ -295,47 +318,30 @@ export default function Letter() {
                 <tbody>
                   {currentLetters.map((letter, i) => (
                     <React.Fragment key={letter.id}>
-                      <tr
-                        style={{ cursor: 'pointer' }}
-                        onClick={() => setExpandedId(expandedId === letter.id ? null : letter.id)}
-                      >
+                      <tr style={{ cursor: 'pointer' }} onClick={() => handleLetterClick(letter)}>
                         <td className="board-no">{letters.length - ((page - 1) * PER_PAGE + i)}</td>
-                        <td className="board-title">
-                          <span style={{ color: '#1A1A2E' }}>{letter.title}</span>
-                        </td>
+                        <td className="board-title"><span style={{ color: '#1A1A2E' }}>{letter.title}</span></td>
                         <td className="board-date" style={{ width: 120 }}>{letter.student_name || '-'}</td>
-                        <td className="board-date">
-                          {letter.created_at ? new Date(letter.created_at).toLocaleDateString() : ''}
-                        </td>
+                        <td className="board-date">{letter.created_at ? new Date(letter.created_at).toLocaleDateString() : ''}</td>
                       </tr>
-                      {expandedId === letter.id && (
+                      {expandedId === letter.id && expandedContent && (
                         <tr>
                           <td colSpan="4" style={{ padding: '20px 24px', background: '#FAFAFA', borderBottom: '1px solid #eee' }}>
                             <div style={{ maxWidth: 700 }}>
                               <div style={{ marginBottom: 12 }}>
                                 <span style={{ fontSize: '0.85rem', color: '#6c757d' }}>
-                                  To: <strong>{letter.student_name}</strong>
-                                  {letter.created_at && ` | ${new Date(letter.created_at).toLocaleDateString()}`}
+                                  To: <strong>{expandedContent.student_name}</strong>
+                                  {expandedContent.created_at && ` | ${new Date(expandedContent.created_at).toLocaleDateString()}`}
                                 </span>
                               </div>
-                              <h4 style={{ fontSize: '1.05rem', fontWeight: 600, color: '#1A1A2E', marginBottom: 8 }}>
-                                {letter.title}
-                              </h4>
-                              <p style={{ fontSize: '0.95rem', lineHeight: 1.7, color: '#333', margin: 0, whiteSpace: 'pre-wrap' }}>
-                                {letter.content}
-                              </p>
-                              {user && user.id === letter.author_id && (
-                                <button
-                                  onClick={(e) => handleEditClick(e, letter)}
-                                  style={{
-                                    marginTop: 16,
-                                    background: 'none', border: '1px solid #B91C1C', borderRadius: 6,
-                                    padding: '6px 16px', fontSize: '0.85rem', color: '#B91C1C',
-                                    cursor: 'pointer', fontFamily: 'inherit', fontWeight: 600,
-                                  }}
-                                >
-                                  Edit
-                                </button>
+                              <h4 style={{ fontSize: '1.05rem', fontWeight: 600, color: '#1A1A2E', marginBottom: 8 }}>{expandedContent.title}</h4>
+                              <p style={{ fontSize: '0.95rem', lineHeight: 1.7, color: '#333', margin: 0, whiteSpace: 'pre-wrap' }}>{expandedContent.content}</p>
+                              {user && user.id === expandedContent.author_id && (
+                                <button onClick={handleEditClick} style={{
+                                  marginTop: 16, background: 'none', border: '1px solid #B91C1C', borderRadius: 6,
+                                  padding: '6px 16px', fontSize: '0.85rem', color: '#B91C1C',
+                                  cursor: 'pointer', fontFamily: 'inherit', fontWeight: 600,
+                                }}>Edit</button>
                               )}
                             </div>
                           </td>
@@ -361,17 +367,9 @@ export default function Letter() {
         </div>
       </section>
 
-      <AuthModal
-        isOpen={showAuth}
-        onClose={() => setShowAuth(false)}
-        onAuth={handleAuth}
-      />
-      <LetterFormModal
-        isOpen={showForm}
-        onClose={() => { setShowForm(false); setEditingLetter(null); }}
-        onSubmit={handleSubmit}
-        editData={editingLetter}
-      />
+      <AuthModal isOpen={showAuth} onClose={() => setShowAuth(false)} onAuth={handleAuth} />
+      <LetterFormModal isOpen={showForm} onClose={() => { setShowForm(false); setEditingLetter(null); }} onSubmit={handleSubmit} editData={editingLetter} />
+      <PasswordModal isOpen={!!passwordModal} onClose={() => setPasswordModal(null)} onSubmit={handlePasswordSubmit} letterTitle={passwordModal?.title || ''} />
     </Layout>
   );
 }
