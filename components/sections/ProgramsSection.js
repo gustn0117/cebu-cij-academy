@@ -418,7 +418,7 @@ function JuniorProgram() {
         <div className="content-block">
           <h3>Time Table</h3>
           
-            <div className="styled-table-wrap"><table className="styled-table" style={{minWidth:800}}>
+            <div className="styled-table-wrap"><table className="styled-table junior-timetable" style={{minWidth:800}}>
               <thead>
                 <tr>
                   <th>Time</th>
