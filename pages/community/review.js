@@ -285,6 +285,7 @@ export default function Review() {
           { label: t.nav.community, href: '/community' },
           { label: rv.pageTitle || 'Reviews' },
         ]}
+        backgroundImage="/images/headers/review.svg"
       />
       <section className="section">
         <div className="container">

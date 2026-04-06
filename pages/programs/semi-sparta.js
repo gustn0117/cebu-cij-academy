@@ -15,6 +15,7 @@ export default function SemiSpartaPage() {
           { label: t.nav.programs, href: '/programs/semi-sparta' },
           { label: t.nav.semiSparta || 'Semi Sparta' },
         ]}
+        backgroundImage="/images/headers/semisparta.svg"
       />
       <SemiSpartaProgram />
     </Layout>

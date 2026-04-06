@@ -272,6 +272,7 @@ export default function Letter() {
           { label: t.nav.community, href: '/community' },
           { label: lt.pageTitle || 'Letter' },
         ]}
+        backgroundImage="/images/headers/letter.svg"
       />
       <section className="section">
         <div className="container">

@@ -75,6 +75,7 @@ export default function Report() {
             { label: 'Report', href: '/community/report' },
             { label: report.title },
           ]}
+          backgroundImage="/images/headers/community.svg"
         />
         <section className="section">
           <div className="container">
@@ -129,6 +130,7 @@ export default function Report() {
           { label: t.nav.community, href: '/community' },
           { label: 'Report' },
         ]}
+        backgroundImage="/images/headers/community.svg"
       />
       <section className="section">
         <div className="container">

@@ -15,6 +15,7 @@ export default function JuniorPage() {
           { label: t.nav.programs, href: '/programs/semi-sparta' },
           { label: t.nav.junior || 'Junior' },
         ]}
+        backgroundImage="/images/headers/junior.svg"
       />
       <JuniorProgram />
     </Layout>

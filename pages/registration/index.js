@@ -12,6 +12,7 @@ export default function Registration() {
         title={t.nav?.registration || 'Registration'}
         description={t.reg?.howToRegSub || 'How to Register & School Regulations'}
         breadcrumbs={[{ label: t.nav?.registration || 'Registration' }]}
+        backgroundImage="/images/headers/registration.svg"
       />
       <RegistrationSection />
     </Layout>

@@ -50,6 +50,7 @@ export default function Levels() {
         title={t.lvl.title}
         description={t.lvl.subtitle}
         breadcrumbs={[{ label: t.nav.levels }]}
+        backgroundImage="/images/headers/level.svg"
       />
 
       {/* Quick Navigation */}

@@ -29,7 +29,7 @@ export default function Notice() {
 
   return (
     <Layout title={t.comm.noticeTitle}>
-      <PageHeader title={t.comm.noticeTitle} subtitle={t.comm.noticeSub} breadcrumb={[{ label: t.nav.community, href: '/community' }, { label: t.comm.noticeTitle }]} />
+      <PageHeader title={t.comm.noticeTitle} subtitle={t.comm.noticeSub} breadcrumb={[{ label: t.nav.community, href: '/community' }, { label: t.comm.noticeTitle }]} backgroundImage="/images/headers/community.svg" />
       <section className="section">
         <div className="container">
           {loading ? (

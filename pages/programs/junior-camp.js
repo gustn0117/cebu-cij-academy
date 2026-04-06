@@ -15,6 +15,7 @@ export default function JuniorCampPage() {
           { label: t.nav.programs, href: '/programs/semi-sparta' },
           { label: t.nav.juniorCamp || 'Junior Camp' },
         ]}
+        backgroundImage="/images/headers/juniorcamp.svg"
       />
       <JuniorCampProgram />
     </Layout>

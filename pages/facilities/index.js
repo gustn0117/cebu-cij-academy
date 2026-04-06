@@ -12,6 +12,7 @@ export default function Facilities() {
         title={t.nav.facilities}
         description={t.fac?.subtitle || 'Our campus facilities'}
         breadcrumbs={[{ label: t.nav.facilities }]}
+        backgroundImage="/images/headers/facility.svg"
       />
       <FacilitiesSection />
     </Layout>

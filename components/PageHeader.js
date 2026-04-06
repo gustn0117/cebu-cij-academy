@@ -1,11 +1,19 @@
 import Link from 'next/link';
 import { useLanguage } from '@/lib/LanguageContext';
 
-export default function PageHeader({ title, description, breadcrumbs = [] }) {
+export default function PageHeader({ title, description, breadcrumbs = [], backgroundImage }) {
   const { t } = useLanguage();
   return (
-    <div className="page-header">
-      <div className="container">
+    <div
+      className="page-header"
+      style={backgroundImage ? {
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      } : undefined}
+    >
+      {backgroundImage && <div className="page-header-overlay" />}
+      <div className="container" style={{ position: 'relative', zIndex: 2 }}>
         <h1>{title}</h1>
         {description && <p>{description}</p>}
         {breadcrumbs.length > 0 && (

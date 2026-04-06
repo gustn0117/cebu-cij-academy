@@ -310,6 +310,7 @@ export default function About() {
         title={t.about.title}
         description={t.about.subtitle}
         breadcrumbs={[{ label: t.nav.aboutUs }]}
+        backgroundImage="/images/headers/aboutus.svg"
       />
 
       {/* Greeting Section */}
@@ -550,8 +551,8 @@ export default function About() {
             <div style={{ marginBottom: 32 }}>
               <h4 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: 8 }}>Domestic Terminal (T1)</h4>
               <p style={{ color: 'var(--gray-500)', marginBottom: 12 }}>(For flights from Manila, Clark, Baguio, etc.)</p>
-              <div id="pickup-domestic-photo" style={{ background: '#f0f0f0', borderRadius: 12, height: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#999', marginBottom: 16 }}>
-                [Photo – Domestic Terminal Arrival Exit &amp; Pickup Point]
+              <div style={{ borderRadius: 12, overflow: 'hidden', marginBottom: 16 }}>
+                <img src="/images/location/domestic.jpg" alt="Domestic Terminal Arrival Exit & Pickup Point" style={{ width: '100%', height: 'auto', display: 'block' }} />
               </div>
               <p>Passengers arriving on domestic flights will exit through Terminal 1.</p>
               <p>There are two exits in the arrival hall, but the pickup location is the same.</p>
@@ -562,8 +563,8 @@ export default function About() {
 
             <div style={{ marginBottom: 32 }}>
               <h4 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: 8 }}>International Terminal (T2)</h4>
-              <div id="pickup-international-photo" style={{ background: '#f0f0f0', borderRadius: 12, height: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#999', marginBottom: 16 }}>
-                [Photo – International Terminal Arrival Exit &amp; Meeting Point]
+              <div style={{ borderRadius: 12, overflow: 'hidden', marginBottom: 16 }}>
+                <img src="/images/location/international.jpg" alt="International Terminal Arrival Exit & Meeting Point" style={{ width: '100%', height: 'auto', display: 'block' }} />
               </div>
               <p>Passengers arriving on international flights will exit through Terminal 2.</p>
               <p>There is only one exit in the arrival hall, making it easy to locate.</p>
@@ -579,8 +580,8 @@ export default function About() {
 
             <div style={{ marginTop: 24 }}>
               <h4 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: 8 }}>By Taxi</h4>
-              <div id="pickup-taxi-photo" style={{ background: '#f0f0f0', borderRadius: 12, height: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#999', marginBottom: 16 }}>
-                [Photo – Airport Taxi Area]
+              <div style={{ borderRadius: 12, overflow: 'hidden', marginBottom: 16 }}>
+                <img src="/images/location/taxi.jpg" alt="Airport Taxi Area" style={{ width: '100%', height: 'auto', display: 'block' }} />
               </div>
               <p>Taxis are readily available at the airport, and there are two types:</p>
               <ul>

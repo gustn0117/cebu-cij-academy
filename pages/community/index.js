@@ -6,7 +6,7 @@ export default function Community() {
   const { t } = useLanguage();
   return (
     <Layout title={t.comm.title}>
-      <PageHeader title={t.comm.title} subtitle={t.comm.subtitle} breadcrumb={[{ label: t.nav.community }]} />
+      <PageHeader title={t.comm.title} subtitle={t.comm.subtitle} breadcrumb={[{ label: t.nav.community }]} backgroundImage="/images/headers/community.svg" />
       <section className="section">
         <div className="container">
           <div className="content-block">

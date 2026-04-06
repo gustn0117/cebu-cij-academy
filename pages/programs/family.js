@@ -15,6 +15,7 @@ export default function FamilyPage() {
           { label: t.nav.programs, href: '/programs/semi-sparta' },
           { label: t.nav.family || 'Family' },
         ]}
+        backgroundImage="/images/headers/family.svg"
       />
       <FamilyProgram />
     </Layout>
