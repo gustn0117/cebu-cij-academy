@@ -135,8 +135,8 @@ function LettersTab() {
   const [checkedIds, setCheckedIds] = useState(new Set());
   const [showForm, setShowForm] = useState(false);
   const [editModal, setEditModal] = useState(null);
-  const [form, setForm] = useState({ title: '', student_name: '', content: '' });
-  const [editForm, setEditForm] = useState({ title: '', student_name: '', content: '' });
+  const [form, setForm] = useState({ title: '', student_name: '', content: '', password: '' });
+  const [editForm, setEditForm] = useState({ title: '', student_name: '', content: '', password: '' });
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => { fetchLetters(); }, []);
@@ -157,7 +157,7 @@ function LettersTab() {
 
   const handleCreate = async (e) => {
     e.preventDefault();
-    if (!form.title.trim() || !form.student_name.trim() || !form.content.trim()) return alert('All fields are required.');
+    if (!form.title.trim() || !form.student_name.trim() || !form.content.trim() || !form.password.trim()) return alert('All fields including birthdate are required.');
     setSubmitting(true);
     try {
       const res = await fetch('/api/admin/letters', {
@@ -167,7 +167,7 @@ function LettersTab() {
       });
       const newLetter = await res.json();
       setLetters((prev) => [newLetter, ...prev]);
-      setForm({ title: '', student_name: '', content: '' });
+      setForm({ title: '', student_name: '', content: '', password: '' });
       setShowForm(false);
     } catch (err) { console.error(err); alert('Failed to add letter.'); }
     setSubmitting(false);
@@ -175,7 +175,7 @@ function LettersTab() {
 
   const openEdit = (letter) => {
     setEditModal(letter);
-    setEditForm({ title: letter.title || '', student_name: letter.student_name || '', content: letter.content || '' });
+    setEditForm({ title: letter.title || '', student_name: letter.student_name || '', content: letter.content || '', password: letter.password || '' });
   };
 
   const handleEditSubmit = async (e) => {
@@ -260,6 +260,10 @@ function LettersTab() {
           <h3 style={styles.formTitle}>New Letter</h3>
           <input type="text" placeholder="Title *" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} style={styles.input} />
           <input type="text" placeholder="Student Name *" value={form.student_name} onChange={(e) => setForm({ ...form, student_name: e.target.value })} style={styles.input} />
+          <div style={{ marginBottom: 12 }}>
+            <label style={{ fontSize: '0.82rem', fontWeight: 600, color: '#666', marginBottom: 4, display: 'block' }}>Student Birthdate (Password) *</label>
+            <input type="date" lang="en" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} style={{ ...styles.input, marginBottom: 0 }} required />
+          </div>
           <textarea placeholder="Content *" value={form.content} onChange={(e) => setForm({ ...form, content: e.target.value })} style={{ ...styles.input, minHeight: 120, resize: 'vertical' }} />
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <button type="submit" disabled={submitting} style={styles.btnPrimary}>{submitting ? 'Saving...' : 'Save Letter'}</button>
@@ -275,6 +279,10 @@ function LettersTab() {
               <h3 style={styles.formTitle}>Edit Letter</h3>
               <input type="text" placeholder="Title *" value={editForm.title} onChange={(e) => setEditForm({ ...editForm, title: e.target.value })} style={styles.input} />
               <input type="text" placeholder="Student Name *" value={editForm.student_name} onChange={(e) => setEditForm({ ...editForm, student_name: e.target.value })} style={styles.input} />
+              <div style={{ marginBottom: 12 }}>
+                <label style={{ fontSize: '0.82rem', fontWeight: 600, color: '#666', marginBottom: 4, display: 'block' }}>Student Birthdate (Password)</label>
+                <input type="date" lang="en" value={editForm.password} onChange={(e) => setEditForm({ ...editForm, password: e.target.value })} style={{ ...styles.input, marginBottom: 0 }} />
+              </div>
               <textarea placeholder="Content *" value={editForm.content} onChange={(e) => setEditForm({ ...editForm, content: e.target.value })} style={{ ...styles.input, minHeight: 120, resize: 'vertical' }} />
               <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
                 <button type="button" onClick={() => setEditModal(null)} style={styles.btnSmallDanger}>Cancel</button>
@@ -818,8 +826,32 @@ function ReviewsTab() {
   const [checkedIds, setCheckedIds] = useState(new Set());
   const [editModal, setEditModal] = useState(null);
   const [editForm, setEditForm] = useState({ name: '', title: '', text: '' });
+  const [file, setFile] = useState(null);
+  const [preview, setPreview] = useState(null);
+  const [editFile, setEditFile] = useState(null);
+  const [editPreview, setEditPreview] = useState(null);
 
   useEffect(() => { fetchReviews(); }, []);
+
+  const handleFileChange = (e, isEdit) => {
+    const f = e.target.files[0];
+    if (!f) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      if (isEdit) { setEditFile(f); setEditPreview(ev.target.result); }
+      else { setFile(f); setPreview(ev.target.result); }
+    };
+    reader.readAsDataURL(f);
+  };
+
+  const uploadImage = async (fileToUpload) => {
+    const formData = new FormData();
+    formData.append('file', fileToUpload);
+    const uploadRes = await fetch('/api/admin/upload', { method: 'POST', body: formData });
+    const uploadData = await uploadRes.json();
+    if (!uploadData.url) throw new Error(uploadData.error || 'Upload failed');
+    return uploadData.url;
+  };
 
   const fetchReviews = async () => {
     setLoading(true);
@@ -840,14 +872,17 @@ function ReviewsTab() {
     if (!form.name.trim() || !form.text.trim()) return alert('Name and review text are required.');
     setSubmitting(true);
     try {
+      let image_url = null;
+      if (file) image_url = await uploadImage(file);
       const res = await fetch('/api/admin/reviews', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, image_url }),
       });
       const newReview = await res.json();
       setReviews((prev) => [newReview, ...prev]);
       setForm({ name: '', title: '', text: '' });
+      setFile(null); setPreview(null);
       setShowForm(false);
     } catch (err) { console.error(err); alert('Failed to add review.'); }
     setSubmitting(false);
@@ -856,6 +891,8 @@ function ReviewsTab() {
   const openEdit = (review) => {
     setEditModal(review);
     setEditForm({ name: review.name || '', title: review.title || '', text: review.text || '' });
+    setEditFile(null);
+    setEditPreview(review.image_url || null);
   };
 
   const handleEditSubmit = async (e) => {
@@ -863,10 +900,12 @@ function ReviewsTab() {
     if (!editForm.text.trim()) return alert('Review text is required.');
     setSubmitting(true);
     try {
+      let image_url = editModal.image_url || null;
+      if (editFile) image_url = await uploadImage(editFile);
       const res = await fetch('/api/admin/reviews', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: editModal.id, ...editForm }),
+        body: JSON.stringify({ id: editModal.id, ...editForm, image_url }),
       });
       const updated = await res.json();
       setReviews((prev) => prev.map((r) => r.id === editModal.id ? updated : r));
