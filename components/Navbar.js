@@ -71,6 +71,7 @@ export default function Navbar() {
       sub: [
         { label: t.nav.liloanCampus || 'Liloan Campus', href: '/facilities#liloan-campus' },
         { label: t.nav.premiumCampus || 'Premium Campus', href: '/facilities#premium-campus' },
+        { label: 'Around the Academy', href: '/facilities#around-academy' },
       ],
     },
     {
