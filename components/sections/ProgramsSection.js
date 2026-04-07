@@ -633,7 +633,7 @@ function JuniorCampProgram() {
                 <tr><td>17:10 ~ 17:50</td></tr>
                 <tr><td>18:00 ~ 19:00</td><td>Dinner</td><td>Dinner</td></tr>
                 <tr><td>19:00 ~ 19:40</td><td>Calling student&apos;s parents</td><td>Watching Movie</td></tr>
-                <tr><td>19:40 ~ 20:20</td><td>Watching Movie</td><td>Watching Movie</td></tr>
+                <tr><td>19:40 ~ 20:20</td><td>Watching Movie</td><td></td></tr>
                 <tr><td>20:30 ~ 21:30</td><td>Essay Writing</td><td>Essay Writing</td></tr>
                 <tr><td>21:30</td><td>Roll Call &amp; Go to bed</td><td>Roll Call &amp; Go to Bed</td></tr>
                 <tr><td>22:00 ~ 23:00</td><td>Learning support for students missing essay submissions</td><td>Learning Support –<br/>For Students Missing<br/>Essay Submissions</td></tr>
