@@ -445,8 +445,8 @@ function JuniorProgram() {
                 <tr><td>16:20 ~ 17:05</td><td>10th</td><td>16:00 ~ 16:40</td><td>Physical Activity</td></tr>
                 <tr><td>17:10 ~ 17:55</td><td>11th</td><td>16:45 ~ 17:25</td><td>Self-Study</td><td>Personal Maintenance &amp; Rest</td></tr>
                 <tr><td>18:00 ~ 18:50</td><td></td><td>18:00 ~ 18:50</td><td>Dinner</td><td>Dinner</td><td>Dinner</td></tr>
-                <tr><td>19:00 ~ 19:45</td><td>12th</td><td>19:00 ~ 19:50</td><td>Vocabulary &amp; Idiom</td><td rowSpan={2}>Calling Students&apos; Parents &amp;<br/>Watching Movie</td><td>Watching Movie</td></tr>
-                <tr><td>19:50 ~ 20:30</td><td>13th</td><td>19:50 ~ 20:30</td><td>Vocabulary Test &amp; Snack time</td><td></td></tr>
+                <tr><td>19:00 ~ 19:45</td><td>12th</td><td>19:00 ~ 19:50</td><td>Vocabulary &amp; Idiom</td><td rowSpan={2}>Calling Students&apos; Parents &amp;<br/>Watching Movie</td><td rowSpan={2} style={{verticalAlign:'middle'}}>Watching Movie</td></tr>
+                <tr><td>19:50 ~ 20:30</td><td>13th</td><td>19:50 ~ 20:30</td><td>Vocabulary Test &amp; Snack time</td></tr>
                 <tr><td>20:30 ~ 21:30</td><td>14th</td><td>20:30 ~ 21:30</td><td>Essay Writing</td><td>Essay Writing</td><td>Essay Writing</td></tr>
                 <tr><td>21:30</td><td></td><td>21:30</td><td>Roll Call &amp; Go to bed</td><td>Roll Call &amp; Go to bed</td><td>Roll Call &amp; Go to Bed</td></tr>
                 <tr><td>22:00 ~ 23:00</td><td></td><td>22:00 ~ 23:00</td><td>Learning Support – For Students Missing Essay Submissions or Failing Vocabulary Tests</td><td>Learning Support – For Students Missing Essay Submissions</td><td>Learning Support – For Students Missing Essay Submissions</td></tr>
@@ -632,8 +632,8 @@ function JuniorCampProgram() {
                 <tr><td>16:25 ~ 17:05</td></tr>
                 <tr><td>17:10 ~ 17:50</td></tr>
                 <tr><td>18:00 ~ 19:00</td><td>Dinner</td><td>Dinner</td></tr>
-                <tr><td>19:00 ~ 19:40</td><td>Calling student&apos;s parents</td><td>Watching Movie</td></tr>
-                <tr><td>19:40 ~ 20:20</td><td>Watching Movie</td><td></td></tr>
+                <tr><td>19:00 ~ 19:40</td><td rowSpan={2} style={{verticalAlign:'middle'}}>Calling Students&apos; Parents &amp; Watching Movie</td><td rowSpan={2} style={{verticalAlign:'middle'}}>Watching Movie</td></tr>
+                <tr><td>19:40 ~ 20:20</td></tr>
                 <tr><td>20:30 ~ 21:30</td><td>Essay Writing</td><td>Essay Writing</td></tr>
                 <tr><td>21:30</td><td>Roll Call &amp; Go to bed</td><td>Roll Call &amp; Go to Bed</td></tr>
                 <tr><td>22:00 ~ 23:00</td><td>Learning support for students missing essay submissions</td><td>Learning Support –<br/>For Students Missing<br/>Essay Submissions</td></tr>
@@ -873,8 +873,8 @@ function FamilyProgram() {
                 <tr><td>10:00 ~ 10:25</td><td>6th</td><td>09:50 ~ 10:10</td><td>1:1 Class (Art: Drawing, Making, etc.)</td></tr>
                 <tr><td>10:30 ~ 10:50</td><td>7th</td><td>10:15 ~ 10:35</td><td>Social Communication Class</td></tr>
                 <tr><td>10:50 ~ 11:15</td><td>8th</td><td>10:35 ~ 10:55</td><td>Physical Activity (Gardening / Play game) &amp; Cleanup activities</td></tr>
-                <tr><td>11:20 ~ 11:40</td><td></td><td>11:00 ~ 11:20</td><td>Free Time with Guardian</td></tr>
-                <tr><td>11:40 ~ 12:05</td><td></td><td>11:20 ~ 11:40</td><td></td></tr>
+                <tr><td>11:20 ~ 11:40</td><td></td><td>11:00 ~ 11:20</td><td rowSpan={2} style={{verticalAlign:'middle'}}>Free Time with Guardian</td></tr>
+                <tr><td>11:40 ~ 12:05</td><td></td><td>11:20 ~ 11:40</td></tr>
                 <tr><td>12:05 ~ 13:00</td><td></td><td>12:05 ~ 13:00</td><td>Lunch</td></tr>
                 <tr><td>13:05 ~ 13:50</td><td>9th</td><td>13:00 ~ 13:20</td><td>Froebel Game / LEGO Block</td><td rowSpan={5} style={{verticalAlign:'middle',textAlign:'center',fontSize:'0.88rem'}}>End of the<br/>All-Day Class</td></tr>
                 <tr><td>13:55 ~ 14:15</td><td>10th</td><td>13:20 ~ 13:40</td><td>Elephant – 1:1 Intensive Alphabet &amp; Vocabulary Class<br/>Whale – 1:1 Intensive Phonics &amp; Vocabulary Class</td></tr>
