@@ -152,6 +152,7 @@ export default function Evaluation() {
           { label: t.nav.community, href: '/community' },
           { label: ev.pageTitle || 'Evaluation Report' },
         ]}
+        backgroundImage="/images/headers/evaluation-reports.svg"
       />
       <section className="section">
         <div className="container">
