@@ -618,11 +618,11 @@ function JuniorCampProgram() {
                 <tr><td>06:50 ~ 07:00</td><td></td><td></td></tr>
                 <tr><td>07:00 ~ 08:00</td><td></td><td></td></tr>
                 <tr><td>08:00 ~ 08:40</td><td>Breakfast</td><td>Breakfast</td></tr>
-                <tr><td>08:45 ~ 09:25</td><td>Activity Orientation</td><td>Level Test</td></tr>
-                <tr><td>09:30 ~ 10:10</td><td rowSpan={9} style={{verticalAlign:'top',lineHeight:1.8,fontSize:'0.88rem'}}><strong>Outdoor activity &amp; Lunch</strong><br/>● Plantation-bay Resort +Resort Buffet<br/>● Safari Adventure Park + Lunch Dine Out<br/>● City Tour + Lunch Dine Out<br/>● J-Park Resort+Resort Buffet<br/>● Westown Lagoon +Lunch Dine Out<br/>● El-Salvador Resort + Resort Buffet<br/>● Maribago Bluewater + Resort Buffet<br/>● Ocean Park Cebu + Lunch dine out<br/><span style={{fontSize:'0.82rem',color:'#888'}}>※ Can be adjusted</span></td><td rowSpan={3}></td></tr>
+                <tr><td>08:45 ~ 09:25</td><td>Activity Orientation</td><td rowSpan={5} style={{verticalAlign:'middle'}}>Level Test</td></tr>
+                <tr><td>09:30 ~ 10:10</td><td rowSpan={9} style={{verticalAlign:'top',lineHeight:1.8,fontSize:'0.88rem'}}><strong>Outdoor activity &amp; Lunch</strong><br/>● Plantation-bay Resort +Resort Buffet<br/>● Safari Adventure Park + Lunch Dine Out<br/>● City Tour + Lunch Dine Out<br/>● J-Park Resort+Resort Buffet<br/>● Westown Lagoon +Lunch Dine Out<br/>● El-Salvador Resort + Resort Buffet<br/>● Maribago Bluewater + Resort Buffet<br/>● Ocean Park Cebu + Lunch dine out<br/><span style={{fontSize:'0.82rem',color:'#888'}}>※ Can be adjusted</span></td></tr>
                 <tr><td>10:10 ~ 10:30</td></tr>
                 <tr><td>10:35 ~ 11:15</td></tr>
-                <tr><td>11:20 ~ 12:00</td><td></td></tr>
+                <tr><td>11:20 ~ 12:00</td></tr>
                 <tr><td>12:00 ~ 13:00</td><td>Lunch</td></tr>
                 <tr><td>13:00 ~ 13:40</td><td rowSpan={2} style={{verticalAlign:'top',lineHeight:1.7,fontSize:'0.85rem'}}>Humanism<br/>Education &amp;<br/>Indoor Activity</td></tr>
                 <tr><td>13:45 ~ 14:25</td></tr>
