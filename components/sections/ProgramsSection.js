@@ -610,7 +610,7 @@ function JuniorCampProgram() {
               <thead>
                 <tr>
                   <th>Time</th>
-                  <th>Saturday</th>
+                  <th>Wednesday or Saturday</th>
                   <th>Sunday</th>
                 </tr>
               </thead>
