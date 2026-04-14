@@ -76,7 +76,7 @@ export default function Navbar() {
     },
     {
       label: t.nav.community,
-      href: '/community',
+      href: '/community/notice',
       sub: [
         { label: t.nav.notice, href: '/community/notice' },
         { label: t.nav.letter || 'Letter', href: '/community/letter' },
