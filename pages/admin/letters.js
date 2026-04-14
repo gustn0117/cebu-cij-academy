@@ -261,8 +261,8 @@ function LettersTab() {
           <input type="text" placeholder="Title *" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} style={styles.input} />
           <input type="text" placeholder="Student Name *" value={form.student_name} onChange={(e) => setForm({ ...form, student_name: e.target.value })} style={styles.input} />
           <div style={{ marginBottom: 12 }}>
-            <label style={{ fontSize: '0.82rem', fontWeight: 600, color: '#666', marginBottom: 4, display: 'block' }}>Student Birthdate (Password) *</label>
-            <input type="date" lang="en" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} style={{ ...styles.input, marginBottom: 0 }} required />
+            <label style={{ fontSize: '0.82rem', fontWeight: 600, color: '#666', marginBottom: 4, display: 'block' }}>Password *</label>
+            <input type="text" placeholder="Set password" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} style={{ ...styles.input, marginBottom: 0 }} required />
           </div>
           <textarea placeholder="Content *" value={form.content} onChange={(e) => setForm({ ...form, content: e.target.value })} style={{ ...styles.input, minHeight: 120, resize: 'vertical' }} />
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
@@ -280,8 +280,8 @@ function LettersTab() {
               <input type="text" placeholder="Title *" value={editForm.title} onChange={(e) => setEditForm({ ...editForm, title: e.target.value })} style={styles.input} />
               <input type="text" placeholder="Student Name *" value={editForm.student_name} onChange={(e) => setEditForm({ ...editForm, student_name: e.target.value })} style={styles.input} />
               <div style={{ marginBottom: 12 }}>
-                <label style={{ fontSize: '0.82rem', fontWeight: 600, color: '#666', marginBottom: 4, display: 'block' }}>Student Birthdate (Password)</label>
-                <input type="date" lang="en" value={editForm.password} onChange={(e) => setEditForm({ ...editForm, password: e.target.value })} style={{ ...styles.input, marginBottom: 0 }} />
+                <label style={{ fontSize: '0.82rem', fontWeight: 600, color: '#666', marginBottom: 4, display: 'block' }}>Password</label>
+                <input type="text" placeholder="Password" value={editForm.password} onChange={(e) => setEditForm({ ...editForm, password: e.target.value })} style={{ ...styles.input, marginBottom: 0 }} />
               </div>
               <textarea placeholder="Content *" value={editForm.content} onChange={(e) => setEditForm({ ...editForm, content: e.target.value })} style={{ ...styles.input, minHeight: 120, resize: 'vertical' }} />
               <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
@@ -1079,6 +1079,7 @@ function ReportsTab() {
   const [editPreview, setEditPreview] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [checkedIds, setCheckedIds] = useState(new Set());
+  const [lightboxUrl, setLightboxUrl] = useState(null);
 
   useEffect(() => { fetchReports(); }, []);
 
@@ -1312,6 +1313,15 @@ function ReportsTab() {
                   >
                     <polyline points="9 18 15 12 9 6" />
                   </svg>
+                  {report.image_url && (
+                    <img
+                      src={report.image_url}
+                      alt={report.title}
+                      onClick={(e) => { e.stopPropagation(); setLightboxUrl(report.image_url); }}
+                      style={{ width: 48, height: 36, objectFit: 'cover', borderRadius: 4, flexShrink: 0, cursor: 'pointer' }}
+                      title="Click to enlarge"
+                    />
+                  )}
                   <strong
                     onClick={() => setExpanded(expanded === report.id ? null : report.id)}
                     style={{ fontSize: '0.93rem', color: '#1a1a2e', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', cursor: 'pointer' }}
@@ -1327,7 +1337,13 @@ function ReportsTab() {
                 <div style={{ padding: '0 20px 20px 48px', fontSize: '0.9rem', lineHeight: 1.7, color: '#444', borderTop: '1px solid #f0f0f0' }}>
                   <div style={{ paddingTop: 16 }}>
                     {report.image_url && (
-                      <img src={report.image_url} alt={report.title} style={{ maxWidth: '100%', maxHeight: 240, objectFit: 'cover', borderRadius: 8, marginBottom: 12 }} />
+                      <img
+                        src={report.image_url}
+                        alt={report.title}
+                        onClick={() => setLightboxUrl(report.image_url)}
+                        style={{ maxWidth: '100%', maxHeight: 240, objectFit: 'cover', borderRadius: 8, marginBottom: 12, cursor: 'pointer' }}
+                        title="Click to enlarge"
+                      />
                     )}
                     {(report.content || '').split('\n').map((line, i) => (
                       <p key={i} style={{ margin: '0 0 6px' }}>{line || '\u00A0'}</p>
@@ -1339,6 +1355,35 @@ function ReportsTab() {
           ))}
         </div>
       )}
+
+      {lightboxUrl && (
+        <div
+          onClick={() => setLightboxUrl(null)}
+          style={{
+            position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+            background: 'rgba(0,0,0,0.85)', zIndex: 9999,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            cursor: 'zoom-out', padding: 20,
+          }}
+        >
+          <img
+            src={lightboxUrl}
+            alt="Report"
+            onClick={(e) => e.stopPropagation()}
+            style={{ maxWidth: '95%', maxHeight: '95%', objectFit: 'contain', borderRadius: 8, boxShadow: '0 20px 60px rgba(0,0,0,0.5)' }}
+          />
+          <button
+            onClick={() => setLightboxUrl(null)}
+            style={{
+              position: 'absolute', top: 20, right: 20,
+              background: 'rgba(255,255,255,0.15)', border: 'none',
+              color: '#fff', width: 40, height: 40, borderRadius: '50%',
+              cursor: 'pointer', fontSize: '1.2rem', fontWeight: 700,
+            }}
+            aria-label="Close"
+          >×</button>
+        </div>
+      )}
     </div>
   );
 }
@@ -1347,6 +1392,7 @@ function ReportsTab() {
 function MembersTab() {
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [checkedIds, setCheckedIds] = useState(new Set());
 
   useEffect(() => { fetchMembers(); }, []);
 
@@ -1366,6 +1412,31 @@ function MembersTab() {
     setMembers((prev) => prev.filter((m) => m.id !== id));
   };
 
+  const toggleCheck = (id) => {
+    setCheckedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      return next;
+    });
+  };
+
+  const toggleAll = () => {
+    if (checkedIds.size === members.length) {
+      setCheckedIds(new Set());
+    } else {
+      setCheckedIds(new Set(members.map((m) => m.id)));
+    }
+  };
+
+  const deleteSelected = async () => {
+    if (checkedIds.size === 0) return;
+    if (!confirm(`Delete ${checkedIds.size} selected member(s)?`)) return;
+    const ids = [...checkedIds].join(',');
+    await fetch(`/api/admin/members?id=${ids}`, { method: 'DELETE' });
+    setMembers((prev) => prev.filter((m) => !checkedIds.has(m.id)));
+    setCheckedIds(new Set());
+  };
+
   return (
     <div>
       <div style={styles.pageHeader}>
@@ -1373,6 +1444,13 @@ function MembersTab() {
           <h1 style={styles.pageTitle}>Members</h1>
           <span style={styles.badge}>{members.length} total</span>
         </div>
+        {checkedIds.size > 0 && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <button onClick={deleteSelected} style={{ ...styles.btnDanger, display: 'flex', alignItems: 'center', gap: 6 }}>
+              Delete Selected ({checkedIds.size})
+            </button>
+          </div>
+        )}
       </div>
 
       {loading ? (
@@ -1385,6 +1463,14 @@ function MembersTab() {
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.88rem' }}>
               <thead>
                 <tr style={{ borderBottom: '2px solid #eee', textAlign: 'left' }}>
+                  <th style={{ padding: '10px 12px', width: 40 }}>
+                    <input
+                      type="checkbox"
+                      checked={checkedIds.size === members.length && members.length > 0}
+                      onChange={toggleAll}
+                      style={{ cursor: 'pointer' }}
+                    />
+                  </th>
                   <th style={{ padding: '10px 12px', color: '#666', fontWeight: 600 }}>Username</th>
                   <th style={{ padding: '10px 12px', color: '#666', fontWeight: 600 }}>Name</th>
                   <th style={{ padding: '10px 12px', color: '#666', fontWeight: 600 }}>Password</th>
@@ -1398,6 +1484,14 @@ function MembersTab() {
               <tbody>
                 {members.map((member) => (
                   <tr key={member.id} style={{ borderBottom: '1px solid #f0f0f0' }}>
+                    <td style={{ padding: '12px', width: 40 }}>
+                      <input
+                        type="checkbox"
+                        checked={checkedIds.has(member.id)}
+                        onChange={() => toggleCheck(member.id)}
+                        style={{ cursor: 'pointer' }}
+                      />
+                    </td>
                     <td style={{ padding: '12px', color: '#1a1a2e', fontWeight: 500 }}>{member.username || '-'}</td>
                     <td style={{ padding: '12px', color: '#1a1a2e' }}>{member.name || '-'}</td>
                     <td style={{ padding: '12px', color: '#666', fontSize: '0.82rem' }}>{member.password_plain || '-'}</td>

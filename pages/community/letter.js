@@ -101,9 +101,9 @@ function LetterFormModal({ isOpen, onClose, onSubmit, editData }) {
             <input style={inputStyle} type="text" value={form.studentName} onChange={(e) => setForm({ ...form, studentName: e.target.value })} placeholder="Enter student's full name" required />
           </div>
           <div style={{ marginBottom: 16 }}>
-            <label style={labelStyle}>Student Birthdate (Password)</label>
-            <input style={inputStyle} type="date" lang="en" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} required />
-            <p style={{ fontSize: '0.78rem', color: '#999', marginTop: 4 }}>Only parents who know this birthdate can read the letter.</p>
+            <label style={labelStyle}>Password</label>
+            <input style={inputStyle} type="text" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} required placeholder="Set a password" />
+            <p style={{ fontSize: '0.78rem', color: '#999', marginTop: 4 }}>Only people who know this password can read the letter.</p>
           </div>
           <div style={{ marginBottom: 24 }}>
             <label style={labelStyle}>Message</label>
@@ -150,15 +150,15 @@ function PasswordModal({ isOpen, onClose, onSubmit, letterTitle }) {
         </h2>
         <p style={{ color: '#6c757d', fontSize: '0.88rem', marginBottom: 20 }}>
           &ldquo;{letterTitle}&rdquo;<br />
-          Enter the student&apos;s birthdate to view this letter.
+          Enter the password to view this letter.
         </p>
         {error && (
           <div style={{ background: '#FEF2F2', color: '#B91C1C', padding: '10px 14px', borderRadius: 8, fontSize: '0.88rem', marginBottom: 16 }}>{error}</div>
         )}
         <form onSubmit={handleSubmit}>
           <div style={{ marginBottom: 20 }}>
-            <label style={labelStyle}>Student Birthdate</label>
-            <input style={inputStyle} type="date" lang="en" value={password} onChange={(e) => setPassword(e.target.value)} required />
+            <label style={labelStyle}>Password</label>
+            <input style={inputStyle} type="password" value={password} onChange={(e) => setPassword(e.target.value)} required placeholder="Enter password" />
           </div>
           <button type="submit" style={{ ...btnPrimary, width: '100%' }} disabled={loading}>
             {loading ? 'Verifying...' : 'View Letter'}

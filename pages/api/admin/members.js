@@ -15,10 +15,13 @@ export default async function handler(req, res) {
     const { id } = req.query;
     if (!id) return res.status(400).json({ error: 'ID required' });
 
+    const ids = String(id).split(',').map((v) => Number(v)).filter((n) => !Number.isNaN(n));
+    if (ids.length === 0) return res.status(400).json({ error: 'Invalid ID' });
+
     const { error } = await supabase
       .from('users')
       .delete()
-      .eq('id', Number(id));
+      .in('id', ids);
 
     if (error) return res.status(500).json({ error: error.message });
     return res.status(200).json({ success: true });

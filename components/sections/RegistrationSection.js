@@ -422,24 +422,69 @@ export default function RegistrationSection() {
             {/* Refund Policy */}
             <div style={categoryStyle}>
               <h3 style={categoryHeadingStyle}>Refund Policy</h3>
-              <p>Refunds are calculated in four (4)-week increments only.</p>
+              <p><strong>General Rule:</strong> Refunds are calculated in four (4) week increments only.</p>
 
-              <p style={{ fontWeight: 600, marginTop: 16, marginBottom: 8 }}>Before Departure</p>
-              <ul>
-                <li style={ruleItemStyle}>Registration fee: Non-refundable</li>
-                <li style={ruleItemStyle}>21+ days before departure → Full refund (excluding registration fee)</li>
-                <li style={ruleItemStyle}>7–21 days → Deduct 2 weeks dormitory cost</li>
-                <li style={ruleItemStyle}>Within 7 days → Deduct 4 weeks dormitory + 1 week tuition</li>
-              </ul>
+              <p style={{ fontWeight: 600, marginTop: 24, marginBottom: 8 }}>1. Before Departure</p>
+              <div className="styled-table-wrap">
+                <table className="styled-table">
+                  <thead>
+                    <tr>
+                      <th>Category</th>
+                      <th>Refund Policy</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Registration fee</td>
+                      <td>Non-refundable</td>
+                    </tr>
+                    <tr>
+                      <td>21+ days before departure</td>
+                      <td>Full refund (excluding registration fee)</td>
+                    </tr>
+                    <tr>
+                      <td>7&ndash;21 days before departure</td>
+                      <td>Deduct 2 weeks dormitory cost</td>
+                    </tr>
+                    <tr>
+                      <td>Within 7 days of departure</td>
+                      <td>Deduct 4 weeks dormitory + 1 week tuition</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
 
-              <p style={{ fontWeight: 600, marginTop: 16, marginBottom: 8 }}>After Course Start</p>
+              <p style={{ fontWeight: 600, marginTop: 24, marginBottom: 8 }}>2. After Course Start</p>
+              <div className="styled-table-wrap">
+                <table className="styled-table">
+                  <thead>
+                    <tr>
+                      <th>Elapsed Period</th>
+                      <th>Refund Policy</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Within 25% of course period</td>
+                      <td>50% refund of remaining balance</td>
+                    </tr>
+                    <tr>
+                      <td>25% &ndash; 50% of course period</td>
+                      <td>30% refund of remaining balance</td>
+                    </tr>
+                    <tr>
+                      <td>After 50% of course period</td>
+                      <td>No refund</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <p style={{ fontWeight: 600, marginTop: 24, marginBottom: 8 }}>Additional Terms</p>
               <ul>
-                <li style={ruleItemStyle}>Within 25% of course period → 50% refund of remaining balance</li>
-                <li style={ruleItemStyle}>25–50% period → 30% refund</li>
-                <li style={ruleItemStyle}>After 50% → No refund</li>
+                <li style={ruleItemStyle}>No refund applies in cases of dismissal or misconduct.</li>
+                <li style={ruleItemStyle}>Force majeure cases are non-refundable.</li>
               </ul>
-              <p style={{ marginTop: 8 }}>No refund applies in cases of dismissal or misconduct.</p>
-              <p>Force majeure cases are non-refundable.</p>
             </div>
 
             {/* Check-In & Check-Out */}
